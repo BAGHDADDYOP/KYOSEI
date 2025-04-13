@@ -32,47 +32,83 @@ exports.handler = async function(event, context) {
       };
     }
 
-    // Initialize Google Generative AI client
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    console.log("API key present, attempting to initialize Google Generative AI");
+    
+    try {
+      // Initialize Google Generative AI client
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
 
-    // Convert history format
-    const googleAIHistory = history.map(msg => ({
-      role: msg.role === 'user' ? 'user' : 'model',
-      parts: msg.parts
-    }));
+      // Convert history format
+      const googleAIHistory = history.map(msg => ({
+        role: msg.role === 'user' ? 'user' : 'model',
+        parts: [{ text: msg.parts[0].text }]
+      }));
 
-    // Start chat with history
-    const chat = model.startChat({
-      history: googleAIHistory.slice(0, -1), // Exclude last user message
-      generationConfig: {
-        maxOutputTokens: 1000,
-      },
-    });
+      console.log("History converted, starting chat");
+      
+      try {
+        // Start chat with history - use empty history if there's only one message
+        const chat = googleAIHistory.length > 1 ? 
+          model.startChat({
+            history: googleAIHistory.slice(0, -1), // Exclude last user message
+            generationConfig: {
+              maxOutputTokens: 1000,
+            },
+          }) : 
+          model.startChat({
+            generationConfig: {
+              maxOutputTokens: 1000,
+            },
+          });
 
-    // Get last user message
-    const userMessage = history[history.length - 1].parts[0].text;
+        // Get last user message
+        const userMessage = history[history.length - 1].parts[0].text;
+        console.log("Sending message to API:", userMessage.substring(0, 50) + "...");
+        
+        // Generate response
+        const result = await chat.sendMessage(userMessage);
+        const aiResponse = result.response.text();
+        console.log("Response received from API");
 
-    // Generate response
-    const result = await chat.sendMessage(userMessage);
-    const aiResponse = result.response.text();
-
-    // Return response
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ aiResponse })
-    };
-
+        // Return response
+        return {
+          statusCode: 200,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ aiResponse })
+        };
+      } catch (chatError) {
+        console.error("Chat error:", chatError);
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ 
+            error: 'Chat processing error', 
+            details: chatError.message,
+            stack: chatError.stack
+          })
+        };
+      }
+    } catch (modelError) {
+      console.error("Model initialization error:", modelError);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ 
+          error: 'Model initialization error', 
+          details: modelError.message,
+          stack: modelError.stack
+        })
+      };
+    }
   } catch (error) {
     console.error('Error processing chat request:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ 
         error: 'Failed to process request',
-        details: error.message 
+        details: error.message,
+        stack: error.stack
       })
     };
   }
