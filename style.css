@@ -6,116 +6,92 @@
 }
 
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Helvetica Neue is common, fallbacks provided */
-    background-color: #ffffff; /* White background */
-    color: #000000; /* Black text */
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #000000; /* Black background */
+    color: #ffffff; /* White text */
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Full viewport height */
+    min-height: 100vh;
 }
 
 header {
-    padding: 20px;
+    padding: 30px 0;
     text-align: center;
-    border-bottom: 1px solid #000000; /* Black border */
 }
 
 /* Animated Header */
 .animated-header {
     font-weight: bold;
     text-transform: uppercase;
-    font-size: 2em; /* Adjust size as needed */
-    /* Simple fade-in animation */
-    animation: fadeIn 2s ease-in-out;
+    font-size: 2em;
+    letter-spacing: 2px;
+    animation: fadeInAndSlide 3s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    color: #ffffff;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+@keyframes fadeInAndSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
-/* --- More complex animation example (e.g., slight glow pulse) ---
-@keyframes pulseGlow {
-    0%, 100% { text-shadow: 0 0 2px #000000; }
-    50% { text-shadow: 0 0 5px #333333; }
-}
-.animated-header {
-    animation: pulseGlow 3s infinite ease-in-out;
-}
-*/
 
 main {
-    flex-grow: 1; /* Takes remaining vertical space */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
     padding: 20px;
-    max-width: 800px; /* Limit chat width */
-    margin: 0 auto; /* Center horizontally */
-    width: 90%; /* Responsive width */
+    max-width: 800px;
+    margin: 0 auto;
+    width: 90%;
 }
 
 #chat-container {
-    flex-grow: 1; /* Takes up space before input */
-    overflow-y: auto; /* Scroll for long chats */
-    margin-bottom: 20px;
-    border: 1px solid #000000; /* Black border */
-    padding: 15px;
-    background-color: #f9f9f9; /* Very light grey for contrast */
-}
-
-/* Style individual messages */
-.message {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 5px;
-    line-height: 1.4;
-}
-
-.user-message {
-    background-color: #e0e0e0; /* Light grey for user */
-    text-align: right;
-    margin-left: auto; /* Push to right */
-    max-width: 70%;
-}
-
-.ai-message {
-    background-color: #f0f0f0; /* Slightly different grey for AI */
-    text-align: left;
-    margin-right: auto; /* Push to left */
-    max-width: 70%;
+    display: none; /* Hide chat container */
 }
 
 /* Input Form - Minimalist Search Bar Look */
 #input-form {
     display: flex;
-    border: 1px solid #000000; /* Black border around the input area */
+    border: 1px solid #333333; /* Dark grey border */
     padding: 5px;
-    background-color: #ffffff;
+    background-color: #000000; /* Black background */
+    margin-top: auto; /* Push to bottom */
 }
 
 #user-input {
-    flex-grow: 1; /* Take available space */
-    border: none; /* Remove default border */
-    padding: 10px;
+    flex-grow: 1;
+    border: none;
+    padding: 12px;
     font-size: 1em;
-    outline: none; /* Remove focus outline */
-    font-family: inherit; /* Use body font */
-    background-color: transparent; /* Match form background */
+    outline: none;
+    font-family: inherit;
+    background-color: #000000; /* Black background */
+    color: #ffffff; /* White text */
 }
 
 #input-form button {
-    /* Optional: Hide button for pure search bar feel, rely on Enter key */
-    /* display: none; */
-
-    /* Or style minimally if kept */
-    background: #000000; /* Black background */
+    background: #333333; /* Dark grey background */
     color: #ffffff; /* White text */
     border: none;
-    padding: 10px 15px;
+    padding: 12px 20px;
     cursor: pointer;
     font-size: 1em;
     font-family: inherit;
 }
 
- #input-form button:hover {
-    background: #333333; /* Darker grey on hover */
- }
+#input-form button:hover {
+    background: #444444; /* Lighter grey on hover */
+}
+
+/* Set placeholder color */
+#user-input::placeholder {
+    color: #777777; /* Grey text for placeholder */
+}
