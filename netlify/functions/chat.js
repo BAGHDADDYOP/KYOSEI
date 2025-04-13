@@ -35,9 +35,11 @@ exports.handler = async function(event, context) {
     console.log("API key present, attempting to initialize Google Generative AI");
     
     try {
-      // Initialize Google Generative AI client
+      // Initialize Google Generative AI client with updated model name
       const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+      
+      // Use the Gemini 2.0 Flash model
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
       // Convert history format
       const googleAIHistory = history.map(msg => ({
