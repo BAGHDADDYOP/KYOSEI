@@ -1,0 +1,121 @@
+/* Basic Reset & Body Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Helvetica Neue is common, fallbacks provided */
+    background-color: #ffffff; /* White background */
+    color: #000000; /* Black text */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Full viewport height */
+}
+
+header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #000000; /* Black border */
+}
+
+/* Animated Header */
+.animated-header {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 2em; /* Adjust size as needed */
+    /* Simple fade-in animation */
+    animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+/* --- More complex animation example (e.g., slight glow pulse) ---
+@keyframes pulseGlow {
+    0%, 100% { text-shadow: 0 0 2px #000000; }
+    50% { text-shadow: 0 0 5px #333333; }
+}
+.animated-header {
+    animation: pulseGlow 3s infinite ease-in-out;
+}
+*/
+
+main {
+    flex-grow: 1; /* Takes remaining vertical space */
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 800px; /* Limit chat width */
+    margin: 0 auto; /* Center horizontally */
+    width: 90%; /* Responsive width */
+}
+
+#chat-container {
+    flex-grow: 1; /* Takes up space before input */
+    overflow-y: auto; /* Scroll for long chats */
+    margin-bottom: 20px;
+    border: 1px solid #000000; /* Black border */
+    padding: 15px;
+    background-color: #f9f9f9; /* Very light grey for contrast */
+}
+
+/* Style individual messages */
+.message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    line-height: 1.4;
+}
+
+.user-message {
+    background-color: #e0e0e0; /* Light grey for user */
+    text-align: right;
+    margin-left: auto; /* Push to right */
+    max-width: 70%;
+}
+
+.ai-message {
+    background-color: #f0f0f0; /* Slightly different grey for AI */
+    text-align: left;
+    margin-right: auto; /* Push to left */
+    max-width: 70%;
+}
+
+/* Input Form - Minimalist Search Bar Look */
+#input-form {
+    display: flex;
+    border: 1px solid #000000; /* Black border around the input area */
+    padding: 5px;
+    background-color: #ffffff;
+}
+
+#user-input {
+    flex-grow: 1; /* Take available space */
+    border: none; /* Remove default border */
+    padding: 10px;
+    font-size: 1em;
+    outline: none; /* Remove focus outline */
+    font-family: inherit; /* Use body font */
+    background-color: transparent; /* Match form background */
+}
+
+#input-form button {
+    /* Optional: Hide button for pure search bar feel, rely on Enter key */
+    /* display: none; */
+
+    /* Or style minimally if kept */
+    background: #000000; /* Black background */
+    color: #ffffff; /* White text */
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: inherit;
+}
+
+ #input-form button:hover {
+    background: #333333; /* Darker grey on hover */
+ }
