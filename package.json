@@ -1,5 +1,8 @@
 {
     "name": "health-ai-chatbot",
     "version": "1.0.0",
-    "private": true
-  }
+    "private": true,
+    "dependencies": {
+        "@google/generative-ai": "^0.1.3"
+    }
+}
