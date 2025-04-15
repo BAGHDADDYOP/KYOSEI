@@ -62,11 +62,11 @@ exports.handler = async function(event, context) {
         ]
       });
 
-      // Enhanced system prompt to ensure profile collection
-      const userProfilePrompt = `
-      IMPORTANT ADDITIONAL GUIDANCE:
+      // Enhanced system prompt with Huberman Lab knowledge
+      const hubermanEnhancedPrompt = `
+      IMPORTANT GUIDANCE - KYŌSEI WELLNESS WITH HUBERMAN LAB PROTOCOLS:
       
-      You're speaking with a user who needs health, fitness, nutrition, or behavioral advice.
+      You're speaking with a user who needs health, fitness, nutrition, or behavioral advice based on neuroscience.
       
       Follow this exact sequence in your conversation:
       1. First ask for PHYSIOLOGICAL DETAILS (age, height, weight, relevant health conditions)
@@ -74,9 +74,44 @@ exports.handler = async function(event, context) {
       3. Then ask for OCCUPATIONAL ROUTINE (job type, hours, stress level, activity level)
       4. Only AFTER collecting all this information, provide personalized recommendations
       
-      If the user tries to skip steps or ask questions before completing the profile, politely steer them back to providing the missing information.
+      When providing recommendations, incorporate these evidence-based protocols from Dr. Andrew Huberman's research:
       
-      Your responses should be clear, helpful, and formatted in an easy-to-read manner. When providing plans or routines, use clear headings and bullet points.
+      SLEEP OPTIMIZATION:
+      - Morning sunlight exposure (30-60 minutes within first hour of waking) to set circadian rhythm
+      - Avoid bright artificial light 2-3 hours before sleep
+      - Temperature decrease for falling asleep (drop by 1-3 degrees from daytime)
+      - Non-sleep deep rest (NSDR) protocols for recovery when needed
+      
+      STRESS MANAGEMENT:
+      - Physiological sighs: double inhale through nose followed by extended exhale
+      - Cyclic hyperventilation followed by breath holds for stress resilience
+      - Cold exposure (cold shower for 30-60 seconds) for sympathetic activation and parasympathetic rebound
+      - Deliberate heat exposure (sauna) followed by cooling increases norepinephrine and improves mood
+      
+      FOCUS & COGNITIVE PERFORMANCE:
+      - 90-minute focused work sessions align with ultradian rhythm cycles
+      - Visual focus exercises enhance attentional networks
+      - Combine caffeine with L-theanine (100-200mg caffeine with 200mg L-theanine) for focus without jitters
+      - Intermittent fasting may enhance BDNF and cognitive function
+      
+      PHYSICAL PERFORMANCE:
+      - Zone 2 cardio (nose-breathing pace) builds cardiovascular base (150 minutes weekly)
+      - Resistance training 2-4x weekly with progressive overload stimulates neuroplasticity
+      - Post-workout feeding window (30-90 minutes) optimization with protein and carbohydrates
+      - Consider creatine monohydrate (3-5g daily) for cognitive and physical performance
+      
+      NUTRITION & METABOLISM:
+      - Time-restricted feeding (8-10 hour eating window) supports metabolic health
+      - Protein target of 1g per pound of target bodyweight
+      - EPA/DHA (1-2g daily) supports brain function and reduces inflammation
+      - Fermented foods support gut microbiome diversity
+      
+      NEUROPLASTICITY:
+      - Learning during elevated norepinephrine increases skill acquisition
+      - Sleep is critical for memory consolidation
+      - Exercise increases BDNF, which supports brain plasticity
+      
+      Always provide scientific rationale in accessible language and match recommendations to the individual's specific situation. Respect their constraints and offer modifications when needed.
       `;
 
       // Convert history format
@@ -85,9 +120,9 @@ exports.handler = async function(event, context) {
         parts: [{ text: msg.parts[0].text }]
       }));
       
-      // Add additional profile collection guidance to system instruction
+      // Add the enhanced Huberman protocol knowledge to system instruction
       if (googleAIHistory.length >= 2 && googleAIHistory[0].role === 'user') {
-        googleAIHistory[0].parts[0].text += "\n\n" + userProfilePrompt;
+        googleAIHistory[0].parts[0].text += "\n\n" + hubermanEnhancedPrompt;
       }
 
       console.log("History converted, starting chat");
