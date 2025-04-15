@@ -39,13 +39,56 @@ exports.handler = async function(event, context) {
       const genAI = new GoogleGenerativeAI(apiKey);
       
       // Use the Gemini 2.0 Flash model
-      const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+      const model = genAI.getGenerativeModel({ 
+        model: 'gemini-2.0-flash',
+        // Add safety settings to ensure appropriate responses
+        safetySettings: [
+          {
+            category: "HARM_CATEGORY_HARASSMENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_HATE_SPEECH",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          },
+          {
+            category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+            threshold: "BLOCK_MEDIUM_AND_ABOVE"
+          }
+        ]
+      });
+
+      // Enhanced system prompt to ensure profile collection
+      const userProfilePrompt = `
+      IMPORTANT ADDITIONAL GUIDANCE:
+      
+      You're speaking with a user who needs health, fitness, nutrition, or behavioral advice.
+      
+      Follow this exact sequence in your conversation:
+      1. First ask for PHYSIOLOGICAL DETAILS (age, height, weight, relevant health conditions)
+      2. Then ask for GOALS (what they want to achieve with fitness, nutrition, health, etc.)
+      3. Then ask for OCCUPATIONAL ROUTINE (job type, hours, stress level, activity level)
+      4. Only AFTER collecting all this information, provide personalized recommendations
+      
+      If the user tries to skip steps or ask questions before completing the profile, politely steer them back to providing the missing information.
+      
+      Your responses should be clear, helpful, and formatted in an easy-to-read manner. When providing plans or routines, use clear headings and bullet points.
+      `;
 
       // Convert history format
       const googleAIHistory = history.map(msg => ({
         role: msg.role === 'user' ? 'user' : 'model',
         parts: [{ text: msg.parts[0].text }]
       }));
+      
+      // Add additional profile collection guidance to system instruction
+      if (googleAIHistory.length >= 2 && googleAIHistory[0].role === 'user') {
+        googleAIHistory[0].parts[0].text += "\n\n" + userProfilePrompt;
+      }
 
       console.log("History converted, starting chat");
       
@@ -56,11 +99,13 @@ exports.handler = async function(event, context) {
             history: googleAIHistory.slice(0, -1), // Exclude last user message
             generationConfig: {
               maxOutputTokens: 1000,
+              temperature: 0.7,
             },
           }) : 
           model.startChat({
             generationConfig: {
               maxOutputTokens: 1000,
+              temperature: 0.7,
             },
           });
 
