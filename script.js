@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Track user profile data
     let userProfile = {
-        physiologicalDetails: {},
-        goals: {},
-        occupation: {},
+        physicalVessel: {},
+        consciousIntent: {},
+        dailyRhythms: {},
         profileComplete: false
     };
 
