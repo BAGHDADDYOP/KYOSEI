@@ -7,7 +7,7 @@
 
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #000000; /* Black background */
+    background-color: #000000; /* Pure black background */
     color: #ffffff; /* White text */
     display: flex;
     flex-direction: column;
@@ -71,12 +71,12 @@ main {
     overflow-y: auto;
     margin-bottom: 30px;
     padding: 20px;
-    background-color: rgba(25, 25, 25, 0.3);
+    background-color: rgba(0, 0, 0, 0.8); /* Pure black with slight transparency */
     border-radius: 8px;
     transition: all 0.5s ease;
     border: 1px solid #333;
     scrollbar-width: thin;
-    scrollbar-color: #444 #222;
+    scrollbar-color: #444 #111; /* Darker scrollbar track */
 }
 
 #chat-container::-webkit-scrollbar {
@@ -84,7 +84,7 @@ main {
 }
 
 #chat-container::-webkit-scrollbar-track {
-    background: #222;
+    background: #111; /* Darker track */
 }
 
 #chat-container::-webkit-scrollbar-thumb {
@@ -104,13 +104,13 @@ main {
 
 .user-message {
     align-self: flex-end;
-    background-color: #333;
+    background-color: #111; /* Darker user message background */
     margin-left: auto;
     text-align: right;
 }
 
 .ai-message {
-    background-color: #222;
+    background-color: #111; /* Darker AI message background */
     margin-right: auto;
 }
 
@@ -146,13 +146,13 @@ main {
 /* Code blocks in AI messages */
 .ai-message code {
     font-family: 'Courier New', monospace;
-    background-color: #2a2a2a;
+    background-color: #111; /* Darker code background */
     padding: 2px 5px;
     border-radius: 3px;
 }
 
 .ai-message pre {
-    background-color: #2a2a2a;
+    background-color: #111; /* Darker pre background */
     padding: 10px;
     border-radius: 5px;
     overflow-x: auto;
@@ -165,7 +165,7 @@ main {
     border: 1px solid #333333;
     border-radius: 6px;
     padding: 5px;
-    background-color: rgba(20, 20, 20, 0.5);
+    background-color: rgba(0, 0, 0, 0.7); /* Darker input form background */
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
@@ -190,7 +190,7 @@ main {
 }
 
 #input-form button {
-    background: #333333;
+    background: #111; /* Darker button background */
     color: #ffffff;
     border: none;
     border-radius: 4px;
@@ -204,7 +204,7 @@ main {
 }
 
 #input-form button:hover {
-    background: #444444;
+    background: #222; /* Darker hover background */
 }
 
 /* When conversation starts, reposition elements */
@@ -279,7 +279,6 @@ main.conversation-active {
         min-height: 350px;
     }
 }
-/* Add these styles to your style.css file */
 
 /* Profile collection progress indicator */
 .profile-progress {
@@ -301,7 +300,7 @@ main.conversation-active {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #333;
+    background-color: #222; /* Darker inactive step */
     margin: 0 5px;
     transition: all 0.3s ease;
 }
@@ -312,7 +311,7 @@ main.conversation-active {
 }
 
 .progress-step.complete {
-    background-color: #4a4a4a;
+    background-color: #333; /* Darker completed step */
 }
 
 /* Progress labels */
