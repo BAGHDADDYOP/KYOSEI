@@ -76,6 +76,11 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
                 customLabel: "Enter other health conditions",
                 allowMultiple: true
             }
+{
+    question: "How would you describe your digestive health?",
+    type: "select",
+    options: ["Excellent - No issues", "Good - Occasional discomfort", "Fair - Regular minor issues", "Poor - Frequent discomfort"],
+}
         ],
         goals: [
             {
@@ -95,6 +100,12 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
                 options: ["Full body", "Upper body", "Lower body", "Core strength", "Cardiovascular health", "Functional mobility"],
                 allowMultiple: true
             }
+{
+    question: "Which aspect of your mind-body connection do you want to strengthen?",
+    type: "select",
+    options: ["Mental clarity", "Emotional balance", "Physical energy", "Resilience to stress", "Sleep quality"],
+    allowMultiple: true
+}
         ],
         occupation: [
             {
