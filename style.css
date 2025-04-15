@@ -155,3 +155,36 @@ main {
         padding: 12px;
     }
 }
+/* Add these to your style.css file */
+
+/* Blinking cursor effect */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+#user-input.blinking-cursor {
+    caret-color: transparent; /* Hide default cursor */
+}
+
+#user-input.blinking-cursor::after {
+    content: '|';
+    margin-left: 2px;
+    animation: blink 1s infinite;
+}
+
+/* Thinking animation */
+.thinking {
+    font-style: italic;
+}
+
+.thinking .dots {
+    display: inline-block;
+    width: 20px;
+}
+
+/* List formatting */
+.list-number {
+    font-weight: 500;
+    margin-right: 4px;
+}
