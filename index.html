@@ -12,9 +12,36 @@
     </header>
 
     <main>
+        <!-- Profile collection progress indicator -->
+        <div class="profile-progress" id="profile-progress">
+            <div class="progress-step active" id="step-1"></div>
+            <div class="progress-step" id="step-2"></div>
+            <div class="progress-step" id="step-3"></div>
+        </div>
+        <div class="progress-labels" id="progress-labels">
+            <div class="progress-label active" id="label-1">Physiology</div>
+            <div class="progress-label" id="label-2">Goals</div>
+            <div class="progress-label" id="label-3">Occupation</div>
+        </div>
+        
+        <!-- Welcome animation (shows before chat begins) -->
+        <div class="welcome-animation" id="welcome-animation">
+            <div class="pulse-dot"></div>
+            <div class="pulse-dot"></div>
+            <div class="pulse-dot"></div>
+        </div>
+        
+        <!-- Initial message -->
+        <div class="initial-message" id="initial-message">
+            To provide personalized health and fitness guidance, I'll ask about your physiology, goals, and daily routine.
+        </div>
+        
+        <!-- Chat container -->
         <div id="chat-container">
             <!-- Chat messages will appear here -->
         </div>
+        
+        <!-- Input form -->
         <form id="input-form">
             <input type="text" id="user-input" autocomplete="off">
             <button type="submit">Send</button>
