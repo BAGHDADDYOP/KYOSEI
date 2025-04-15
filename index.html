@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=Helvetica+Neue:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Simplified header -->
@@ -88,93 +88,6 @@
                 shape.style.animationDuration = `${20 + (index * 5)}s`;
             });
         });
-        
-        // Add selectPulse animation
-        document.head.insertAdjacentHTML('beforeend', `
-            <style>
-            @keyframes selectPulse {
-                0% { transform: scale(1) translateY(0); }
-                50% { transform: scale(1.02) translateY(-2px); }
-                100% { transform: scale(1) translateY(0); }
-            }
-            
-            @keyframes floatShape {
-                0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-                50% { transform: translate(10px, 15px) scale(1.05) rotate(5deg); }
-                100% { transform: translate(-10px, -10px) scale(0.98) rotate(-5deg); }
-            }
-            
-            .symbiotic-shape {
-                position: fixed;
-                border-radius: 50%;
-                background: radial-gradient(circle at 30% 30%, rgba(40, 40, 40, 0.3) 0%, transparent 70%);
-                filter: blur(70px);
-                opacity: 0.2;
-                animation: floatShape 20s infinite alternate ease-in-out;
-                z-index: -1;
-            }
-            
-            .shape1 {
-                top: 20%;
-                left: 10%;
-                width: 40vw;
-                height: 40vw;
-            }
-            
-            .shape2 {
-                bottom: 10%;
-                right: 10%;
-                width: 50vw;
-                height: 50vw;
-            }
-            
-            .shape3 {
-                top: 50%;
-                left: 50%;
-                width: 30vw;
-                height: 30vw;
-            }
-            
-            .footer-content {
-                padding: 15px;
-                text-align: center;
-                font-size: 0.8rem;
-                color: rgba(255,255,255,0.5);
-                letter-spacing: 1px;
-                font-weight: 300;
-            }
-            
-            /* Removed logo container styles */
-            
-            .header-subtitle {
-                font-size: 0.9rem;
-                letter-spacing: 3px;
-                opacity: 0;
-                transform: translateY(10px);
-                animation: fadeIn 1s ease-out 1s forwards;
-                color: rgba(255,255,255,0.7);
-                font-weight: 300;
-                text-transform: uppercase;
-            }
-            
-            @keyframes fadeIn {
-                to { opacity: 1; transform: translateY(0); }
-            }
-            
-            .loader-text {
-                margin-top: 15px;
-                letter-spacing: 3px;
-                font-size: 0.9rem;
-                opacity: 0.7;
-                animation: pulseText 1.5s infinite ease-in-out;
-            }
-            
-            @keyframes pulseText {
-                0%, 100% { opacity: 0.5; }
-                50% { opacity: 0.9; }
-            }
-            </style>
-        `);
     </script>
 
     <!-- Enhanced script with optimized performance -->
