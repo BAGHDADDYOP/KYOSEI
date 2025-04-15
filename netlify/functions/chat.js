@@ -1,5 +1,6 @@
 // netlify/functions/chat.js
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const axios = require('axios');
 
 exports.handler = async function(event, context) {
   // Only allow POST requests
@@ -35,12 +36,65 @@ exports.handler = async function(event, context) {
     console.log("API key present, attempting to initialize Google Generative AI");
     
     try {
-      // Initialize Google Generative AI client with updated model name
+      // Initialize Google Generative AI client
       const genAI = new GoogleGenerativeAI(apiKey);
       
-      // Use the Gemini 2.0 Flash model
+      // Use the Gemini 2.0 Flash model with function calling capabilities
       const model = genAI.getGenerativeModel({ 
         model: 'gemini-2.0-flash',
+        // Add function calling capability
+        tools: [
+          {
+            functionDeclarations: [
+              {
+                name: "fetchNutritionInfo",
+                description: "Get detailed nutrition information about foods",
+                parameters: {
+                  type: "object",
+                  properties: {
+                    query: {
+                      type: "string",
+                      description: "The food to get nutrition information about"
+                    }
+                  },
+                  required: ["query"]
+                }
+              },
+              {
+                name: "fetchExerciseInfo",
+                description: "Get exercise recommendations based on type and difficulty",
+                parameters: {
+                  type: "object",
+                  properties: {
+                    exerciseType: {
+                      type: "string",
+                      description: "Type of exercise (e.g., 'cardio', 'strength', 'flexibility')"
+                    },
+                    difficulty: {
+                      type: "string",
+                      description: "Difficulty level (e.g., 'beginner', 'intermediate', 'expert')"
+                    }
+                  },
+                  required: ["exerciseType", "difficulty"]
+                }
+              },
+              {
+                name: "fetchResearch",
+                description: "Get scientific research on wellness topics",
+                parameters: {
+                  type: "object",
+                  properties: {
+                    topic: {
+                      type: "string",
+                      description: "The wellness topic to research"
+                    }
+                  },
+                  required: ["topic"]
+                }
+              }
+            ]
+          }
+        ],
         // Add safety settings to ensure appropriate responses
         safetySettings: [
           {
@@ -112,6 +166,14 @@ exports.handler = async function(event, context) {
       - Exercise increases BDNF, which supports brain plasticity
       
       Always provide scientific rationale in accessible language and match recommendations to the individual's specific situation. Respect their constraints and offer modifications when needed.
+
+      FUNCTION CALLING:
+      You have access to external knowledge through function calls. Use them when:
+      1. A user asks about specific nutrition information (use fetchNutritionInfo)
+      2. A user needs exercise recommendations (use fetchExerciseInfo)
+      3. A user wants evidence-based research on wellness topics (use fetchResearch)
+      
+      When using these functions, incorporate the retrieved information naturally into your response, citing sources when appropriate.
       `;
 
       // Convert history format
@@ -148,9 +210,58 @@ exports.handler = async function(event, context) {
         const userMessage = history[history.length - 1].parts[0].text;
         console.log("Sending message to API:", userMessage.substring(0, 50) + "...");
         
-        // Generate response
-        const result = await chat.sendMessage(userMessage);
-        const aiResponse = result.response.text();
+        // Send message and handle function calling
+        const result = await chat.sendMessageStream(userMessage);
+        let aiResponse = "";
+        let functionCalls = [];
+        
+        for await (const chunk of result.stream) {
+          const partContent = chunk.text();
+          if (partContent) {
+            aiResponse += partContent;
+          }
+          
+          // Check for function calls
+          if (chunk.functionCalls && chunk.functionCalls.length > 0) {
+            functionCalls = functionCalls.concat(chunk.functionCalls);
+          }
+        }
+        
+        // Handle function calls if any
+        if (functionCalls.length > 0) {
+          for (const functionCall of functionCalls) {
+            const { name, args } = functionCall;
+            let functionResponse;
+            
+            // Execute the appropriate function based on name
+            switch (name) {
+              case "fetchNutritionInfo":
+                functionResponse = await fetchFromKnowledgeAPI('nutrition', args.query);
+                break;
+              case "fetchExerciseInfo":
+                functionResponse = await fetchFromKnowledgeAPI('exercise', { 
+                  exerciseType: args.exerciseType, 
+                  difficulty: args.difficulty 
+                });
+                break;
+              case "fetchResearch":
+                functionResponse = await fetchFromKnowledgeAPI('research', args.topic);
+                break;
+            }
+            
+            // Get response from model with function data
+            const functionResponseResult = await chat.sendMessage({
+              functionResponse: {
+                name: name,
+                response: functionResponse
+              }
+            });
+            
+            // Add function response data to the AI response
+            aiResponse += "\n\n" + functionResponseResult.text();
+          }
+        }
+
         console.log("Response received from API");
 
         // Return response
@@ -195,3 +306,17 @@ exports.handler = async function(event, context) {
     };
   }
 };
+
+// Helper function to call the knowledge API
+async function fetchFromKnowledgeAPI(type, query) {
+  try {
+    const response = await axios.post('/.netlify/functions/fetch-knowledge', {
+      type,
+      query
+    });
+    return JSON.stringify(response.data);
+  } catch (error) {
+    console.error(`Error fetching ${type} knowledge:`, error);
+    return JSON.stringify({ error: `Failed to fetch ${type} information` });
+  }
+}
