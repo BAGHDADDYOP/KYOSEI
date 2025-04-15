@@ -1,16 +1,35 @@
-// script.js (Enhanced for better UI experience)
+// script.js (Enhanced with user profile collection)
 
 const form = document.getElementById('input-form');
 const input = document.getElementById('user-input');
 const chatContainer = document.getElementById('chat-container');
 const mainElement = document.querySelector('main');
 
-// System Instruction
+// Track user profile data
+let userProfile = {
+    physiologicalDetails: null,
+    goals: null,
+    occupation: null,
+    profileComplete: false
+};
+
+// Profile collection stage
+let profileCollectionStage = 0;
+
+// System Instruction with updated guidance
 const SYSTEM_INSTRUCTION = `You are a helpful AI assistant focused **exclusively** on providing information about:
-1.  Healthcare (general information, disease explanations)
-2.  Nutrition (healthy eating, macronutrients, micronutrients, diet types)
-3.  Physical Training (exercise types, workout routines, fitness principles)
-4.  Behavioral Tools (mindfulness, stress management techniques, habit formation)
+1. Healthcare (general information, disease explanations)
+2. Nutrition (healthy eating, macronutrients, micronutrients, diet types)
+3. Physical Training (exercise types, workout routines, fitness principles)
+4. Behavioral Tools (mindfulness, stress management techniques, habit formation)
+
+IMPORTANT: When a user first engages with you, ALWAYS follow this flow:
+1. First, ask about their physiological details (age, height, weight, any health conditions or limitations).
+2. Second, ask about their specific health and fitness goals.
+3. Third, ask about their occupational routine (job type, activity level, work hours, stress factors).
+4. Only AFTER collecting this information should you provide personalized advice and plans.
+
+If a user asks a question before completing this profile, politely explain that you need this information to provide personalized advice.
 
 Keep your answers concise, informative, and easy to understand.
 Structure information clearly, using bullet points or numbered lists where appropriate.
@@ -19,7 +38,7 @@ Structure information clearly, using bullet points or numbered lists where appro
 // Store conversation history
 let conversationHistory = [
     { role: "user", parts: [{ text: SYSTEM_INSTRUCTION }] },
-    { role: "model", parts: [{ text: "Understood. I will focus on healthcare, nutrition, fitness, and behavioral tools. How can I help?" }] }
+    { role: "model", parts: [{ text: "Welcome! To provide you with personalized health and fitness guidance, I'd like to learn a bit about you first.\n\nCould you please share some physiological details such as your age, height, weight, and any health conditions or limitations you may have?" }] },
 ];
 
 // Improved content formatting for AI responses
@@ -106,6 +125,31 @@ function addMessage(sender, text) {
     }
 }
 
+// Function to update user profile based on AI response analysis
+function updateUserProfileStage(userMessage, aiResponse) {
+    // Simple progression through profile stages based on AI responses
+    if (!userProfile.profileComplete) {
+        if (aiResponse.includes("goals") && !userProfile.physiologicalDetails) {
+            // AI asked about goals, which means physiological details were provided
+            userProfile.physiologicalDetails = userMessage;
+            profileCollectionStage = 1; // Move to goals stage
+        } 
+        else if (aiResponse.includes("occupational routine") && !userProfile.goals) {
+            // AI asked about occupation, which means goals were provided
+            userProfile.goals = userMessage;
+            profileCollectionStage = 2; // Move to occupation stage
+        }
+        else if ((aiResponse.includes("personalized") || aiResponse.includes("plan") || aiResponse.includes("recommend")) && 
+                 userProfile.physiologicalDetails && userProfile.goals && !userProfile.occupation) {
+            // AI is giving advice, which means occupation was provided
+            userProfile.occupation = userMessage;
+            userProfile.profileComplete = true;
+            profileCollectionStage = 3; // Profile complete
+            console.log("User profile complete:", userProfile);
+        }
+    }
+}
+
 // Function to call backend API endpoint (/api/chat)
 async function getAiResponse(userText) {
     // Add user message to history
@@ -156,6 +200,9 @@ async function getAiResponse(userText) {
         const data = await response.json();
         const aiText = data.aiResponse;
 
+        // Update user profile based on the interaction
+        updateUserProfileStage(userText, aiText);
+
         // Add AI response to history
         conversationHistory.push({ role: "model", parts: [{ text: aiText }] });
 
@@ -174,6 +221,12 @@ async function getAiResponse(userText) {
     }
 }
 
+// Initialization - Add the initial AI message
+function initialize() {
+    // Add the AI's first message asking for physiological details
+    addMessage('ai', conversationHistory[1].parts[0].text);
+}
+
 // Handle form submission
 form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -188,6 +241,7 @@ form.addEventListener('submit', (event) => {
 // Add focus to input when page loads
 window.addEventListener('load', () => {
     input.focus();
+    initialize(); // Add the initial AI message on load
 });
 
 // Add a blinking cursor style to empty input
