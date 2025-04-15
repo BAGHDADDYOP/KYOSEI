@@ -1,12 +1,14 @@
-// script.js (Enhanced with quiz-like profile collection)
+// Enhanced script.js with symbiotic animations and optimizations
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Cache DOM elements for better performance
     const form = document.getElementById('input-form');
     const input = document.getElementById('user-input');
     const chatContainer = document.getElementById('chat-container');
     const quizContainer = document.getElementById('quiz-container');
     const mainElement = document.querySelector('main');
     const welcomeAnimation = document.getElementById('welcome-animation');
+    const loadingScreen = document.getElementById('loading-screen');
 
     // Track user profile data
     let userProfile = {
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let profileCollectionStage = 0;
 
     // System Instruction with updated guidance
-   const SYSTEM_INSTRUCTION = `You represent Kyōsei, a wellness guide focused on the symbiotic relationship between mind, body, gut microbiome, and consciousness. Your purpose is to help users discover how these systems work together for optimal wellness.
+    const SYSTEM_INSTRUCTION = `You represent Kyōsei, a wellness guide focused on the symbiotic relationship between mind, body, gut microbiome, and consciousness. Your purpose is to help users discover how these systems work together for optimal wellness.
 
 Always emphasize:
 1. The interconnectedness of physical, mental, and microbial health
@@ -28,7 +30,7 @@ Always emphasize:
 3. The natural capacity for adaptation and growth (neuroplasticity)
 4. The wisdom inherent in holistic balance
 
-Present wellness as a journey of self-discovery rather than a problem to be fixed. Use language that evokes harmony, integration, and mutual benefit. Draw from principles of neuroplasticity and holistic wellbeing without using religious terminology.
+Present wellness as a journey of self-discovery rather than a problem to be fixed. Use language that evokes harmony, integration, and mutual benefit. Draw from principles of neuroplasticity, holistic wellbeing, and philosophical concepts from Upanishads and Kashmiri Shaivism without using religious terminology.
 
 IMPORTANT: When a user first engages with you, ALWAYS follow this flow:
 1. First, ask about their physical vessel (age, height, weight, digestive patterns, energy levels).
@@ -134,6 +136,19 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
     let currentQuizQuestionIndex = 0;
     let currentQuizAnswers = {};
 
+    // Debounce function to optimize event handlers
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
     // Function to start the profile collection process
     function startProfileCollection() {
         // Hide standard input form and show quiz
@@ -147,11 +162,12 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         updateProfileProgress(1);
     }
 
-    // Function to show the current quiz question
+    // Function to show the current quiz question with enhanced animation
     function showCurrentQuizQuestion() {
         const questions = quizQuestions[currentQuizSection];
         const currentQuestion = questions[currentQuizQuestionIndex];
         
+        // Create quiz HTML
         let quizHTML = `
             <div class="quiz-question">${currentQuestion.question}</div>
             <div class="quiz-options">
@@ -192,18 +208,29 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             <button class="quiz-button" onclick="submitQuizAnswer()" disabled>Next</button>
         `;
         
-        quizContainer.innerHTML = quizHTML;
+        // Apply fade-out animation to current content
+        quizContainer.style.opacity = '0';
+        quizContainer.style.transform = 'translateY(10px)';
         
-        // Add focus to the custom input if it's a custom question
-        if (currentQuestion.type === 'custom') {
-            setTimeout(() => {
-                const customInput = document.getElementById('custom-quiz-input');
-                if (customInput) customInput.focus();
-            }, 100);
-        }
+        setTimeout(() => {
+            // Update content
+            quizContainer.innerHTML = quizHTML;
+            
+            // Apply fade-in animation
+            quizContainer.style.opacity = '1';
+            quizContainer.style.transform = 'translateY(0)';
+            
+            // Add focus to the custom input if it's a custom question
+            if (currentQuestion.type === 'custom') {
+                setTimeout(() => {
+                    const customInput = document.getElementById('custom-quiz-input');
+                    if (customInput) customInput.focus();
+                }, 100);
+            }
+        }, 300);
     }
 
-    // Function to update profile progress indicators
+    // Function to update profile progress indicators with enhanced animation
     function updateProfileProgress(step) {
         // Update progress steps
         for (let i = 1; i <= 3; i++) {
@@ -216,6 +243,27 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             } else if (i === step) {
                 progressStep.classList.add('active');
                 progressLabel.classList.add('active');
+                
+                // Add subtle animation to active step
+                progressStep.animate([
+                    { transform: 'scale(1)', opacity: 0.8 },
+                    { transform: 'scale(1.2)', opacity: 1 },
+                    { transform: 'scale(1.1)', opacity: 1 }
+                ], {
+                    duration: 600,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
+                
+                // Add subtle animation to active label
+                progressLabel.animate([
+                    { opacity: 0.8, transform: 'translateY(3px)' },
+                    { opacity: 1, transform: 'translateY(0)' }
+                ], {
+                    duration: 500,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
             } else {
                 progressStep.classList.remove('active', 'complete');
                 progressLabel.classList.remove('active', 'complete');
@@ -229,7 +277,7 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         }
     }
 
-    // Function to handle quiz option selection
+    // Function to handle quiz option selection with enhanced animation
     window.selectQuizOption = function(element, allowMultiple) {
         const selectedClass = 'selected';
         
@@ -239,24 +287,31 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             
             // Add subtle animation for selection
             if (element.classList.contains(selectedClass)) {
-                element.style.animation = 'selectPulse 0.3s ease';
-                setTimeout(() => {
-                    element.style.animation = '';
-                }, 300);
+                element.animate([
+                    { transform: 'translateY(0)' },
+                    { transform: 'translateY(-3px)' },
+                    { transform: 'translateY(-1px)' }
+                ], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+                });
             }
         } else {
             // For single-choice options, deselect all others
             document.querySelectorAll('.quiz-option').forEach(opt => {
                 opt.classList.remove(selectedClass);
-                opt.style.animation = '';
             });
             
             // Select the clicked option with animation
             element.classList.add(selectedClass);
-            element.style.animation = 'selectPulse 0.3s ease';
-            setTimeout(() => {
-                element.style.animation = '';
-            }, 300);
+            element.animate([
+                { transform: 'translateY(0)' },
+                { transform: 'translateY(-3px)' },
+                { transform: 'translateY(-1px)' }
+            ], {
+                duration: 300,
+                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+            });
         }
         
         // Enable/disable the next button based on selection
@@ -269,26 +324,48 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             nextButton.disabled = !hasSelection;
             if (hasSelection) {
                 nextButton.classList.add('active');
+                
+                // Add button activation animation
+                nextButton.animate([
+                    { opacity: 0.5, transform: 'scale(0.98)' },
+                    { opacity: 1, transform: 'scale(1)' }
+                ], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
             } else {
                 nextButton.classList.remove('active');
             }
         }
     };
 
-    // Function to handle custom input changes
-    window.handleCustomInput = function(inputElement) {
+    // Function to handle custom input changes with debounce for performance
+    window.handleCustomInput = debounce(function(inputElement) {
         const nextButton = document.querySelector('.quiz-button');
         if (nextButton) {
-            nextButton.disabled = inputElement.value.trim() === '';
-            if (inputElement.value.trim() !== '') {
+            const hasValue = inputElement.value.trim() !== '';
+            nextButton.disabled = !hasValue;
+            
+            if (hasValue) {
                 nextButton.classList.add('active');
+                
+                // Subtle button activation animation 
+                nextButton.animate([
+                    { opacity: 0.5, transform: 'scale(0.98)' },
+                    { opacity: 1, transform: 'scale(1)' }
+                ], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
             } else {
                 nextButton.classList.remove('active');
             }
         }
-    };
+    }, 100);
 
-    // Function to submit quiz answer and move to next question
+    // Function to submit quiz answer and move to next question with enhanced transition
     window.submitQuizAnswer = function() {
         const questions = quizQuestions[currentQuizSection];
         const currentQuestion = questions[currentQuizQuestionIndex];
@@ -321,31 +398,41 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         }
         currentQuizAnswers[currentQuizSection][currentQuestion.question] = answer;
         
-        // Move to next question or section
-        currentQuizQuestionIndex++;
+        // Apply transition animation
+        quizContainer.style.opacity = '0';
+        quizContainer.style.transform = 'translateY(10px)';
         
-        if (currentQuizQuestionIndex >= questions.length) {
-            // Move to next section or complete profile
-            if (currentQuizSection === 'physiology') {
-                currentQuizSection = 'goals';
-                currentQuizQuestionIndex = 0;
-                updateProfileProgress(2);
-            } else if (currentQuizSection === 'goals') {
-                currentQuizSection = 'occupation';
-                currentQuizQuestionIndex = 0;
-                updateProfileProgress(3);
-            } else {
-                // Profile complete
-                finishProfileCollection();
-                return;
+        setTimeout(() => {
+            // Move to next question or section
+            currentQuizQuestionIndex++;
+            
+            if (currentQuizQuestionIndex >= questions.length) {
+                // Move to next section or complete profile
+                if (currentQuizSection === 'physiology') {
+                    currentQuizSection = 'goals';
+                    currentQuizQuestionIndex = 0;
+                    updateProfileProgress(2);
+                } else if (currentQuizSection === 'goals') {
+                    currentQuizSection = 'occupation';
+                    currentQuizQuestionIndex = 0;
+                    updateProfileProgress(3);
+                } else {
+                    // Profile complete
+                    finishProfileCollection();
+                    return;
+                }
             }
-        }
-        
-        // Show next question
-        showCurrentQuizQuestion();
+            
+            // Show next question
+            showCurrentQuizQuestion();
+            
+            // Apply fade-in animation
+            quizContainer.style.opacity = '1';
+            quizContainer.style.transform = 'translateY(0)';
+        }, 300);
     };
 
-    // Function to finish profile collection and start chat
+    // Function to finish profile collection and start chat with enhanced transition
     function finishProfileCollection() {
         // Update user profile with collected answers
         userProfile.physiologicalDetails = currentQuizAnswers.physiology;
@@ -359,17 +446,36 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         // Update profile progress
         updateProfileProgress(4);
         
-        // Hide quiz container and show chat
-        quizContainer.style.display = 'none';
-        chatContainer.style.display = 'block';
-        form.style.display = 'flex';
+        // Hide quiz container with fade-out
+        quizContainer.style.opacity = '0';
+        quizContainer.style.transform = 'translateY(10px)';
         
-        // Add user profile message to chat and history
-        addMessage('user', profileSummary);
-        conversationHistory.push({ role: "user", parts: [{ text: profileSummary }] });
-        
-        // Get AI response with the profile data
-        getAiResponse(profileSummary);
+        setTimeout(() => {
+            // Hide quiz and show chat interface
+            quizContainer.style.display = 'none';
+            chatContainer.style.display = 'block';
+            form.style.display = 'flex';
+            
+            // Apply fade-in animation for chat interface
+            chatContainer.style.opacity = '0';
+            form.style.opacity = '0';
+            chatContainer.style.transform = 'translateY(20px)';
+            form.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                chatContainer.style.opacity = '1';
+                form.style.opacity = '1';
+                chatContainer.style.transform = 'translateY(0)';
+                form.style.transform = 'translateY(0)';
+                
+                // Add user profile message to chat and history
+                addMessage('user', profileSummary);
+                conversationHistory.push({ role: "user", parts: [{ text: profileSummary }] });
+                
+                // Get AI response with the profile data
+                getAiResponse(profileSummary);
+            }, 100);
+        }, 300);
     }
 
     // Format user profile as a summary for the AI
@@ -405,7 +511,7 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         return summary;
     }
 
-    // Improved content formatting for AI responses
+    // Enhanced content formatting for AI responses
     function formatAIContent(text) {
         // Format section titles (e.g., **I. Nutrition**)
         let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -433,7 +539,7 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         return formatted;
     }
 
-    // Enhanced addMessage function
+    // Enhanced addMessage function with smooth animations
     function addMessage(sender, text) {
         // Make chat container visible when conversation starts
         if (chatContainer.style.display !== 'block') {
@@ -444,10 +550,21 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('message');
 
+        // Set initial state for animation
+        messageDiv.style.opacity = '0';
+        messageDiv.style.transform = 'translateY(10px)';
+
         if (sender === 'user') {
             messageDiv.classList.add('user-message');
             messageDiv.textContent = text;
             chatContainer.appendChild(messageDiv);
+            
+            // Animate message appearance
+            setTimeout(() => {
+                messageDiv.style.opacity = '1';
+                messageDiv.style.transform = 'translateY(0)';
+            }, 10);
+            
             chatContainer.scrollTop = chatContainer.scrollHeight;
         } else { // sender === 'ai'
             messageDiv.classList.add('ai-message');
@@ -455,6 +572,12 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             
             // Apply formatting for better readability
             const formattedText = formatAIContent(text);
+            
+            // Start animation by making message visible
+            setTimeout(() => {
+                messageDiv.style.opacity = '1';
+                messageDiv.style.transform = 'translateY(0)';
+            }, 10);
             
             // Add content with gradual reveal
             let i = 0;
@@ -478,7 +601,7 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
                         i++;
                     }
                     
-                    // Speed up typing for very long responses
+                    // Optimize typing speed based on content length
                     const timeoutDelay = formattedText.length > 1000 ? 1 : speed;
                     setTimeout(typeWriter, timeoutDelay);
                     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -494,12 +617,24 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         const thinkingDiv = document.createElement('div');
         thinkingDiv.classList.add('message', 'ai-message', 'thinking');
         thinkingDiv.innerHTML = '<div class="thinking-dots"><span>.</span><span>.</span><span>.</span></div>';
+        
+        // Set initial state for animation
+        thinkingDiv.style.opacity = '0';
+        thinkingDiv.style.transform = 'translateY(10px)';
+        
         chatContainer.appendChild(thinkingDiv);
+        
+        // Animate appearance
+        setTimeout(() => {
+            thinkingDiv.style.opacity = '1';
+            thinkingDiv.style.transform = 'translateY(0)';
+        }, 10);
+        
         chatContainer.scrollTop = chatContainer.scrollHeight;
         return thinkingDiv;
     }
 
-    // Function to call backend API endpoint (/api/chat)
+    // Optimized function to call backend API endpoint (/api/chat)
     async function getAiResponse(userText) {
         // Add user message to history if not already added (for profile summary)
         if (conversationHistory[conversationHistory.length - 1].role !== "user" || 
@@ -519,8 +654,12 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
                 body: JSON.stringify({ history: conversationHistory }),
             });
 
-            // Remove thinking indicator
-            thinkingIndicator.remove();
+            // Remove thinking indicator with gentle fade-out
+            thinkingIndicator.style.opacity = '0';
+            thinkingIndicator.style.transform = 'translateY(5px)';
+            setTimeout(() => {
+                thinkingIndicator.remove();
+            }, 300);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -534,20 +673,33 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             
         } catch (error) {
             // Remove thinking indicator
-            thinkingIndicator.remove();
+            thinkingIndicator.style.opacity = '0';
+            setTimeout(() => {
+                thinkingIndicator.remove();
+            }, 300);
             
             console.error('Error:', error);
             addMessage('ai', "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.");
         }
     }
 
-    // Form submission handler
+    // Form submission handler with optimized event handling
     form.addEventListener('submit', function(event) {
         event.preventDefault();
         
         const userText = input.value.trim();
         
         if (userText) {
+            // Add slight animation to form when submitting
+            form.animate([
+                { transform: 'translateY(0)' },
+                { transform: 'translateY(2px)' },
+                { transform: 'translateY(0)' }
+            ], {
+                duration: 300,
+                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+            });
+            
             addMessage('user', userText);
             input.value = '';
             
@@ -557,276 +709,248 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
 
     // Initialize - Start profile collection when page loads
     function init() {
+        // Fade out loading screen
+        if (loadingScreen) {
+            setTimeout(() => {
+                loadingScreen.classList.add('fade-out');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 1000);
+        }
+        
+        // Create dynamic symbiotic background effect
+        createSymbioticBackground();
+        
         // Hide welcome animation after a delay
         setTimeout(() => {
             if (welcomeAnimation) {
-                welcomeAnimation.style.display = 'none';
+                // Fade out welcome animation
+                welcomeAnimation.style.opacity = '0';
+                welcomeAnimation.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    welcomeAnimation.style.display = 'none';
+                }, 300);
             }
             // Start profile collection
             startProfileCollection();
-        }, 1000);
+        }, 1500);
+    }
+    
+    // Create dynamic symbiotic background effect
+    function createSymbioticBackground() {
+        const container = document.createElement('div');
+        container.className = 'symbiotic-bg';
+        container.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+        `;
+        
+        // Create organic shapes
+        for (let i = 0; i < 5; i++) {
+            const shape = document.createElement('div');
+            shape.className = 'organic-shape';
+            
+            // Random position and size
+            const size = Math.random() * 300 + 100;
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            const opacity = Math.random() * 0.05 + 0.02;
+            const animDuration = Math.random() * 30 + 20;
+            const blurAmount = Math.random() * 50 + 30;
+            
+            shape.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                border-radius: 50%;
+                background: radial-gradient(circle at center, rgba(255,255,255,${opacity}), transparent 70%);
+                left: ${posX}%;
+                top: ${posY}%;
+                filter: blur(${blurAmount}px);
+                transform-origin: center;
+                animation: floatShape ${animDuration}s infinite alternate ease-in-out;
+            `;
+            
+            container.appendChild(shape);
+        }
+        
+        document.body.appendChild(container);
+        
+        // Add keyframes for floating animation
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes floatShape {
+                0% { transform: translate(0, 0) scale(1); }
+                100% { transform: translate(30px, 30px) scale(1.1); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    }
+
+    // Create enhanced protocol toolkit cards
+    function createProtocolToolkitCards() {
+        // Create a container for protocol cards
+        const protocolContainer = document.createElement('div');
+        protocolContainer.className = 'protocol-cards-container';
+        protocolContainer.style.display = 'none'; // Hidden by default
+        
+        // Create cards for different topics with enhanced UI aligned with symbiotic theme
+        const protocolTopics = [
+            {
+                title: "Mind-Body Harmony",
+                protocols: [
+                    "Get 30-60 min of morning sunlight to sync circadian rhythm",
+                    "Practice physiological sighs (double inhale, extended exhale)",
+                    "Lower room temperature by 1-3°F at night for optimal sleep",
+                    "Try NSDR (Non-Sleep Deep Rest) for midday recovery",
+                    "Maintain consistent sleep-wake times to support hormonal balance"
+                ]
+            },
+            {
+                title: "Adaptive Resilience",
+                protocols: [
+                    "Cyclical hyperventilation followed by breath holds",
+                    "Deliberate cold exposure (30-60 sec cold shower)",
+                    "Heat exposure (sauna) followed by cooling",
+                    "Zone 2 cardio (nose-breathing pace) 150 min/week",
+                    "Resistance training 2-4x weekly with progressive overload"
+                ]
+            },
+            {
+                title: "Neural Integration",
+                protocols: [
+                    "Work in 90-minute focused sessions (ultradian rhythm cycles)",
+                    "Morning meditation aligning with natural cortisol rise",
+                    "Visual focus exercises to enhance attentional networks",
+                    "Optimize nutritional support with specific timing",
+                    "Balance sympathetic and parasympathetic states throughout day"
+                ]
+            },
+            {
+                title: "Microbial Symbiosis",
+                protocols: [
+                    "Consume diverse fermented foods to support gut microbiome",
+                    "Time-restricted feeding (8-10 hour window) for metabolic health",
+                    "Prebiotic fiber intake to nurture beneficial bacteria",
+                    "Forest bathing to increase environmental microbe exposure",
+                    "Targeted probiotics matched to individual needs"
+                ]
+            }
+        ];
+        
+        // Create each card with enhanced animations
+        protocolTopics.forEach(topic => {
+            const card = document.createElement('div');
+            card.className = 'protocol-card';
+            
+            const cardHeader = document.createElement('div');
+            cardHeader.className = 'card-header';
+            
+            const title = document.createElement('h3');
+            title.className = 'card-title';
+            title.textContent = topic.title;
+            
+            cardHeader.appendChild(title);
+            
+            const cardContent = document.createElement('div');
+            cardContent.className = 'card-content';
+            
+            const protocolList = document.createElement('ul');
+            protocolList.className = 'protocol-list';
+            
+            topic.protocols.forEach(protocol => {
+                const item = document.createElement('li');
+                item.textContent = protocol;
+                protocolList.appendChild(item);
+            });
+            
+            cardContent.appendChild(protocolList);
+            
+            // Learn more button
+            const learnMoreBtn = document.createElement('button');
+            learnMoreBtn.className = 'learn-more-btn';
+            learnMoreBtn.textContent = 'Ask About This';
+            learnMoreBtn.setAttribute('data-topic', topic.title);
+            learnMoreBtn.addEventListener('click', function() {
+                const userInput = document.getElementById('user-input');
+                userInput.value = `Tell me more about ${this.getAttribute('data-topic')} techniques`;
+                userInput.focus();
+                
+                // Add subtle animation on button click
+                this.animate([
+                    { transform: 'scale(1)' },
+                    { transform: 'scale(0.95)' },
+                    { transform: 'scale(1)' }
+                ], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+                });
+            });
+            
+            card.appendChild(cardHeader);
+            card.appendChild(cardContent);
+            card.appendChild(learnMoreBtn);
+            
+            protocolContainer.appendChild(card);
+        });
+        
+        // Add toggle button with fluid animation
+        const toggleButton = document.createElement('button');
+        toggleButton.className = 'toggle-protocols-btn';
+        toggleButton.innerHTML = '<span>Knowledge Toolkit</span>';
+        toggleButton.addEventListener('click', function() {
+            const isHidden = protocolContainer.style.display === 'none';
+            
+            // Add fluid animation to container
+            if (isHidden) {
+                protocolContainer.style.display = 'flex';
+                protocolContainer.style.opacity = '0';
+                protocolContainer.style.transform = 'translateY(-10px)';
+                
+                setTimeout(() => {
+                    protocolContainer.style.opacity = '1';
+                    protocolContainer.style.transform = 'translateY(0)';
+                }, 10);
+                
+                this.classList.add('active');
+            } else {
+                protocolContainer.style.opacity = '0';
+                protocolContainer.style.transform = 'translateY(-10px)';
+                
+                setTimeout(() => {
+                    protocolContainer.style.display = 'none';
+                }, 300);
+                
+                this.classList.remove('active');
+            }
+            
+            // Button animation
+            this.animate([
+                { transform: 'scale(1)' },
+                { transform: 'scale(0.95)' },
+                { transform: 'scale(1)' }
+            ], {
+                duration: 300,
+                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+            });
+        });
+        
+        // Add to the page
+        const mainElement = document.querySelector('main');
+        mainElement.appendChild(toggleButton);
+        mainElement.appendChild(protocolContainer);
     }
 
     // Run initialization
     init();
+    
+    // Add protocol toolkit cards with slight delay
+    setTimeout(createProtocolToolkitCards, 1500);
 });
-
-// Add at the end of your script.js file
-// Loading screen handler
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        const loadingScreen = document.getElementById('loading-screen');
-        if (loadingScreen) {
-            loadingScreen.classList.add('fade-out');
-            setTimeout(() => {
-                loadingScreen.style.display = 'none';
-            }, 500);
-        }
-    }, 1000);
-});
-
-// Define selectPulse animation in JavaScript (since it was commented out in CSS)
-document.head.insertAdjacentHTML('beforeend', `
-    <style>
-    @keyframes selectPulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.02); }
-        100% { transform: scale(1); }
-    }
-    </style>
-`);
-// Add this to your script.js or create a new file
-
-function createProtocolToolkitCards() {
-  // Create a container for protocol cards
-  const protocolContainer = document.createElement('div');
-  protocolContainer.className = 'protocol-cards-container';
-  protocolContainer.style.display = 'none'; // Hidden by default
-  
-  // Create cards for different topics
-  const protocolTopics = [
-    {
-      title: "Optimizing Sleep",
-      protocols: [
-        "Get 30-60 min of morning sunlight within 30-60 min of waking",
-        "Avoid bright artificial light 2-3 hours before sleep",
-        "Lower room temperature by 1-3°F at night",
-        "Maintain consistent sleep-wake times",
-        "Try NSDR (Non-Sleep Deep Rest) for midday recovery"
-      ]
-    },
-    {
-      title: "Managing Stress",
-      protocols: [
-        "Practice physiological sighs (double inhale, extended exhale)",
-        "Try cyclical hyperventilation and breath holds",
-        "Use deliberate cold exposure (30-60 sec cold shower)",
-        "Consider heat exposure (sauna) followed by cooling",
-        "Incorporate mindfulness practices with specific durations"
-      ]
-    },
-    {
-      title: "Focus & Cognition",
-      protocols: [
-        "Work in 90-minute focused sessions with 5-15 min breaks",
-        "Practice visual focus exercises daily",
-        "Consider caffeine + L-theanine for focus",
-        "Use ultradian rhythms (90 min work/20 min rest)",
-        "Combine specific nutritional support with behavioral protocols"
-      ]
-    },
-    {
-      title: "Physical Performance",
-      protocols: [
-        "Include Zone 2 cardio (nose-breathing pace) 150 min/week",
-        "Resistance train 2-4x weekly with progressive overload",
-        "Optimize post-workout nutrition within 30-90 min window",
-        "Balance training intensity with recovery protocols",
-        "Use specific supplement protocols when appropriate"
-      ]
-    }
-  ];
-  
-  // Create each card
-  protocolTopics.forEach(topic => {
-    const card = document.createElement('div');
-    card.className = 'protocol-card';
-    
-    const cardHeader = document.createElement('div');
-    cardHeader.className = 'card-header';
-    
-    const title = document.createElement('h3');
-    title.className = 'card-title';
-    title.textContent = topic.title;
-    
-    cardHeader.appendChild(title);
-    
-    const cardContent = document.createElement('div');
-    cardContent.className = 'card-content';
-    
-    const protocolList = document.createElement('ul');
-    protocolList.className = 'protocol-list';
-    
-    topic.protocols.forEach(protocol => {
-      const item = document.createElement('li');
-      item.textContent = protocol;
-      protocolList.appendChild(item);
-    });
-    
-    cardContent.appendChild(protocolList);
-    
-    // Learn more button
-    const learnMoreBtn = document.createElement('button');
-    learnMoreBtn.className = 'learn-more-btn';
-    learnMoreBtn.textContent = 'Ask About This';
-    learnMoreBtn.setAttribute('data-topic', topic.title);
-    learnMoreBtn.addEventListener('click', function() {
-      const userInput = document.getElementById('user-input');
-      userInput.value = `Tell me more about ${this.getAttribute('data-topic')} techniques`;
-      userInput.focus();
-    });
-    
-    card.appendChild(cardHeader);
-    card.appendChild(cardContent);
-    card.appendChild(learnMoreBtn);
-    
-    protocolContainer.appendChild(card);
-  });
-  
-  // Add toggle button
-  const toggleButton = document.createElement('button');
-  toggleButton.className = 'toggle-protocols-btn';
-  toggleButton.textContent = 'Toolkit';
-  toggleButton.addEventListener('click', function() {
-    if (protocolContainer.style.display === 'none') {
-      protocolContainer.style.display = 'flex';
-      this.classList.add('active');
-    } else {
-      protocolContainer.style.display = 'none';
-      this.classList.remove('active');
-    }
-  });
-  
-  // Add to the page
-  const mainElement = document.querySelector('main');
-  mainElement.appendChild(toggleButton);
-  mainElement.appendChild(protocolContainer);
-  
-  // Add styles
-  const style = document.createElement('style');
-  style.textContent = `
-    .toggle-protocols-btn {
-      background-color: rgba(30, 30, 30, 0.8);
-      color: #fff;
-      border: 1px solid #444;
-      border-radius: 8px;
-      padding: 10px 15px;
-      margin: 15px 0;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
-    }
-    
-    .toggle-protocols-btn.active {
-      background-color: rgba(50, 50, 50, 0.8);
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-    }
-    
-    .protocol-cards-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-      margin: 10px 0 25px;
-      width: 100%;
-    }
-    
-    .protocol-card {
-      background-color: #000000;
-      border: 1px solid #333;
-      border-radius: 12px;
-      width: calc(50% - 15px);
-      min-width: 250px;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-    
-    .protocol-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-      border-color: #444;
-    }
-    
-    .card-header {
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      background-color: rgba(30, 30, 30, 0.8);
-      border-bottom: 1px solid #333;
-    }
-    
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 600;
-    }
-    
-    .card-content {
-      padding: 15px;
-    }
-    
-    .protocol-list {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .protocol-list li {
-      padding: 8px 0;
-      border-bottom: 1px;;
-      margin: 0;
-    }
-    
-    .protocol-list li {
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(60, 60, 60, 0.3);
-      font-size: 0.95rem;
-      line-height: 1.5;
-    }
-    
-    .protocol-list li:last-child {
-      border-bottom: none;
-    }
-    
-    .learn-more-btn {
-      width: 100%;
-      padding: 12px;
-      background-color: rgba(40, 40, 40, 0.8);
-      border: none;
-      border-top: 1px solid #333;
-      color: #fff;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .learn-more-btn:hover {
-      background-color: rgba(60, 60, 60, 0.8);
-    }
-    
-    @media (max-width: 768px) {
-      .protocol-card {
-        width: 100%;
-      }
-    }
-  `;
-  
-  document.head.appendChild(style);
-};
-
-// Call this function after the chat is initialized
-document.addEventListener('DOMContentLoaded', function() {
-  // Add this line to your existing DOMContentLoaded event handler
-  setTimeout(createProtocolToolkitCards, 1500);
-});
-
