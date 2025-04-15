@@ -57,35 +57,56 @@ main {
     justify-content: center; /* Center content vertically */
     align-items: center; /* Center content horizontally */
     padding: 20px;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
     width: 90%;
 }
 
+/* Improved chat container */
 #chat-container {
     display: none; /* Initially hidden */
     width: 100%;
-    max-height: 60vh;
+    height: 60vh; /* Larger fixed height */
+    min-height: 400px;
     overflow-y: auto;
     margin-bottom: 30px;
     padding: 20px;
-    /* Add a subtle background for messages */
     background-color: rgba(25, 25, 25, 0.3);
     border-radius: 8px;
+    transition: all 0.5s ease;
+    border: 1px solid #333;
+    scrollbar-width: thin;
+    scrollbar-color: #444 #222;
 }
 
-/* Message styling */
+#chat-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat-container::-webkit-scrollbar-track {
+    background: #222;
+}
+
+#chat-container::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 6px;
+}
+
+/* Message styling with improved formatting */
 .message {
-    margin-bottom: 15px;
-    padding: 12px 18px;
+    margin-bottom: 16px;
+    padding: 14px 20px;
     border-radius: 8px;
     max-width: 90%;
+    line-height: 1.5;
+    word-wrap: break-word;
 }
 
 .user-message {
     align-self: flex-end;
     background-color: #333;
     margin-left: auto;
+    text-align: right;
 }
 
 .ai-message {
@@ -93,17 +114,62 @@ main {
     margin-right: auto;
 }
 
+/* Typography for AI messages */
+.ai-message strong, 
+.ai-message b {
+    font-weight: 700;
+    color: #fff;
+}
+
+.ai-message em,
+.ai-message i {
+    font-style: italic;
+    color: #ddd;
+}
+
+/* Lists in AI messages */
+.ai-message ul,
+.ai-message ol {
+    margin-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.ai-message li {
+    margin-bottom: 8px;
+}
+
+.ai-message p {
+    margin-bottom: 12px;
+}
+
+/* Code blocks in AI messages */
+.ai-message code {
+    font-family: 'Courier New', monospace;
+    background-color: #2a2a2a;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+.ai-message pre {
+    background-color: #2a2a2a;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
 /* Enhanced Input Form */
 #input-form {
     display: flex;
-    border: 1px solid #333333; /* Dark grey border */
+    border: 1px solid #333333;
     border-radius: 6px;
     padding: 5px;
-    background-color: rgba(20, 20, 20, 0.5); /* Slightly transparent background */
+    background-color: rgba(20, 20, 20, 0.5);
     width: 100%;
-    max-width: 700px;
+    max-width: 800px;
     margin: 0 auto;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
 }
 
@@ -141,21 +207,42 @@ main {
     background: #444444;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .animated-header {
-        font-size: 1.8em;
-    }
-    
-    #input-form {
-        width: 95%;
-    }
-    
-    #user-input {
-        padding: 12px;
-    }
+/* When conversation starts, reposition elements */
+main.conversation-active {
+    justify-content: flex-start;
+    padding-top: 3vh;
 }
-/* Add these to your style.css file */
+
+/* Thinking animation */
+.thinking {
+    font-style: italic;
+    color: #aaa;
+}
+
+.thinking .dots {
+    display: inline-block;
+    width: 20px;
+}
+
+/* Special formatting for AI content */
+.section-title {
+    font-weight: bold;
+    color: #fff;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.bullet-point {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.bullet-point:before {
+    content: "•";
+    margin-right: 8px;
+    color: #888;
+}
 
 /* Blinking cursor effect */
 @keyframes blink {
@@ -173,18 +260,22 @@ main {
     animation: blink 1s infinite;
 }
 
-/* Thinking animation */
-.thinking {
-    font-style: italic;
-}
-
-.thinking .dots {
-    display: inline-block;
-    width: 20px;
-}
-
-/* List formatting */
-.list-number {
-    font-weight: 500;
-    margin-right: 4px;
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .animated-header {
+        font-size: 1.8em;
+    }
+    
+    #input-form {
+        width: 100%;
+    }
+    
+    #user-input {
+        padding: 12px;
+    }
+    
+    #chat-container {
+        height: 50vh;
+        min-height: 350px;
+    }
 }
