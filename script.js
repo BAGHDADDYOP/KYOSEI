@@ -597,7 +597,7 @@ document.head.insertAdjacentHTML('beforeend', `
 `);
 // Add this to your script.js or create a new file
 
-function createHubermanProtocolCards() {
+function createProtocolToolkitCards() {
   // Create a container for protocol cards
   const protocolContainer = document.createElement('div');
   protocolContainer.className = 'protocol-cards-container';
@@ -607,7 +607,6 @@ function createHubermanProtocolCards() {
   const protocolTopics = [
     {
       title: "Optimizing Sleep",
-      icon: "🌙",
       protocols: [
         "Get 30-60 min of morning sunlight within 30-60 min of waking",
         "Avoid bright artificial light 2-3 hours before sleep",
@@ -618,7 +617,6 @@ function createHubermanProtocolCards() {
     },
     {
       title: "Managing Stress",
-      icon: "🧘",
       protocols: [
         "Practice physiological sighs (double inhale, extended exhale)",
         "Try cyclical hyperventilation and breath holds",
@@ -629,7 +627,6 @@ function createHubermanProtocolCards() {
     },
     {
       title: "Focus & Cognition",
-      icon: "🧠",
       protocols: [
         "Work in 90-minute focused sessions with 5-15 min breaks",
         "Practice visual focus exercises daily",
@@ -640,7 +637,6 @@ function createHubermanProtocolCards() {
     },
     {
       title: "Physical Performance",
-      icon: "💪",
       protocols: [
         "Include Zone 2 cardio (nose-breathing pace) 150 min/week",
         "Resistance train 2-4x weekly with progressive overload",
@@ -659,15 +655,10 @@ function createHubermanProtocolCards() {
     const cardHeader = document.createElement('div');
     cardHeader.className = 'card-header';
     
-    const icon = document.createElement('span');
-    icon.className = 'card-icon';
-    icon.textContent = topic.icon;
-    
     const title = document.createElement('h3');
     title.className = 'card-title';
     title.textContent = topic.title;
     
-    cardHeader.appendChild(icon);
     cardHeader.appendChild(title);
     
     const cardContent = document.createElement('div');
@@ -691,7 +682,7 @@ function createHubermanProtocolCards() {
     learnMoreBtn.setAttribute('data-topic', topic.title);
     learnMoreBtn.addEventListener('click', function() {
       const userInput = document.getElementById('user-input');
-      userInput.value = `Tell me more about ${this.getAttribute('data-topic')} protocols from Dr. Huberman's research`;
+      userInput.value = `Tell me more about ${this.getAttribute('data-topic')} techniques`;
       userInput.focus();
     });
     
@@ -705,7 +696,7 @@ function createHubermanProtocolCards() {
   // Add toggle button
   const toggleButton = document.createElement('button');
   toggleButton.className = 'toggle-protocols-btn';
-  toggleButton.textContent = 'Huberman Protocols';
+  toggleButton.textContent = 'Toolkit';
   toggleButton.addEventListener('click', function() {
     if (protocolContainer.style.display === 'none') {
       protocolContainer.style.display = 'flex';
@@ -751,7 +742,7 @@ function createHubermanProtocolCards() {
     }
     
     .protocol-card {
-      background-color: rgba(20, 20, 20, 0.7);
+      background-color: #000000;
       border: 1px solid #333;
       border-radius: 12px;
       width: calc(50% - 15px);
@@ -775,11 +766,6 @@ function createHubermanProtocolCards() {
       border-bottom: 1px solid #333;
     }
     
-    .card-icon {
-      font-size: 1.5rem;
-      margin-right: 10px;
-    }
-    
     .card-title {
       font-size: 1.1rem;
       font-weight: 600;
@@ -792,6 +778,12 @@ function createHubermanProtocolCards() {
     .protocol-list {
       list-style-type: none;
       padding: 0;
+      margin: 0;
+    }
+    
+    .protocol-list li {
+      padding: 8px 0;
+      border-bottom: 1px;;
       margin: 0;
     }
     
@@ -830,10 +822,11 @@ function createHubermanProtocolCards() {
   `;
   
   document.head.appendChild(style);
-}
+};
 
 // Call this function after the chat is initialized
 document.addEventListener('DOMContentLoaded', function() {
   // Add this line to your existing DOMContentLoaded event handler
-  setTimeout(createHubermanProtocolCards, 1500);
+  setTimeout(createProtocolToolkitCards, 1500);
 });
+
