@@ -1,4 +1,4 @@
-// Enhanced script.js with complete functionality and aesthetic improvements
+// Enhanced script.js with fixed loading animation and new functionality
 
 document.addEventListener('DOMContentLoaded', function() {
     // Cache DOM elements for better performance
@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleToolkitBtn = document.getElementById('toggle-toolkit-btn');
     const closeSidebarBtn = document.getElementById('close-sidebar');
     
-    // Add loading animation text sequence
-    const connectingTexts = ['Connecting', 'Harmonizing', 'Synchronizing', 'Aligning'];
+    // FIXED: Loading animation text sequence
+    const connectingTexts = ['Initializing', 'Processing', 'Analyzing', 'Preparing'];
     let textIndex = 0;
 
-    // Animate the loading text before fading out
+    // Add loading animation text sequence with proper fallback
     const loadingTextInterval = setInterval(function() {
         if (loaderText) {
             loaderText.textContent = connectingTexts[textIndex] + '...';
@@ -34,11 +34,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (loaderText) loaderText.textContent = 'Welcome to Kyōsei';
         
         setTimeout(function() {
-            loadingScreen.classList.add('fade-out');
-            setTimeout(function() {
-                loadingScreen.style.display = 'none';
-                animateSymbioticBackground();
-            }, 600);
+            if (loadingScreen) {
+                loadingScreen.classList.add('fade-out');
+                setTimeout(function() {
+                    loadingScreen.style.display = 'none';
+                    animateSymbioticBackground();
+                }, 600);
+            }
         }, 800);
     }, 2500);
     
@@ -53,32 +55,32 @@ document.addEventListener('DOMContentLoaded', function() {
     // Profile collection stage
     let profileCollectionStage = 0;
 
-    // System Instruction with the original guidance
-    const SYSTEM_INSTRUCTION = `You represent Kyōsei, a wellness guide focused on the symbiotic relationship between mind, body, gut microbiome, and consciousness. Your purpose is to help users discover how these systems work together for optimal wellness.
+    // System Instruction with more professional language
+    const SYSTEM_INSTRUCTION = `You represent Kyōsei, a professional wellness guide focused on evidence-based approaches to optimize health. Your purpose is to provide scientifically validated information about the interconnected systems of physical health, mental wellbeing, and physiological balance.
 
 Always emphasize:
-1. The interconnectedness of physical, mental, and microbial health
-2. How changes in one system positively influence others
-3. The natural capacity for adaptation and growth (neuroplasticity)
-4. The wisdom inherent in holistic balance
+1. Evidence-based approaches backed by peer-reviewed research
+2. How physiological systems interact for optimal health outcomes
+3. Neuroplasticity and adaptation mechanisms in response to lifestyle interventions
+4. The importance of individualized approach based on assessment data
 
-Present wellness as a journey of self-discovery rather than a problem to be fixed. Use language that evokes harmony, integration, and mutual benefit. Draw from principles of neuroplasticity, holistic wellbeing, and philosophical concepts from Upanishads and Kashmiri Shaivism without using religious terminology.
+Present wellness as a process of targeted optimization rather than a deficit-correction model. Use professional, evidence-focused terminology reflecting current biomedical understanding. Draw from established principles in exercise physiology, nutritional science, sleep medicine, and cognitive performance optimization.
 
 IMPORTANT: When a user first engages with you, ALWAYS follow this flow:
-1. First, ask about their physical vessel (age, height, weight, digestive patterns, energy levels).
-2. Second, ask about their conscious intent (goals, aspirations, areas seeking harmony).
-3. Third, ask about their daily rhythms (occupation, sleep patterns, stress sources).
-4. Only AFTER collecting this information should you provide personalized guidance.
+1. First, ask about their physical metrics (age, height, weight, medical conditions, biomarkers if available).
+2. Second, ask about their objectives (specific, measurable goals and areas for improvement).
+3. Third, ask about their current patterns (occupation, sleep schedule, stress factors, current routines).
+4. Only AFTER collecting this information should you provide personalized, evidence-based recommendations.
 
-Frame recommendations to show how they benefit multiple systems simultaneously.`;
+Frame recommendations to highlight specific physiological mechanisms and outcomes supported by research.`;
 
     // Store conversation history
     let conversationHistory = [
         { role: "user", parts: [{ text: SYSTEM_INSTRUCTION }] },
-        { role: "model", parts: [{ text: "Welcome! To provide you with personalized health and fitness guidance, I'd like to learn a bit about you first.\n\nCould you please share some details about your physical vessel such as your age, height, weight, and any health conditions or limitations you may have?" }] },
+        { role: "model", parts: [{ text: "Welcome! To provide you with personalized health and fitness guidance, I'd like to learn a bit about you first.\n\nCould you please share some details about your physical metrics such as your age, height, weight, and any health conditions or limitations you may have?" }] },
     ];
 
-    // Define quiz questions with original language
+    // Define quiz questions with more professional language
     const quizQuestions = {
         physiology: [
             {
@@ -131,9 +133,9 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
                 allowMultiple: true
             },
             {
-                question: "Which aspect of your mind-body connection do you want to strengthen?",
+                question: "Which aspect of your wellbeing do you want to prioritize?",
                 type: "select",
-                options: ["Mental clarity", "Emotional balance", "Physical energy", "Resilience to stress", "Sleep quality"],
+                options: ["Cognitive performance", "Stress management", "Energy levels", "Recovery optimization", "Sleep quality"],
                 allowMultiple: true
             }
         ],
@@ -163,69 +165,176 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         ]
     };
 
-    // Define knowledge toolkit protocols to populate sidebar
+    // Define knowledge toolkit protocols with professional content and no emojis
     const knowledgeProtocols = [
         {
             title: "Sleep Optimization",
-            icon: "🌙",
+            icon: "S",
             content: `<h3>Sleep Optimization Protocol</h3>
-                      <p>Enhance your sleep quality through interconnected approaches:</p>
+                      <p>Enhance sleep quality through evidence-based approaches:</p>
                       <ul>
-                          <li><strong>Morning Light Exposure:</strong> 10-20 minutes of morning sunlight resets your circadian rhythm</li>
-                          <li><strong>Temperature Regulation:</strong> Cooler sleeping environment (65-68°F/18-20°C) facilitates deeper sleep</li>
-                          <li><strong>Consistent Cycles:</strong> Regular sleep-wake times harmonize your body's internal clock</li>
-                          <li><strong>Evening Wind-Down:</strong> Reduce blue light 1-2 hours before sleep to enhance melatonin production</li>
-                      </ul>`
+                          <li><strong>Circadian Entrainment:</strong> 10-20 minutes of morning sunlight exposure to regulate melatonin production</li>
+                          <li><strong>Temperature Regulation:</strong> Cooler sleeping environment (65-68°F/18-20°C) facilitates deeper slow-wave sleep</li>
+                          <li><strong>Consistent Schedule:</strong> Regular sleep-wake times stabilize circadian rhythm and optimize sleep architecture</li>
+                          <li><strong>Evening Wind-Down:</strong> Reduce blue light exposure 1-2 hours before sleep to enhance melatonin production</li>
+                      </ul>
+                      <button class="inquire-button" data-protocol="Sleep Optimization">Inquire about this protocol</button>`
         },
         {
             title: "Stress Management",
-            icon: "🧘",
+            icon: "SM",
             content: `<h3>Stress Management Protocol</h3>
-                      <p>Develop resilience through proven techniques:</p>
+                      <p>Develop resilience through validated techniques:</p>
                       <ul>
-                          <li><strong>Breathwork:</strong> Physiological sighs (double inhale, extended exhale) calm your nervous system</li>
-                          <li><strong>Temperature Contrast:</strong> Cold/heat exposure builds physical and mental adaptability</li>
-                          <li><strong>Movement:</strong> Regular exercise releases tension and builds stress tolerance</li>
-                          <li><strong>Presence Practice:</strong> Daily mindfulness strengthens your attention control networks</li>
-                      </ul>`
+                          <li><strong>Respiratory Regulation:</strong> Physiological sighs (double inhale, extended exhale) downregulate sympathetic activation</li>
+                          <li><strong>Thermal Exposure:</strong> Cold/heat exposure triggers beneficial hormetic stress response and adaptation</li>
+                          <li><strong>Targeted Exercise:</strong> Regular physical activity optimizes cortisol regulation and HPA axis function</li>
+                          <li><strong>Attentional Control:</strong> Structured mindfulness practice enhances prefrontal regulation of limbic response</li>
+                      </ul>
+                      <button class="inquire-button" data-protocol="Stress Management">Inquire about this protocol</button>`
         },
         {
             title: "Focus & Performance",
-            icon: "🎯",
+            icon: "FP",
             content: `<h3>Focus & Performance Protocol</h3>
-                      <p>Optimize your cognitive function:</p>
+                      <p>Optimize cognitive function through validated methods:</p>
                       <ul>
-                          <li><strong>Ultradian Rhythm:</strong> 90-minute focus blocks with 15-20 minute breaks align with natural attention cycles</li>
-                          <li><strong>Nutrition Support:</strong> Protein, healthy fats, and complex carbs provide sustained mental energy</li>
-                          <li><strong>Environment Design:</strong> Create spaces that minimize distractions and support deep work</li>
-                          <li><strong>Recovery:</strong> Integrate micro-breaks with movement to restore mental capacity</li>
-                      </ul>`
+                          <li><strong>Ultradian Rhythm Management:</strong> 90-minute focus blocks with 15-20 minute breaks align with natural attention cycles</li>
+                          <li><strong>Nutritional Support:</strong> Protein, healthy fats, and complex carbohydrates provide optimal substrate for neurotransmitter production</li>
+                          <li><strong>Environment Optimization:</strong> Structured workspace minimizes attentional switching costs and supports sustained focus</li>
+                          <li><strong>Recovery Integration:</strong> Strategic micro-breaks with movement maintain prefrontal energy reserves</li>
+                      </ul>
+                      <button class="inquire-button" data-protocol="Focus & Performance">Inquire about this protocol</button>`
         },
         {
             title: "Physical Training",
-            icon: "💪",
+            icon: "PT",
             content: `<h3>Physical Training Protocol</h3>
-                      <p>Build strength and resilience through balanced approaches:</p>
+                      <p>Build capacity through validated training principles:</p>
                       <ul>
-                          <li><strong>Zone 2 Cardio:</strong> Moderate-intensity exercise where you can maintain conversation builds cardiovascular base</li>
-                          <li><strong>Resistance:</strong> Progressive overload through increased weight, reps, or density builds functional strength</li>
-                          <li><strong>Recovery:</strong> Protein timing, sleep quality, and active recovery optimize adaptation</li>
-                          <li><strong>Movement Variety:</strong> Diverse motion patterns prevent adaptations and build broader capacities</li>
-                      </ul>`
+                          <li><strong>Zone 2 Cardiovascular Training:</strong> Moderate-intensity exercise at ventilatory threshold 1 maximizes mitochondrial development</li>
+                          <li><strong>Resistance Training:</strong> Progressive tension overload through periodized programming optimizes muscle adaptation</li>
+                          <li><strong>Recovery Optimization:</strong> Strategic protein timing, sleep hygiene, and parasympathetic activation enhance adaptation response</li>
+                          <li><strong>Movement Pattern Diversity:</strong> Varied stimulus prevents adaptation plateaus and builds broader movement competency</li>
+                      </ul>
+                      <button class="inquire-button" data-protocol="Physical Training">Inquire about this protocol</button>`
         },
         {
             title: "Nutrition Foundations",
-            icon: "🥗",
+            icon: "NF",
             content: `<h3>Nutrition Foundations Protocol</h3>
-                      <p>Nourish your body with evidence-based approaches:</p>
+                      <p>Optimize physiological function through evidence-based nutrition:</p>
                       <ul>
-                          <li><strong>Time-Restricted Eating:</strong> Aligning food intake with your circadian rhythm enhances metabolic health</li>
-                          <li><strong>Protein Priority:</strong> Adequate protein (1.6-2.2g/kg) supports muscle maintenance and satiety</li>
-                          <li><strong>Whole Foods:</strong> Minimally processed foods provide micronutrients and support gut microbiome</li>
-                          <li><strong>Hydration:</strong> Consistent water intake supports all physiological processes</li>
-                      </ul>`
+                          <li><strong>Time-Restricted Feeding:</strong> Aligning food intake with circadian rhythm enhances metabolic flexibility and autophagy</li>
+                          <li><strong>Protein Optimization:</strong> Strategic protein distribution (1.6-2.2g/kg) supports muscle protein synthesis and satiety</li>
+                          <li><strong>Whole Food Prioritization:</strong> Minimally processed foods maximize micronutrient density and support gut microbiome diversity</li>
+                          <li><strong>Hydration Strategy:</strong> Consistent water intake supports optimal cellular function and metabolic processes</li>
+                      </ul>
+                      <button class="inquire-button" data-protocol="Nutrition Foundations">Inquire about this protocol</button>`
         }
     ];
+
+    // NEW: PDF Generation functionality
+    function generatePDF(contentType, data) {
+        // Simulate PDF generation - In a real implementation, this would use a PDF library
+        const pdfMessage = `Your personalized ${contentType} PDF has been generated. In a production environment, this would create a downloadable PDF document containing: ${JSON.stringify(data).substring(0, 100)}...`;
+        
+        addAIMessage(pdfMessage);
+        
+        // Show a modal dialog to simulate PDF generation
+        const modal = document.createElement('div');
+        modal.className = 'pdf-modal';
+        modal.innerHTML = `
+            <div class="pdf-modal-content">
+                <h3>PDF Generated</h3>
+                <p>Your personalized ${contentType} document has been created.</p>
+                <div class="pdf-thumbnail">
+                    <div class="pdf-icon">PDF</div>
+                </div>
+                <button class="pdf-download-btn">Download PDF</button>
+                <button class="pdf-close-btn">Close</button>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Add functionality to buttons
+        modal.querySelector('.pdf-download-btn').addEventListener('click', function() {
+            modal.querySelector('.pdf-download-btn').textContent = 'Downloaded!';
+            setTimeout(() => {
+                document.body.removeChild(modal);
+            }, 1500);
+        });
+        
+        modal.querySelector('.pdf-close-btn').addEventListener('click', function() {
+            document.body.removeChild(modal);
+        });
+    }
+
+    // NEW: Interactive roadmap visualization
+    function createInteractiveRoadmap(title, steps) {
+        const roadmapContainer = document.createElement('div');
+        roadmapContainer.className = 'roadmap-container';
+        
+        const roadmapHeader = document.createElement('div');
+        roadmapHeader.className = 'roadmap-header';
+        roadmapHeader.innerHTML = `
+            <h3>${title}</h3>
+            <div class="roadmap-controls">
+                <button class="roadmap-fullscreen-btn">Expand</button>
+                <button class="roadmap-pdf-btn">Save as PDF</button>
+            </div>
+        `;
+        
+        const roadmapContent = document.createElement('div');
+        roadmapContent.className = 'roadmap-content';
+        
+        // Create timeline elements
+        const timeline = document.createElement('div');
+        timeline.className = 'roadmap-timeline';
+        
+        steps.forEach((step, index) => {
+            const stepElement = document.createElement('div');
+            stepElement.className = 'roadmap-step';
+            stepElement.innerHTML = `
+                <div class="roadmap-step-number">${index + 1}</div>
+                <div class="roadmap-step-content">
+                    <h4>${step.title}</h4>
+                    <p>${step.description}</p>
+                    <div class="roadmap-step-timeframe">${step.timeframe}</div>
+                </div>
+            `;
+            
+            timeline.appendChild(stepElement);
+        });
+        
+        roadmapContent.appendChild(timeline);
+        roadmapContainer.appendChild(roadmapHeader);
+        roadmapContainer.appendChild(roadmapContent);
+        
+        // Add to chat
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message ai-message';
+        messageDiv.appendChild(roadmapContainer);
+        
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        
+        // Add event listeners
+        messageDiv.querySelector('.roadmap-fullscreen-btn').addEventListener('click', function() {
+            messageDiv.classList.toggle('roadmap-fullscreen');
+            this.textContent = messageDiv.classList.contains('roadmap-fullscreen') ? 'Minimize' : 'Expand';
+        });
+        
+        messageDiv.querySelector('.roadmap-pdf-btn').addEventListener('click', function() {
+            generatePDF('Roadmap', {
+                title: title,
+                steps: steps
+            });
+        });
+        
+        return roadmapContainer;
+    }
 
     // Current quiz data
     let currentQuizSection = 'physiology';
@@ -293,7 +402,7 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             card.className = 'protocol-card';
             card.innerHTML = `
                 <div class="protocol-header">
-                    <span class="protocol-icon">${protocol.icon}</span>
+                    <div class="protocol-icon">${protocol.icon}</div>
                     <h3 class="protocol-title">${protocol.title}</h3>
                 </div>
                 <div class="protocol-content">
@@ -309,6 +418,23 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             
             sidebarContent.appendChild(card);
         });
+        
+        // Add event listeners to all inquire buttons
+        document.querySelectorAll('.inquire-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent the expand/collapse from triggering
+                const protocol = this.getAttribute('data-protocol');
+                inquireAboutProtocol(protocol);
+                closeSidebar();
+            });
+        });
+    }
+
+    // NEW: Function to handle protocol inquiries
+    function inquireAboutProtocol(protocolName) {
+        const inquiryMessage = `I'd like to learn more about the ${protocolName} protocol. Can you provide detailed information and how I can implement it?`;
+        addUserMessage(inquiryMessage);
+        getAIResponse();
     }
 
     // Animate symbiotic background elements
@@ -701,19 +827,19 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         let profileMessage = "Here's my information:\n\n";
         
         // Physical data
-        profileMessage += "Physical Vessel:\n";
+        profileMessage += "Physical Metrics:\n";
         for (const [question, answer] of Object.entries(userProfile.physicalVessel)) {
             profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
         }
         
         // Goals data
-        profileMessage += "\nConscious Intent:\n";
+        profileMessage += "\nObjectives:\n";
         for (const [question, answer] of Object.entries(userProfile.consciousIntent)) {
             profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
         }
         
         // Occupation data
-        profileMessage += "\nDaily Rhythms:\n";
+        profileMessage += "\nCurrent Patterns:\n";
         for (const [question, answer] of Object.entries(userProfile.dailyRhythms)) {
             profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
         }
@@ -857,8 +983,15 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
                 console.error('API Error:', data.error);
                 addAIMessage('I apologize, but I encountered an issue processing your request. Please try again later.');
             } else {
-                // Add AI message to chat
-                addAIMessage(data.aiResponse);
+                // Check if response contains roadmap request
+                if (data.aiResponse.includes('[ROADMAP]')) {
+                    handleRoadmapRequest(data.aiResponse);
+                } else if (data.aiResponse.includes('[PDF]')) {
+                    handlePDFRequest(data.aiResponse);
+                } else {
+                    // Add AI message to chat
+                    addAIMessage(data.aiResponse);
+                }
             }
         } catch (error) {
             console.error('Chat Error:', error);
@@ -868,6 +1001,58 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             
             // Show error message
             addAIMessage('I apologize, but I encountered an issue connecting to the server. Please check your internet connection and try again.');
+        }
+    }
+    
+    // NEW: Handle roadmap request from AI response
+    function handleRoadmapRequest(aiResponse) {
+        // Extract roadmap data from AI response
+        const roadmapMatch = aiResponse.match(/\[ROADMAP\]([\s\S]*?)\[\/ROADMAP\]/);
+        
+        if (roadmapMatch && roadmapMatch[1]) {
+            try {
+                // Remove the roadmap tags from the response
+                const cleanResponse = aiResponse.replace(/\[ROADMAP\]([\s\S]*?)\[\/ROADMAP\]/, '');
+                addAIMessage(cleanResponse);
+                
+                // Parse the roadmap data
+                const roadmapData = JSON.parse(roadmapMatch[1]);
+                
+                // Create interactive roadmap
+                createInteractiveRoadmap(roadmapData.title, roadmapData.steps);
+            } catch (error) {
+                console.error('Roadmap parsing error:', error);
+                addAIMessage('I created a personalized plan for you, but there was an issue displaying it in an interactive format.');
+            }
+        } else {
+            // If no valid roadmap data found, just display the response
+            addAIMessage(aiResponse);
+        }
+    }
+    
+    // NEW: Handle PDF request from AI response
+    function handlePDFRequest(aiResponse) {
+        // Extract PDF data from AI response
+        const pdfMatch = aiResponse.match(/\[PDF\]([\s\S]*?)\[\/PDF\]/);
+        
+        if (pdfMatch && pdfMatch[1]) {
+            try {
+                // Remove the PDF tags from the response
+                const cleanResponse = aiResponse.replace(/\[PDF\]([\s\S]*?)\[\/PDF\]/, '');
+                addAIMessage(cleanResponse);
+                
+                // Parse the PDF data
+                const pdfData = JSON.parse(pdfMatch[1]);
+                
+                // Generate PDF
+                generatePDF(pdfData.title, pdfData.content);
+            } catch (error) {
+                console.error('PDF parsing error:', error);
+                addAIMessage('I prepared a document for you, but there was an issue generating the PDF.');
+            }
+        } else {
+            // If no valid PDF data found, just display the response
+            addAIMessage(aiResponse);
         }
     }
     
