@@ -1,4 +1,4 @@
-/* Enhanced style.css with symbiotic theme and refined UI */
+/* Enhanced style.css with sidebar functionality and refined UI */
 * {
     margin: 0;
     padding: 0;
@@ -17,7 +17,7 @@
     --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     --shadow-soft: 0 5px 15px rgba(0, 0, 0, 0.3);
     --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.5);
-    /* New variables */
+    --sidebar-width: 320px;
     --accent-gradient: linear-gradient(135deg, rgba(40, 40, 40, 0.8), rgba(60, 60, 60, 0.8));
     --highlight-color: rgba(255, 255, 255, 0.8);
 }
@@ -58,6 +58,13 @@ body::before {
     }
 }
 
+.main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    transition: var(--transition-smooth);
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -91,21 +98,6 @@ header {
     0% { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(5px); }
     40% { opacity: 0.7; filter: blur(2px); transform: translateY(5px) scale(0.98); }
     100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-}
-
-.header-subtitle {
-    font-size: 0.9rem;
-    letter-spacing: 4px;
-    opacity: 0;
-    transform: translateY(10px);
-    animation: fadeIn 1s ease-out 1s forwards;
-    color: rgba(255,255,255,0.7);
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-@keyframes fadeIn {
-    to { opacity: 1; transform: translateY(0); }
 }
 
 main {
@@ -872,8 +864,89 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     50% { opacity: 0.9; }
 }
 
-/* Protocol Cards Styles - Refined */
-.toggle-protocols-btn {
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: var(--sidebar-width);
+    height: 100%;
+    background-color: rgba(10, 10, 10, 0.95);
+    border-left: 1px solid var(--border-color);
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #444 #111;
+}
+
+.sidebar.active {
+    right: 0;
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background-color: rgba(10, 10, 10, 0.97);
+    z-index: 2;
+}
+
+.sidebar-header h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.close-sidebar {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: 1.8rem;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: var(--transition-smooth);
+}
+
+.close-sidebar:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-content {
+    padding: 20px;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(3px);
+    z-index: 999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Toggle Toolkit Button */
+.toggle-toolkit-btn {
     background-color: #000;
     color: #fff;
     border: 1px solid #444;
@@ -892,7 +965,7 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     overflow: hidden;
 }
 
-.toggle-protocols-btn::before {
+.toggle-toolkit-btn::before {
     content: '';
     position: absolute;
     top: 0;
@@ -904,37 +977,28 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     transition: transform 0.6s ease;
 }
 
-.toggle-protocols-btn:hover {
+.toggle-toolkit-btn:hover {
     background-color: #111;
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
-.toggle-protocols-btn:hover::before {
+.toggle-toolkit-btn:hover::before {
     transform: translateX(100%);
 }
 
-.toggle-protocols-btn.active {
+.toggle-toolkit-btn.active {
     background-color: rgba(30, 30, 30, 0.9);
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
-.protocol-cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    margin: 10px 0 25px;
-    width: 100%;
-    max-width: 900px;
-}
-
+/* Protocol Cards Styles - Refined for Sidebar */
 .protocol-card {
     background-color: rgba(20, 20, 20, 0.7);
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    width: calc(50% - 15px);
-    min-width: 250px;
+    width: 100%;
+    margin-bottom: 20px;
     overflow: hidden;
     transition: var(--transition-smooth);
     box-shadow: var(--shadow-soft);
@@ -1065,10 +1129,57 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     transform: translateX(100%);
 }
 
+/* Symbiotic shape animation */
+.symbiotic-shape {
+    position: fixed;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(40, 40, 40, 0.3) 0%, transparent 70%);
+    filter: blur(70px);
+    opacity: 0.2;
+    animation: floatShape 20s infinite alternate ease-in-out;
+    z-index: -1;
+}
+
+.shape1 {
+    top: 20%;
+    left: 10%;
+    width: 40vw;
+    height: 40vw;
+}
+
+.shape2 {
+    bottom: 10%;
+    right: 10%;
+    width: 50vw;
+    height: 50vw;
+}
+
+.shape3 {
+    top: 50%;
+    left: 50%;
+    width: 30vw;
+    height: 30vw;
+}
+
+@keyframes floatShape {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    50% { transform: translate(10px, 15px) scale(1.05) rotate(5deg); }
+    100% { transform: translate(-10px, -10px) scale(0.98) rotate(-5deg); }
+}
+
+.footer-content {
+    padding: 15px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+    font-weight: 300;
+}
+
 /* Responsiveness with enhanced mobile experience */
 @media (max-width: 768px) {
-    .protocol-card {
-        width: 100%;
+    .sidebar {
+        width: 85%;
     }
     
     .animated-header {
@@ -1143,6 +1254,10 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
 }
 
 @media (max-width: 480px) {
+    .sidebar {
+        width: 100%;
+    }
+    
     .animated-header {
         letter-spacing: 2px;
         font-size: clamp(1.3rem, 4vw, 1.8rem);
@@ -1170,7 +1285,7 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
         padding: 15px 12px;
     }
     
-    .toggle-protocols-btn {
+    .toggle-toolkit-btn {
         width: 100%;
         padding: 14px;
         margin: 15px auto;
@@ -1193,50 +1308,3 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
 
 /* Font Import */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-/* Symbiotic shape animation */
-.symbiotic-shape {
-    position: fixed;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, rgba(40, 40, 40, 0.3) 0%, transparent 70%);
-    filter: blur(70px);
-    opacity: 0.2;
-    animation: floatShape 20s infinite alternate ease-in-out;
-    z-index: -1;
-}
-
-.shape1 {
-    top: 20%;
-    left: 10%;
-    width: 40vw;
-    height: 40vw;
-}
-
-.shape2 {
-    bottom: 10%;
-    right: 10%;
-    width: 50vw;
-    height: 50vw;
-}
-
-.shape3 {
-    top: 50%;
-    left: 50%;
-    width: 30vw;
-    height: 30vw;
-}
-
-@keyframes floatShape {
-    0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-    50% { transform: translate(10px, 15px) scale(1.05) rotate(5deg); }
-    100% { transform: translate(-10px, -10px) scale(0.98) rotate(-5deg); }
-}
-
-.footer-content {
-    padding: 15px;
-    text-align: center;
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 1px;
-    font-weight: 300;
-}
