@@ -6,30 +6,40 @@
 }
 
 body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #000000; /* Pure black background */
-    color: #ffffff; /* White text */
+    font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #000000;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    line-height: 1.6;
+}
+
+/* Improved container layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
 }
 
 header {
-    padding: 8vh 0;
+    padding: 6vh 0 4vh;
     text-align: center;
 }
 
 /* Enhanced Animated Header */
 .animated-header {
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
-    font-size: 2.4em;
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
     letter-spacing: 4px;
     animation: fadeInAndGlow 3s ease-out forwards;
     opacity: 0;
     transform: translateY(20px);
     color: #ffffff;
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+    margin: 0 10px;
 }
 
 @keyframes fadeInAndGlow {
@@ -54,314 +64,105 @@ main {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
-    padding: 40px 20px; /* Increased vertical padding */
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px 16px 40px;
     max-width: 1000px;
     margin: 0 auto;
-    width: 90%;
-}
-
-/* Improved chat container */
-#chat-container {
-    display: none; /* Initially hidden */
     width: 100%;
-    height: 60vh; /* Larger fixed height */
-    min-height: 400px;
-    overflow-y: auto;
-    margin-bottom: 40px; /* Increased margin */
-    padding: 30px; /* Increased padding */
-    background-color: rgba(0, 0, 0, 0.8); /* Pure black with slight transparency */
-    border-radius: 12px; /* Increased border radius */
-    transition: all 0.5s ease;
-    border: 1px solid #333;
-    scrollbar-width: thin;
-    scrollbar-color: #444 #111; /* Darker scrollbar track */
 }
 
-#chat-container::-webkit-scrollbar {
-    width: 8px;
-}
-
-#chat-container::-webkit-scrollbar-track {
-    background: #111; /* Darker track */
-}
-
-#chat-container::-webkit-scrollbar-thumb {
-    background-color: #444;
-    border-radius: 6px;
-}
-
-/* Message styling with improved formatting */
-.message {
-    margin-bottom: 24px; /* Increased margin */
-    padding: 18px 24px; /* Increased padding */
-    border-radius: 12px; /* Increased border radius */
-    max-width: 90%;
-    line-height: 1.6; /* Increased line height */
-    word-wrap: break-word;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Added shadow */
-}
-
-.user-message {
-    align-self: flex-end;
-    background-color: #000; /* Pure black user message background */
-    margin-left: auto;
-    text-align: right;
-    border: 1px solid #333; /* Added border */
-}
-
-.ai-message {
-    background-color: #000; /* Pure black AI message background */
-    margin-right: auto;
-    border: 1px solid #333; /* Added border */
-}
-
-/* Typography for AI messages */
-.ai-message strong, 
-.ai-message b {
-    font-weight: 700;
-    color: #fff;
-}
-
-.ai-message em,
-.ai-message i {
-    font-style: italic;
-    color: #ddd;
-}
-
-/* Lists in AI messages */
-.ai-message ul,
-.ai-message ol {
-    margin-left: 20px;
-    margin-top: 12px;
-    margin-bottom: 12px;
-}
-
-.ai-message li {
-    margin-bottom: 10px;
-}
-
-.ai-message p {
-    margin-bottom: 16px;
-}
-
-/* Code blocks in AI messages */
-.ai-message code {
-    font-family: 'Courier New', monospace;
-    background-color: #111; /* Darker code background */
-    padding: 2px 5px;
-    border-radius: 3px;
-}
-
-.ai-message pre {
-    background-color: #111; /* Darker pre background */
-    padding: 10px;
-    border-radius: 5px;
-    overflow-x: auto;
-    margin: 10px 0;
-}
-
-/* Enhanced Input Form */
-#input-form {
-    display: flex;
-    border: 1px solid #333333;
-    border-radius: 12px; /* Increased border radius */
-    padding: 8px;
-    background-color: rgba(0, 0, 0, 0.7); /* Darker input form background */
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-#input-form:focus-within {
-    border-color: #444444;
-    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.05);
-}
-
-#user-input {
-    flex-grow: 1;
-    border: none;
-    padding: 18px; /* Increased padding */
-    font-size: 1.1em;
-    outline: none;
-    font-family: inherit;
-    background-color: transparent;
-    color: #ffffff;
-}
-
-#input-form button {
-    background: #111; /* Darker button background */
-    color: #ffffff;
-    border: none;
-    border-radius: 8px; /* Increased border radius */
-    padding: 12px 24px; /* Increased padding */
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 500;
-    letter-spacing: 1px;
-    font-family: inherit;
-    transition: background 0.2s ease;
-}
-
-#input-form button:hover {
-    background: #222; /* Darker hover background */
-}
-
-/* When conversation starts, reposition elements */
-main.conversation-active {
-    justify-content: flex-start;
-    padding-top: 5vh; /* Increased padding */
-}
-
-/* Quiz-like interactive elements */
-.quiz-container {
-    background-color: #000;
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 30px;
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 40px;
-    text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-
-.quiz-question {
-    margin-bottom: 30px;
-    font-size: 1.2em;
-    line-height: 1.6;
-}
-
-.quiz-options {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.quiz-option {
-    background-color: #111;
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 16px 20px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: left;
-    font-size: 1.1em;
-}
-
-.quiz-option:hover {
-    background-color: #222;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.quiz-option.selected {
-    border-color: #444;
-    background-color: #222;
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-}
-
-.quiz-custom-input {
-    background-color: #111;
-    border: 1px solid #333;
-    border-radius: 8px;
-    padding: 16px;
-    width: 100%;
-    margin-bottom: 20px;
-    color: #fff;
-    font-size: 1.1em;
-}
-
-.quiz-button {
-    background-color: #111;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 16px 30px;
-    cursor: pointer;
-    font-size: 1.1em;
-    letter-spacing: 1px;
-    transition: all 0.2s ease;
-    margin-top: 15px;
-}
-
-.quiz-button:hover {
-    background-color: #222;
-    transform: translateY(-2px);
-}
-
-.quiz-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Profile progress with improved styling */
+/* Improved Profile Progress Indicators */
 .profile-progress {
     display: flex;
     justify-content: center;
-    margin-bottom: 30px;
-    opacity: 0.8;
-    transition: opacity 0.3s ease;
+    margin: 10px 0 20px;
+    opacity: 0.9;
+    transition: all 0.5s ease;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+}
+
+.profile-progress:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    right: 18px;
+    height: 2px;
+    background-color: #222;
+    z-index: 0;
+    transform: translateY(-50%);
 }
 
 .profile-progress.complete {
     opacity: 0;
     height: 0;
     margin: 0;
-    transition: opacity 0.5s ease, height 0.5s ease, margin 0.5s ease;
+    overflow: hidden;
+    transition: all 0.5s ease;
 }
 
 .progress-step {
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    background-color: #222; /* Darker inactive step */
-    margin: 0 8px;
+    background-color: #222;
+    margin: 0;
+    position: relative;
+    z-index: 1;
     transition: all 0.3s ease;
+    border: 2px solid #000;
+    flex: 0 0 16px;
+}
+
+.progress-step:not(:last-child) {
+    margin-right: auto;
 }
 
 .progress-step.active {
     background-color: #fff;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    transform: scale(1.2);
 }
 
 .progress-step.complete {
-    background-color: #333; /* Darker completed step */
+    background-color: #555;
 }
 
 /* Progress labels with improved styling */
 .progress-labels {
     display: flex;
     justify-content: space-between;
-    max-width: 400px;
     width: 100%;
-    margin: 8px auto 20px;
-    font-size: 0.8em;
+    max-width: 500px;
+    margin: 0 auto 30px;
+    font-size: 0,9rem;
     color: #777;
-    transition: opacity 0.3s ease;
+    transition: all 0.5s ease;
+    padding: 0 5px;
 }
 
 .progress-labels.complete {
     opacity: 0;
     height: 0;
     margin: 0;
-    transition: opacity 0.5s ease, height 0.5s ease, margin 0.5s ease;
+    overflow: hidden;
+    transition: all 0.5s ease;
 }
 
 .progress-label {
     text-align: center;
-    flex: 1;
     transition: all 0.3s ease;
+    flex: 0 0 33.33%;
+    padding: 0 5px;
+    font-weight: 500;
 }
 
 .progress-label.active {
     color: #fff;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .progress-label.complete {
@@ -371,8 +172,11 @@ main.conversation-active {
 /* Welcome animation with improved styling */
 .welcome-animation {
     text-align: center;
-    margin-bottom: 35px;
+    margin: 0 0 35px;
     height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .pulse-dot {
@@ -399,18 +203,473 @@ main.conversation-active {
     100% { transform: scale(0.8); opacity: 0.5; }
 }
 
-/* Initial message style */
-.initial-message {
-    text-align: center;
+/* Improved Quiz Container */
+.quiz-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 30px;
+    width: 100%;
     max-width: 600px;
-    margin: 0 auto 40px;
-    font-size: 1.2em;
-    line-height: 1.6;
-    color: #aaa;
-    animation: fadeIn 1s ease-out;
+    margin: 10px auto 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.quiz-question {
+    margin-bottom: 24px;
+    font-size: 1.3rem;
+    line-height: 1.6;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
 }
+
+/* Redesigned Option Selection */
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.quiz-option {
+    background-color: rgba(20, 20, 20, 0.6);
+    border: 1px solid #2d2d2d;
+    border-radius: 10px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-size: 1.05rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.quiz-option:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+.quiz-option:hover {
+    background-color: rgba(40, 40, 40, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.quiz-option.selected {
+    border-color: #444;
+    background-color: rgba(40, 40, 40, 0.8);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.quiz-option.selected:before {
+    background-color: #555;
+}
+
+/* Improved checkbox/radio visual styling */
+.quiz-option:after {
+    content: '';
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #444;
+    margin-right: 12px;
+    display: inline-block;
+    vertical-align: middle;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+    position: absolute;
+    right: 20px;
+}
+
+.quiz-option.selected:after {
+    border-color: #666;
+    background-color: #666;
+    box-shadow: inset 0 0 0 4px #222;
+}
+
+/* Improved Input Styling */
+.quiz-custom-input {
+    background-color: rgba(20, 20, 20, 0.6);
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 16px;
+    width: 100%;
+    margin: 5px 0 20px;
+    color: #fff;
+    font-size: 1.05rem;
+    transition: all 0.2s ease;
+}
+
+.quiz-custom-input:focus {
+    border-color: #444;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+    outline: none;
+}
+
+.quiz-button {
+    background-color: rgba(40, 40, 40, 0.8);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 16px 30px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    margin: 15px auto 0;
+    display: block;
+    min-width: 140px;
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-button:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.7s ease;
+}
+
+.quiz-button:hover {
+    background-color: rgba(60, 60, 60, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.quiz-button:hover:after {
+    left: 100%;
+}
+
+.quiz-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Improved Chat Container */
+#chat-container {
+    display: none;
+    width: 100%;
+    height: 60vh;
+    min-height: 400px;
+    overflow-y: auto;
+    margin: 10px 0 30px;
+    padding: 25px;
+    background-color: rgba(15, 15, 15, 0.6);
+    border-radius: 16px;
+    transition: all 0.5s ease;
+    border: 1px solid #333;
+    scrollbar-width: thin;
+    scrollbar-color: #444 #111;
+    scroll-behavior: smooth;
+}
+
+#chat-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+#chat-container::-webkit-scrollbar-track {
+    background: #111;
+    border-radius: 4px;
+}
+
+#chat-container::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 4px;
+}
+
+/* Message Styling */
+.message {
+    margin-bottom: 20px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    max-width: 90%;
+    line-height: 1.6;
+    word-wrap: break-word;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.user-message {
+    background-color: rgba(20, 20, 20, 0.8);
+    margin-left: auto;
+    text-align: right;
+    border: 1px solid #2d2d2d;
+    border-bottom-right-radius: 4px;
+}
+
+.ai-message {
+    background-color: rgba(25, 25, 25, 0.8);
+    margin-right: auto;
+    border: 1px solid #2d2d2d;
+    border-bottom-left-radius: 4px;
+}
+
+/* Thinking indicator */
+.thinking {
+    padding: 12px 16px;
+    min-height: auto;
+}
+
+.thinking-dots {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 20px;
+}
+
+.thinking-dots span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #555;
+    border-radius: 50%;
+    margin-right: 5px;
+    animation: thinking 1.4s infinite ease-in-out both;
+}
+
+.thinking-dots span:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.thinking-dots span:nth-child(2) {
+    animation-delay: -0.16s;
+}
+
+@keyframes thinking {
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+    40% {
+        transform: scale(1);
+    }
+}
+
+/* Typography for AI messages */
+.ai-message .section-title {
+    font-weight: 600;
+    margin: 16px 0 8px;
+    color: #ddd;
+}
+
+.ai-message .bullet-point {
+    margin: 8px 0 8px 10px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.ai-message .bullet-point:before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #888;
+}
+
+.ai-message p {
+    margin-bottom: 14px;
+}
+
+/* Enhanced Input Form */
+#input-form {
+    display: flex;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 8px;
+    background-color: rgba(20, 20, 20, 0.7);
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+#input-form:focus-within {
+    border-color: #444;
+    box-shadow: 0 5px 25px rgba(255, 255, 255, 0.05);
+}
+
+#user-input {
+    flex-grow: 1;
+    border: none;
+    padding: 16px;
+    font-size: 1.05rem;
+    outline: none;
+    font-family: inherit;
+    background-color: transparent;
+    color: #fff;
+}
+
+#input-form button {
+    background: #222;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+#input-form button:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.7s ease;
+}
+
+#input-form button:hover {
+    background: #333;
+}
+
+#input-form button:hover:after {
+    left: 100%;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    header {
+        padding: 4vh 0 2vh;
+    }
+    
+    .animated-header {
+        font-size: clamp(1.5rem, 4vw, 2.2rem);
+    }
+    
+    main {
+        padding: 10px 10px 30px;
+    }
+    
+    .quiz-container {
+        padding: 25px 20px;
+        border-radius: 14px;
+    }
+    
+    .quiz-question {
+        font-size: 1.15rem;
+        margin-bottom: 20px;
+    }
+    
+    .quiz-option {
+        padding: 14px 16px;
+        font-size: 1rem;
+    }
+    
+    .quiz-option:after {
+        right: 15px;
+    }
+    
+    .quiz-custom-input {
+        padding: 14px;
+        font-size: 1rem;
+    }
+    
+    .quiz-button {
+        padding: 14px 24px;
+        font-size: 1rem;
+    }
+    
+    #chat-container {
+        padding: 20px 15px;
+        border-radius: 14px;
+        margin-bottom: 20px;
+    }
+    
+    .message {
+        padding: 14px 16px;
+        margin-bottom: 16px;
+        max-width: 95%;
+    }
+    
+    #input-form {
+        padding: 6px;
+    }
+    
+    #user-input {
+        padding: 12px;
+        font-size: 1rem;
+    }
+    
+    #input-form button {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .animated-header {
+        letter-spacing: 2px;
+    }
+    
+    .quiz-container {
+        padding: 20px 16px;
+    }
+    
+    .quiz-question {
+        font-size: 1.1rem;
+    }
+    
+    .message {
+        max-width: 100%;
+    }
+}
+
+/* Improved Initial Loading Animation */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.loading-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loader {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    border-top-color: #fff;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Font Addition - Optional but improves overall look */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
