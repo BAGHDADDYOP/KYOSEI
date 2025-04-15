@@ -1,15 +1,16 @@
-// script.js (Enhanced with user profile collection)
+// script.js (Enhanced with quiz-like profile collection)
 
 const form = document.getElementById('input-form');
 const input = document.getElementById('user-input');
 const chatContainer = document.getElementById('chat-container');
+const quizContainer = document.getElementById('quiz-container');
 const mainElement = document.querySelector('main');
 
 // Track user profile data
 let userProfile = {
-    physiologicalDetails: null,
-    goals: null,
-    occupation: null,
+    physiologicalDetails: {},
+    goals: {},
+    occupation: {},
     profileComplete: false
 };
 
@@ -40,6 +41,264 @@ let conversationHistory = [
     { role: "user", parts: [{ text: SYSTEM_INSTRUCTION }] },
     { role: "model", parts: [{ text: "Welcome! To provide you with personalized health and fitness guidance, I'd like to learn a bit about you first.\n\nCould you please share some physiological details such as your age, height, weight, and any health conditions or limitations you may have?" }] },
 ];
+
+// Define quiz questions
+const quizQuestions = {
+    physiology: [
+        {
+            question: "What is your age?",
+            type: "select",
+            options: ["Under 18", "18-24", "25-34", "35-44", "45-54", "55-64", "65 or older"],
+            allowCustom: true,
+            customLabel: "Enter your specific age"
+        },
+        {
+            question: "What is your height?",
+            type: "custom",
+            placeholder: "e.g., 5'10\" or 178 cm"
+        },
+        {
+            question: "What is your weight?",
+            type: "custom",
+            placeholder: "e.g., 160 lbs or 73 kg"
+        },
+        {
+            question: "Do you have any health conditions or limitations?",
+            type: "select",
+            options: ["None", "High blood pressure", "Diabetes", "Joint pain/arthritis", "Back problems", "Heart condition", "Respiratory issues"],
+            allowCustom: true,
+            customLabel: "Enter other health conditions",
+            allowMultiple: true
+        }
+    ],
+    goals: [
+        {
+            question: "What are your primary fitness goals?",
+            type: "select",
+            options: ["Weight loss", "Muscle gain", "Improved endurance", "Better flexibility", "Overall health", "Sports performance", "Rehabilitation"],
+            allowMultiple: true
+        },
+        {
+            question: "How would you describe your current fitness level?",
+            type: "select",
+            options: ["Beginner - New to exercise", "Intermediate - Exercise occasionally", "Advanced - Regular exercise", "Athletic - Trained regularly for years"]
+        },
+        {
+            question: "What specific areas would you like to focus on?",
+            type: "select",
+            options: ["Full body", "Upper body", "Lower body", "Core strength", "Cardiovascular health", "Functional mobility"],
+            allowMultiple: true
+        }
+    ],
+    occupation: [
+        {
+            question: "What is your occupation or job type?",
+            type: "select",
+            options: ["Office/Desk job", "Physical/Manual labor", "Healthcare", "Education", "Service industry", "Remote/Work from home", "Student", "Retired"],
+            allowCustom: true,
+            customLabel: "Enter your specific occupation"
+        },
+        {
+            question: "How many hours do you typically work per day?",
+            type: "select",
+            options: ["Less than 4 hours", "4-6 hours", "7-8 hours", "9-10 hours", "More than 10 hours", "Variable schedule"]
+        },
+        {
+            question: "How would you rate your daily activity level at work?",
+            type: "select",
+            options: ["Mostly sedentary (sitting)", "Light activity (occasional walking)", "Moderate activity (regular walking/standing)", "High activity (physically demanding)"]
+        },
+        {
+            question: "How would you rate your work stress level?",
+            type: "select",
+            options: ["Low stress", "Moderate stress", "High stress", "Variable/depends on the day"]
+        }
+    ]
+};
+
+// Current quiz data
+let currentQuizSection = 'physiology';
+let currentQuizQuestionIndex = 0;
+let currentQuizAnswers = {};
+
+// Function to start the profile collection process
+function startProfileCollection() {
+    // Hide standard input form and show quiz
+    form.style.display = 'none';
+    quizContainer.style.display = 'block';
+    
+    // Initialize the first question
+    showCurrentQuizQuestion();
+    
+    // Update progress indicators
+    updateProfileProgress(1);
+}
+
+// Function to render the current quiz question
+function showCurrentQuizQuestion() {
+    const questions = quizQuestions[currentQuizSection];
+    const currentQuestion = questions[currentQuizQuestionIndex];
+    
+    let quizHTML = `
+        <div class="quiz-question">${currentQuestion.question}</div>
+        <div class="quiz-options">
+    `;
+    
+    if (currentQuestion.type === 'select') {
+        currentQuestion.options.forEach((option, index) => {
+            quizHTML += `
+                <div class="quiz-option" data-value="${option}" onclick="selectQuizOption(this, ${currentQuestion.allowMultiple || false})">${option}</div>
+            `;
+        });
+        
+        if (currentQuestion.allowCustom) {
+            quizHTML += `
+                <input type="text" class="quiz-custom-input" placeholder="${currentQuestion.customLabel || 'Enter custom answer'}" id="custom-quiz-input">
+            `;
+        }
+    } else if (currentQuestion.type === 'custom') {
+        quizHTML += `
+            <input type="text" class="quiz-custom-input" placeholder="${currentQuestion.placeholder || 'Enter your answer'}" id="custom-quiz-input">
+        `;
+    }
+    
+    quizHTML += `
+        </div>
+        <button class="quiz-button" onclick="submitQuizAnswer()">Next</button>
+    `;
+    
+    quizContainer.innerHTML = quizHTML;
+}
+
+// Function to handle quiz option selection
+window.selectQuizOption = function(element, allowMultiple) {
+    if (allowMultiple) {
+        element.classList.toggle('selected');
+    } else {
+        // Remove selection from all options
+        document.querySelectorAll('.quiz-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        element.classList.add('selected');
+    }
+};
+
+// Function to submit quiz answer and move to next question
+window.submitQuizAnswer = function() {
+    const questions = quizQuestions[currentQuizSection];
+    const currentQuestion = questions[currentQuizQuestionIndex];
+    let answer;
+    
+    if (currentQuestion.type === 'select') {
+        if (currentQuestion.allowMultiple) {
+            answer = Array.from(document.querySelectorAll('.quiz-option.selected')).map(el => el.dataset.value);
+        } else {
+            const selected = document.querySelector('.quiz-option.selected');
+            answer = selected ? selected.dataset.value : null;
+        }
+        
+        // Handle custom input if present
+        const customInput = document.getElementById('custom-quiz-input');
+        if (customInput && customInput.value.trim()) {
+            if (Array.isArray(answer)) {
+                answer.push(customInput.value.trim());
+            } else if (!answer) {
+                answer = customInput.value.trim();
+            }
+        }
+    } else if (currentQuestion.type === 'custom') {
+        answer = document.getElementById('custom-quiz-input').value.trim();
+    }
+    
+    // Save answer
+    if (!currentQuizAnswers[currentQuizSection]) {
+        currentQuizAnswers[currentQuizSection] = {};
+    }
+    currentQuizAnswers[currentQuizSection][currentQuestion.question] = answer;
+    
+    // Move to next question or section
+    currentQuizQuestionIndex++;
+    
+    if (currentQuizQuestionIndex >= questions.length) {
+        // Move to next section or complete profile
+        if (currentQuizSection === 'physiology') {
+            currentQuizSection = 'goals';
+            currentQuizQuestionIndex = 0;
+            updateProfileProgress(2);
+        } else if (currentQuizSection === 'goals') {
+            currentQuizSection = 'occupation';
+            currentQuizQuestionIndex = 0;
+            updateProfileProgress(3);
+        } else {
+            // Profile complete
+            finishProfileCollection();
+            return;
+        }
+    }
+    
+    // Show next question
+    showCurrentQuizQuestion();
+};
+
+// Function to finish profile collection and start chat
+function finishProfileCollection() {
+    // Update user profile with collected answers
+    userProfile.physiologicalDetails = currentQuizAnswers.physiology;
+    userProfile.goals = currentQuizAnswers.goals;
+    userProfile.occupation = currentQuizAnswers.occupation;
+    userProfile.profileComplete = true;
+    
+    // Format profile data for the AI
+    const profileSummary = formatProfileSummary();
+    
+    // Update profile progress
+    updateProfileProgress(4);
+    
+    // Hide quiz container and show chat
+    quizContainer.style.display = 'none';
+    chatContainer.style.display = 'block';
+    form.style.display = 'flex';
+    
+    // Add user profile message to chat and history
+    addMessage('user', profileSummary);
+    conversationHistory.push({ role: "user", parts: [{ text: profileSummary }] });
+    
+    // Get AI response with the profile data
+    getAiResponse(profileSummary);
+}
+
+// Format user profile as a summary for the AI
+function formatProfileSummary() {
+    let summary = "Here's my information:\n\nPhysiological Details:\n";
+    
+    // Add physiology details
+    Object.entries(userProfile.physiologicalDetails).forEach(([question, answer]) => {
+        const shortQ = question.replace("What is your ", "")
+                              .replace("Do you have any ", "");
+        summary += `- ${shortQ}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
+    });
+    
+    // Add goals
+    summary += "\nGoals:\n";
+    Object.entries(userProfile.goals).forEach(([question, answer]) => {
+        const shortQ = question.replace("What are your ", "")
+                              .replace("How would you describe your ", "")
+                              .replace("What specific ", "");
+        summary += `- ${shortQ}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
+    });
+    
+    // Add occupation details
+    summary += "\nOccupational Information:\n";
+    Object.entries(userProfile.occupation).forEach(([question, answer]) => {
+        const shortQ = question.replace("What is your ", "")
+                              .replace("How many ", "")
+                              .replace("How would you rate your ", "");
+        summary += `- ${shortQ}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
+    });
+    
+    summary += "\nBased on this information, could you provide me with personalized health and fitness guidance?";
+    return summary;
+}
 
 // Improved content formatting for AI responses
 function formatAIContent(text) {
@@ -125,216 +384,12 @@ function addMessage(sender, text) {
     }
 }
 
-// Function to update user profile based on AI response analysis
-function updateUserProfileStage(userMessage, aiResponse) {
-    // Simple progression through profile stages based on AI responses
-    if (!userProfile.profileComplete) {
-        if (aiResponse.includes("goals") && !userProfile.physiologicalDetails) {
-            // AI asked about goals, which means physiological details were provided
-            userProfile.physiologicalDetails = userMessage;
-            profileCollectionStage = 1; // Move to goals stage
-        } 
-        else if (aiResponse.includes("occupational routine") && !userProfile.goals) {
-            // AI asked about occupation, which means goals were provided
-            userProfile.goals = userMessage;
-            profileCollectionStage = 2; // Move to occupation stage
-        }
-        else if ((aiResponse.includes("personalized") || aiResponse.includes("plan") || aiResponse.includes("recommend")) && 
-                 userProfile.physiologicalDetails && userProfile.goals && !userProfile.occupation) {
-            // AI is giving advice, which means occupation was provided
-            userProfile.occupation = userMessage;
-            userProfile.profileComplete = true;
-            profileCollectionStage = 3; // Profile complete
-            console.log("User profile complete:", userProfile);
-        }
-    }
-}
-
 // Function to call backend API endpoint (/api/chat)
 async function getAiResponse(userText) {
-    // Add user message to history
-    conversationHistory.push({ role: "user", parts: [{ text: userText }] });
+    // Add user message to history if not already added (for profile summary)
+    if (conversationHistory[conversationHistory.length - 1].role !== "user" || 
+        conversationHistory[conversationHistory.length - 1].parts[0].text !== userText) {
+        conversationHistory.push({ role: "user", parts: [{ text: userText }] });
+    }
 
     // Add thinking indicator
-    const thinkingDiv = document.createElement('div');
-    thinkingDiv.classList.add('message', 'ai-message');
-    thinkingDiv.innerHTML = '<span class="thinking">AI thinking<span class="dots">...</span></span>';
-    
-    // Make chat container visible when sending message
-    if (chatContainer.style.display !== 'block') {
-        chatContainer.style.display = 'block';
-        mainElement.classList.add('conversation-active');
-    }
-    
-    chatContainer.appendChild(thinkingDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-
-    // Animate the thinking dots
-    const dots = thinkingDiv.querySelector('.dots');
-    const thinkingAnimation = setInterval(() => {
-        if (dots.textContent === '...') dots.textContent = '';
-        else dots.textContent += '.';
-    }, 500);
-
-    try {
-        // Call serverless function
-        const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ history: conversationHistory }),
-        });
-
-        // Stop thinking animation
-        clearInterval(thinkingAnimation);
-        // Remove thinking indicator
-        chatContainer.removeChild(thinkingDiv);
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error("Backend API Error:", errorData);
-            throw new Error(`Error from backend: ${errorData.error || response.statusText}`);
-        }
-
-        const data = await response.json();
-        const aiText = data.aiResponse;
-
-        // Update user profile based on the interaction
-        updateUserProfileStage(userText, aiText);
-
-        // Add AI response to history
-        conversationHistory.push({ role: "model", parts: [{ text: aiText }] });
-
-        // Add the final AI message
-        addMessage('ai', aiText);
-
-    } catch (error) {
-        // Stop thinking animation
-        clearInterval(thinkingAnimation);
-        // Remove thinking indicator on error
-        if (chatContainer.contains(thinkingDiv)) {
-            chatContainer.removeChild(thinkingDiv);
-        }
-        console.error('Error fetching AI response via backend:', error);
-        addMessage('ai', `Error: ${error.message}. Please try again later.`);
-    }
-}
-
-// Initialization - Add the initial AI message
-function initialize() {
-    // Add the AI's first message asking for physiological details
-    addMessage('ai', conversationHistory[1].parts[0].text);
-}
-
-// Handle form submission
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const userText = input.value.trim();
-    if (userText) {
-        addMessage('user', userText);
-        input.value = '';
-        getAiResponse(userText);
-    }
-});
-
-// Add focus to input when page loads
-window.addEventListener('load', () => {
-    input.focus();
-    initialize(); // Add the initial AI message on load
-});
-
-// Add a blinking cursor style to empty input
-input.addEventListener('input', () => {
-    if (input.value.length === 0) {
-        input.classList.add('blinking-cursor');
-    } else {
-        input.classList.remove('blinking-cursor');
-    }
-});
-
-// Initial class for cursor
-input.classList.add('blinking-cursor');
-// Add these functions to your script.js file
-
-// Elements for profile progress
-const profileProgress = document.getElementById('profile-progress');
-const progressLabels = document.getElementById('progress-labels');
-const initialMessage = document.getElementById('initial-message');
-const welcomeAnimation = document.getElementById('welcome-animation');
-
-// Function to update profile progress indicators
-function updateProfileProgress(stage) {
-    // Update progress steps
-    for (let i = 1; i <= 3; i++) {
-        const step = document.getElementById(`step-${i}`);
-        const label = document.getElementById(`label-${i}`);
-        
-        if (i < stage) {
-            // Previous steps
-            step.classList.remove('active');
-            step.classList.add('complete');
-            label.classList.remove('active');
-            label.classList.add('complete');
-        } else if (i === stage) {
-            // Current step
-            step.classList.add('active');
-            step.classList.remove('complete');
-            label.classList.add('active');
-            label.classList.remove('complete');
-        } else {
-            // Future steps
-            step.classList.remove('active', 'complete');
-            label.classList.remove('active', 'complete');
-        }
-    }
-    
-    // Hide welcome animation after first message
-    if (stage > 0) {
-        welcomeAnimation.style.display = 'none';
-        initialMessage.style.display = 'none';
-    }
-    
-    // Hide progress when complete
-    if (stage > 3) {
-        profileProgress.classList.add('complete');
-        progressLabels.classList.add('complete');
-    }
-}
-
-// Modify your updateUserProfileStage function
-function updateUserProfileStage(userMessage, aiResponse) {
-    // Simple progression through profile stages based on AI responses
-    if (!userProfile.profileComplete) {
-        if (aiResponse.includes("goals") && !userProfile.physiologicalDetails) {
-            // AI asked about goals, which means physiological details were provided
-            userProfile.physiologicalDetails = userMessage;
-            profileCollectionStage = 1; // Move to goals stage
-            updateProfileProgress(2); // Update UI to show second step
-        } 
-        else if (aiResponse.includes("occupational") && !userProfile.goals) {
-            // AI asked about occupation, which means goals were provided
-            userProfile.goals = userMessage;
-            profileCollectionStage = 2; // Move to occupation stage
-            updateProfileProgress(3); // Update UI to show third step
-        }
-        else if ((aiResponse.includes("personalized") || aiResponse.includes("plan") || aiResponse.includes("recommend")) && 
-                 userProfile.physiologicalDetails && userProfile.goals && !userProfile.occupation) {
-            // AI is giving advice, which means occupation was provided
-            userProfile.occupation = userMessage;
-            userProfile.profileComplete = true;
-            profileCollectionStage = 3; // Profile complete
-            updateProfileProgress(4); // Complete the progress
-            console.log("User profile complete:", userProfile);
-        }
-    }
-}
-
-// Initialization function - update to include progress indicators
-function initialize() {
-    // Set initial progress state
-    updateProfileProgress(1);
-    
-    // Add the AI's first message asking for physiological details
-    addMessage('ai', conversationHistory[1].parts[0].text);
-}
