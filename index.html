@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=Helvetica+Neue:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Simplified header - subtitle removed -->
+    <!-- Simplified header -->
     <header>
         <h1 class="animated-header">KNOWLEDGE EMPOWERS FREEDOM.</h1>
     </header>
@@ -96,16 +96,6 @@
     <script>
         // Set current year in footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
-        
-        // Add animation classes dynamically to optimize performance
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add animation attributes to symbiotic background elements
-            const shapes = document.querySelectorAll('.symbiotic-shape');
-            shapes.forEach((shape, index) => {
-                shape.style.animationDelay = `${index * 0.5}s`;
-                shape.style.animationDuration = `${20 + (index * 5)}s`;
-            });
-        });
     </script>
 
     <!-- Enhanced script with optimized performance -->
