@@ -15,7 +15,7 @@ body {
 }
 
 header {
-    padding: 6vh 0;
+    padding: 8vh 0;
     text-align: center;
 }
 
@@ -56,7 +56,7 @@ main {
     flex-direction: column;
     justify-content: center; /* Center content vertically */
     align-items: center; /* Center content horizontally */
-    padding: 20px;
+    padding: 40px 20px; /* Increased vertical padding */
     max-width: 1000px;
     margin: 0 auto;
     width: 90%;
@@ -69,10 +69,10 @@ main {
     height: 60vh; /* Larger fixed height */
     min-height: 400px;
     overflow-y: auto;
-    margin-bottom: 30px;
-    padding: 20px;
+    margin-bottom: 40px; /* Increased margin */
+    padding: 30px; /* Increased padding */
     background-color: rgba(0, 0, 0, 0.8); /* Pure black with slight transparency */
-    border-radius: 8px;
+    border-radius: 12px; /* Increased border radius */
     transition: all 0.5s ease;
     border: 1px solid #333;
     scrollbar-width: thin;
@@ -94,24 +94,27 @@ main {
 
 /* Message styling with improved formatting */
 .message {
-    margin-bottom: 16px;
-    padding: 14px 20px;
-    border-radius: 8px;
+    margin-bottom: 24px; /* Increased margin */
+    padding: 18px 24px; /* Increased padding */
+    border-radius: 12px; /* Increased border radius */
     max-width: 90%;
-    line-height: 1.5;
+    line-height: 1.6; /* Increased line height */
     word-wrap: break-word;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Added shadow */
 }
 
 .user-message {
     align-self: flex-end;
-    background-color: #111; /* Darker user message background */
+    background-color: #000; /* Pure black user message background */
     margin-left: auto;
     text-align: right;
+    border: 1px solid #333; /* Added border */
 }
 
 .ai-message {
-    background-color: #111; /* Darker AI message background */
+    background-color: #000; /* Pure black AI message background */
     margin-right: auto;
+    border: 1px solid #333; /* Added border */
 }
 
 /* Typography for AI messages */
@@ -131,16 +134,16 @@ main {
 .ai-message ul,
 .ai-message ol {
     margin-left: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 .ai-message li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .ai-message p {
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 /* Code blocks in AI messages */
@@ -163,8 +166,8 @@ main {
 #input-form {
     display: flex;
     border: 1px solid #333333;
-    border-radius: 6px;
-    padding: 5px;
+    border-radius: 12px; /* Increased border radius */
+    padding: 8px;
     background-color: rgba(0, 0, 0, 0.7); /* Darker input form background */
     width: 100%;
     max-width: 800px;
@@ -181,7 +184,7 @@ main {
 #user-input {
     flex-grow: 1;
     border: none;
-    padding: 16px;
+    padding: 18px; /* Increased padding */
     font-size: 1.1em;
     outline: none;
     font-family: inherit;
@@ -193,8 +196,8 @@ main {
     background: #111; /* Darker button background */
     color: #ffffff;
     border: none;
-    border-radius: 4px;
-    padding: 12px 22px;
+    border-radius: 8px; /* Increased border radius */
+    padding: 12px 24px; /* Increased padding */
     cursor: pointer;
     font-size: 1em;
     font-weight: 500;
@@ -210,81 +213,98 @@ main {
 /* When conversation starts, reposition elements */
 main.conversation-active {
     justify-content: flex-start;
-    padding-top: 3vh;
+    padding-top: 5vh; /* Increased padding */
 }
 
-/* Thinking animation */
-.thinking {
-    font-style: italic;
-    color: #aaa;
+/* Quiz-like interactive elements */
+.quiz-container {
+    background-color: #000;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 30px;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 40px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-.thinking .dots {
-    display: inline-block;
-    width: 20px;
+.quiz-question {
+    margin-bottom: 30px;
+    font-size: 1.2em;
+    line-height: 1.6;
 }
 
-/* Special formatting for AI content */
-.section-title {
-    font-weight: bold;
-    color: #fff;
-    margin-top: 15px;
-    margin-bottom: 10px;
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.quiz-option {
+    background-color: #111;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
     font-size: 1.1em;
 }
 
-.bullet-point {
-    display: flex;
-    margin-bottom: 8px;
+.quiz-option:hover {
+    background-color: #222;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.bullet-point:before {
-    content: "•";
-    margin-right: 8px;
-    color: #888;
+.quiz-option.selected {
+    border-color: #444;
+    background-color: #222;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
 }
 
-/* Blinking cursor effect */
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+.quiz-custom-input {
+    background-color: #111;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 16px;
+    width: 100%;
+    margin-bottom: 20px;
+    color: #fff;
+    font-size: 1.1em;
 }
 
-#user-input.blinking-cursor {
-    caret-color: transparent; /* Hide default cursor */
+.quiz-button {
+    background-color: #111;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 16px 30px;
+    cursor: pointer;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    margin-top: 15px;
 }
 
-#user-input.blinking-cursor::after {
-    content: '|';
-    margin-left: 2px;
-    animation: blink 1s infinite;
+.quiz-button:hover {
+    background-color: #222;
+    transform: translateY(-2px);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .animated-header {
-        font-size: 1.8em;
-    }
-    
-    #input-form {
-        width: 100%;
-    }
-    
-    #user-input {
-        padding: 12px;
-    }
-    
-    #chat-container {
-        height: 50vh;
-        min-height: 350px;
-    }
+.quiz-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
 }
 
-/* Profile collection progress indicator */
+/* Profile progress with improved styling */
 .profile-progress {
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     opacity: 0.8;
     transition: opacity 0.3s ease;
 }
@@ -297,30 +317,31 @@ main.conversation-active {
 }
 
 .progress-step {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background-color: #222; /* Darker inactive step */
-    margin: 0 5px;
+    margin: 0 8px;
     transition: all 0.3s ease;
 }
 
 .progress-step.active {
     background-color: #fff;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 .progress-step.complete {
     background-color: #333; /* Darker completed step */
 }
 
-/* Progress labels */
+/* Progress labels with improved styling */
 .progress-labels {
     display: flex;
     justify-content: space-between;
     max-width: 400px;
-    margin: 5px auto 0;
-    font-size: 0.7em;
+    width: 100%;
+    margin: 8px auto 20px;
+    font-size: 0.8em;
     color: #777;
     transition: opacity 0.3s ease;
 }
@@ -347,51 +368,20 @@ main.conversation-active {
     color: #555;
 }
 
-/* Initial message style */
-.initial-message {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto 30px;
-    font-size: 1.1em;
-    line-height: 1.5;
-    color: #aaa;
-    animation: fadeIn 1s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Message category indicators */
-.message.user-message {
-    position: relative;
-}
-
-.message-category {
-    position: absolute;
-    top: -20px;
-    right: 10px;
-    font-size: 0.7em;
-    color: #666;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-/* Welcome animation */
+/* Welcome animation with improved styling */
 .welcome-animation {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 35px;
     height: 40px;
 }
 
 .pulse-dot {
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background-color: #fff;
-    margin: 0 5px;
+    margin: 0 8px;
     animation: pulse 1.5s infinite;
 }
 
@@ -407,4 +397,20 @@ main.conversation-active {
     0% { transform: scale(0.8); opacity: 0.5; }
     50% { transform: scale(1.2); opacity: 1; }
     100% { transform: scale(0.8); opacity: 0.5; }
+}
+
+/* Initial message style */
+.initial-message {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #aaa;
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
