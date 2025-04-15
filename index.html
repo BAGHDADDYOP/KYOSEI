@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kyōsei: Symbiotic Wellness - Discover the interconnected harmony between mind, body, and consciousness">
+    <meta name="description" content="Kyōsei: Research-based wellness optimization platform leveraging evidence-based protocols">
     <meta name="theme-color" content="#000000">
-    <title>Kyōsei: Symbiotic Wellness</title>
+    <title>Kyōsei: Evidence-Based Wellness</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=Helvetica+Neue:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Simplified header -->
+    <!-- Professional header -->
     <header>
-        <h1 class="animated-header">KNOWLEDGE EMPOWERS FREEDOM.</h1>
+        <h1 class="animated-header">EVIDENCE-BASED WELLNESS OPTIMIZATION</h1>
     </header>
 
-    <!-- Enhanced loading screen with symbiotic elements -->
+    <!-- Fixed loading screen with professional styling -->
     <div class="loading-screen" id="loading-screen">
         <div class="loader"></div>
-        <div class="loader-text">Connecting</div>
+        <div class="loader-text">Initializing</div>
     </div>
 
-    <!-- Sidebar for Knowledge Toolkit -->
+    <!-- Enhanced sidebar for Knowledge Toolkit -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h2>Knowledge Toolkit</h2>
+            <h2>Evidence-Based Protocols</h2>
             <button class="close-sidebar" id="close-sidebar">×</button>
         </div>
         <div class="sidebar-content" id="sidebar-content">
@@ -44,37 +44,37 @@
                 <div class="progress-step" id="step-3"></div>
             </div>
             <div class="progress-labels" id="progress-labels">
-                <div class="progress-label" id="label-1">Physical Vessel</div>
-                <div class="progress-label" id="label-2">Conscious Intent</div>
-                <div class="progress-label" id="label-3">Daily Rhythms</div>
+                <div class="progress-label" id="label-1">Physical Metrics</div>
+                <div class="progress-label" id="label-2">Objectives</div>
+                <div class="progress-label" id="label-3">Current Patterns</div>
             </div>
             
-            <!-- Enhanced welcome animation with symbiotic elements -->
+            <!-- Welcome animation with professional elements -->
             <div class="welcome-animation" id="welcome-animation">
                 <div class="pulse-dot"></div>
                 <div class="pulse-dot"></div>
                 <div class="pulse-dot"></div>
             </div>
             
-            <!-- Enhanced quiz container with organic styling -->
+            <!-- Enhanced quiz container with professional styling -->
             <div class="quiz-container" id="quiz-container">
                 <!-- Quiz content will be inserted here via JavaScript -->
             </div>
             
-            <!-- Improved chat container with organic transitions -->
+            <!-- Improved chat container with professional transitions -->
             <div id="chat-container">
                 <!-- Chat messages will appear here -->
             </div>
             
             <!-- Enhanced input form -->
             <form id="input-form">
-                <input type="text" id="user-input" autocomplete="off" placeholder="Begin your journey...">
+                <input type="text" id="user-input" autocomplete="off" placeholder="Ask a question...">
                 <button type="submit">Send</button>
             </form>
             
-            <!-- Knowledge Toolkit button -->
+            <!-- Knowledge Toolkit button with professional styling -->
             <button class="toggle-toolkit-btn" id="toggle-toolkit-btn">
-                <span>OPEN KNOWLEDGE TOOLKIT</span>
+                <span>EXPLORE EVIDENCE-BASED PROTOCOLS</span>
             </button>
         </main>
     </div>
@@ -86,10 +86,223 @@
         <div class="symbiotic-shape shape3"></div>
     </div>
 
+    <!-- PDF styling -->
+    <style>
+        .pdf-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .pdf-modal-content {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .pdf-modal-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .pdf-modal-content p {
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+        
+        .pdf-thumbnail {
+            background-color: #111;
+            width: 150px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border: 1px solid #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .pdf-icon {
+            color: #2c6cb0;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .pdf-download-btn, .pdf-close-btn {
+            background-color: #2c6cb0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .pdf-download-btn:hover, .pdf-close-btn:hover {
+            background-color: #3a7bc0;
+            transform: translateY(-2px);
+        }
+        
+        .pdf-close-btn {
+            background-color: #333;
+        }
+        
+        .pdf-close-btn:hover {
+            background-color: #444;
+        }
+        
+        /* Roadmap Styling */
+        .roadmap-container {
+            width: 100%;
+            background-color: rgba(15, 15, 15, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            border: 1px solid #333;
+        }
+        
+        .roadmap-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        
+        .roadmap-header h3 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin: 0;
+        }
+        
+        .roadmap-controls {
+            display: flex;
+        }
+        
+        .roadmap-fullscreen-btn, .roadmap-pdf-btn {
+            background-color: #2c6cb0;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 10px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .roadmap-fullscreen-btn:hover, .roadmap-pdf-btn:hover {
+            background-color: #3a7bc0;
+        }
+        
+        .roadmap-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .roadmap-step {
+            display: flex;
+            position: relative;
+        }
+        
+        .roadmap-step::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 15px;
+            width: 1px;
+            height: calc(100% + 20px);
+            background-color: #333;
+        }
+        
+        .roadmap-step:last-child::before {
+            display: none;
+        }
+        
+        .roadmap-step-number {
+            width: 30px;
+            height: 30px;
+            background-color: #2c6cb0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            z-index: 2;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .roadmap-step-content {
+            flex: 1;
+            background-color: rgba(25, 25, 25, 0.8);
+            border-radius: 8px;
+            padding: 15px;
+            border-left: 3px solid #2c6cb0;
+        }
+        
+        .roadmap-step-content h4 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        
+        .roadmap-step-content p {
+            margin-bottom: 10px;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .roadmap-step-timeframe {
+            font-size: 0.8rem;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .roadmap-fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        
+        .roadmap-fullscreen .roadmap-container {
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 0;
+        }
+    </style>
+
     <!-- Footer with brand info -->
     <footer>
         <div class="footer-content">
-            <div class="footer-text">Kyōsei: Symbiotic Wellness &copy; <span id="current-year"></span></div>
+            <div class="footer-text">Kyōsei: Evidence-Based Wellness &copy; <span id="current-year"></span></div>
         </div>
     </footer>
 
