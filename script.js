@@ -38,10 +38,6 @@ IMPORTANT: When a user first engages with you, ALWAYS follow this flow:
 
 Frame recommendations to show how they benefit multiple systems simultaneously.`;
 
-    If a user asks a question before completing this profile, politely explain that you need this information to provide personalized advice.
-
-    **Strictly refuse** to answer questions outside these topics. If asked about something unrelated, politely state that you can only discuss healthcare, nutrition, fitness, and behavioral tools.`;
-
     // Store conversation history
     let conversationHistory = [
         { role: "user", parts: [{ text: SYSTEM_INSTRUCTION }] },
@@ -75,12 +71,12 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
                 allowCustom: true,
                 customLabel: "Enter other health conditions",
                 allowMultiple: true
+            },
+            {
+                question: "How would you describe your digestive health?",
+                type: "select",
+                options: ["Excellent - No issues", "Good - Occasional discomfort", "Fair - Regular minor issues", "Poor - Frequent discomfort"]
             }
-{
-    question: "How would you describe your digestive health?",
-    type: "select",
-    options: ["Excellent - No issues", "Good - Occasional discomfort", "Fair - Regular minor issues", "Poor - Frequent discomfort"],
-}
         ],
         goals: [
             {
@@ -99,13 +95,13 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
                 type: "select",
                 options: ["Full body", "Upper body", "Lower body", "Core strength", "Cardiovascular health", "Functional mobility"],
                 allowMultiple: true
+            },
+            {
+                question: "Which aspect of your mind-body connection do you want to strengthen?",
+                type: "select",
+                options: ["Mental clarity", "Emotional balance", "Physical energy", "Resilience to stress", "Sleep quality"],
+                allowMultiple: true
             }
-{
-    question: "Which aspect of your mind-body connection do you want to strengthen?",
-    type: "select",
-    options: ["Mental clarity", "Emotional balance", "Physical energy", "Resilience to stress", "Sleep quality"],
-    allowMultiple: true
-}
         ],
         occupation: [
             {
@@ -589,9 +585,13 @@ window.addEventListener('load', function() {
     }, 1000);
 });
 
-// Add this animation to the CSS
-// @keyframes selectPulse {
-//     0% { transform: scale(1); }
-//     50% { transform: scale(1.02); }
-//     100% { transform: scale(1); }
-// }
+// Define selectPulse animation in JavaScript (since it was commented out in CSS)
+document.head.insertAdjacentHTML('beforeend', `
+    <style>
+    @keyframes selectPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+    </style>
+`);
