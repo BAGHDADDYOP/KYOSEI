@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateProfileProgress(1);
     }
 
-    // Function to render the current quiz question
+    // Function to show the current quiz question
     function showCurrentQuizQuestion() {
         const questions = quizQuestions[currentQuizSection];
         const currentQuestion = questions[currentQuizQuestionIndex];
@@ -149,27 +149,47 @@ document.addEventListener('DOMContentLoaded', function() {
         if (currentQuestion.type === 'select') {
             currentQuestion.options.forEach((option, index) => {
                 quizHTML += `
-                    <div class="quiz-option" data-value="${option}" onclick="selectQuizOption(this, ${currentQuestion.allowMultiple || false})">${option}</div>
+                    <div class="quiz-option" data-value="${option}" onclick="selectQuizOption(this, ${currentQuestion.allowMultiple || false})">
+                        <span class="option-text">${option}</span>
+                    </div>
                 `;
             });
             
             if (currentQuestion.allowCustom) {
                 quizHTML += `
-                    <input type="text" class="quiz-custom-input" placeholder="${currentQuestion.customLabel || 'Enter custom answer'}" id="custom-quiz-input">
+                    <div class="custom-input-container">
+                        <input type="text" class="quiz-custom-input" 
+                               placeholder="${currentQuestion.customLabel || 'Enter custom answer'}" 
+                               id="custom-quiz-input"
+                               oninput="handleCustomInput(this)">
+                    </div>
                 `;
             }
         } else if (currentQuestion.type === 'custom') {
             quizHTML += `
-                <input type="text" class="quiz-custom-input" placeholder="${currentQuestion.placeholder || 'Enter your answer'}" id="custom-quiz-input">
+                <div class="custom-input-container">
+                    <input type="text" class="quiz-custom-input" 
+                           placeholder="${currentQuestion.placeholder || 'Enter your answer'}" 
+                           id="custom-quiz-input"
+                           oninput="handleCustomInput(this)">
+                </div>
             `;
         }
         
         quizHTML += `
             </div>
-            <button class="quiz-button" onclick="submitQuizAnswer()">Next</button>
+            <button class="quiz-button" onclick="submitQuizAnswer()" disabled>Next</button>
         `;
         
         quizContainer.innerHTML = quizHTML;
+        
+        // Add focus to the custom input if it's a custom question
+        if (currentQuestion.type === 'custom') {
+            setTimeout(() => {
+                const customInput = document.getElementById('custom-quiz-input');
+                if (customInput) customInput.focus();
+            }, 100);
+        }
     }
 
     // Function to update profile progress indicators
@@ -200,14 +220,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to handle quiz option selection
     window.selectQuizOption = function(element, allowMultiple) {
+        const selectedClass = 'selected';
+        
         if (allowMultiple) {
-            element.classList.toggle('selected');
+            // Toggle selection for multiple-choice options
+            element.classList.toggle(selectedClass);
+            
+            // Add subtle animation for selection
+            if (element.classList.contains(selectedClass)) {
+                element.style.animation = 'selectPulse 0.3s ease';
+                setTimeout(() => {
+                    element.style.animation = '';
+                }, 300);
+            }
         } else {
-            // Remove selection from all options
+            // For single-choice options, deselect all others
             document.querySelectorAll('.quiz-option').forEach(opt => {
-                opt.classList.remove('selected');
+                opt.classList.remove(selectedClass);
+                opt.style.animation = '';
             });
-            element.classList.add('selected');
+            
+            // Select the clicked option with animation
+            element.classList.add(selectedClass);
+            element.style.animation = 'selectPulse 0.3s ease';
+            setTimeout(() => {
+                element.style.animation = '';
+            }, 300);
+        }
+        
+        // Enable/disable the next button based on selection
+        const nextButton = document.querySelector('.quiz-button');
+        const hasSelection = document.querySelector('.quiz-option.selected') || 
+                             (document.getElementById('custom-quiz-input') && 
+                              document.getElementById('custom-quiz-input').value.trim() !== '');
+        
+        if (nextButton) {
+            nextButton.disabled = !hasSelection;
+            if (hasSelection) {
+                nextButton.classList.add('active');
+            } else {
+                nextButton.classList.remove('active');
+            }
+        }
+    };
+
+    // Function to handle custom input changes
+    window.handleCustomInput = function(inputElement) {
+        const nextButton = document.querySelector('.quiz-button');
+        if (nextButton) {
+            nextButton.disabled = inputElement.value.trim() === '';
+            if (inputElement.value.trim() !== '') {
+                nextButton.classList.add('active');
+            } else {
+                nextButton.classList.remove('active');
+            }
         }
     };
 
@@ -493,3 +559,24 @@ document.addEventListener('DOMContentLoaded', function() {
     // Run initialization
     init();
 });
+
+// Add at the end of your script.js file
+// Loading screen handler
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('fade-out');
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 500);
+        }
+    }, 1000);
+});
+
+// Add this animation to the CSS
+// @keyframes selectPulse {
+//     0% { transform: scale(1); }
+//     50% { transform: scale(1.02); }
+//     100% { transform: scale(1); }
+// }
