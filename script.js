@@ -255,3 +255,86 @@ input.addEventListener('input', () => {
 
 // Initial class for cursor
 input.classList.add('blinking-cursor');
+// Add these functions to your script.js file
+
+// Elements for profile progress
+const profileProgress = document.getElementById('profile-progress');
+const progressLabels = document.getElementById('progress-labels');
+const initialMessage = document.getElementById('initial-message');
+const welcomeAnimation = document.getElementById('welcome-animation');
+
+// Function to update profile progress indicators
+function updateProfileProgress(stage) {
+    // Update progress steps
+    for (let i = 1; i <= 3; i++) {
+        const step = document.getElementById(`step-${i}`);
+        const label = document.getElementById(`label-${i}`);
+        
+        if (i < stage) {
+            // Previous steps
+            step.classList.remove('active');
+            step.classList.add('complete');
+            label.classList.remove('active');
+            label.classList.add('complete');
+        } else if (i === stage) {
+            // Current step
+            step.classList.add('active');
+            step.classList.remove('complete');
+            label.classList.add('active');
+            label.classList.remove('complete');
+        } else {
+            // Future steps
+            step.classList.remove('active', 'complete');
+            label.classList.remove('active', 'complete');
+        }
+    }
+    
+    // Hide welcome animation after first message
+    if (stage > 0) {
+        welcomeAnimation.style.display = 'none';
+        initialMessage.style.display = 'none';
+    }
+    
+    // Hide progress when complete
+    if (stage > 3) {
+        profileProgress.classList.add('complete');
+        progressLabels.classList.add('complete');
+    }
+}
+
+// Modify your updateUserProfileStage function
+function updateUserProfileStage(userMessage, aiResponse) {
+    // Simple progression through profile stages based on AI responses
+    if (!userProfile.profileComplete) {
+        if (aiResponse.includes("goals") && !userProfile.physiologicalDetails) {
+            // AI asked about goals, which means physiological details were provided
+            userProfile.physiologicalDetails = userMessage;
+            profileCollectionStage = 1; // Move to goals stage
+            updateProfileProgress(2); // Update UI to show second step
+        } 
+        else if (aiResponse.includes("occupational") && !userProfile.goals) {
+            // AI asked about occupation, which means goals were provided
+            userProfile.goals = userMessage;
+            profileCollectionStage = 2; // Move to occupation stage
+            updateProfileProgress(3); // Update UI to show third step
+        }
+        else if ((aiResponse.includes("personalized") || aiResponse.includes("plan") || aiResponse.includes("recommend")) && 
+                 userProfile.physiologicalDetails && userProfile.goals && !userProfile.occupation) {
+            // AI is giving advice, which means occupation was provided
+            userProfile.occupation = userMessage;
+            userProfile.profileComplete = true;
+            profileCollectionStage = 3; // Profile complete
+            updateProfileProgress(4); // Complete the progress
+            console.log("User profile complete:", userProfile);
+        }
+    }
+}
+
+// Initialization function - update to include progress indicators
+function initialize() {
+    // Set initial progress state
+    updateProfileProgress(1);
+    
+    // Add the AI's first message asking for physiological details
+    addMessage('ai', conversationHistory[1].parts[0].text);
+}
