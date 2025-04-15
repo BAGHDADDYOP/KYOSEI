@@ -1,4 +1,4 @@
-// Enhanced script.js with sidebar functionality and original terminology
+// Modified script.js that properly removes the loading screen
 
 document.addEventListener('DOMContentLoaded', function() {
     // Cache DOM elements for better performance
@@ -13,6 +13,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebarOverlay = document.getElementById('sidebar-overlay');
     const toggleToolkitBtn = document.getElementById('toggle-toolkit-btn');
     const closeSidebarBtn = document.getElementById('close-sidebar');
+    
+    // Add this code to remove the loading screen after a short delay
+    setTimeout(function() {
+        loadingScreen.classList.add('fade-out');
+        setTimeout(function() {
+            loadingScreen.style.display = 'none';
+        }, 500);
+    }, 1500); // Adjust this delay as needed (1.5 seconds)
     
     // Track user profile data
     let userProfile = {
@@ -151,6 +159,28 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
         };
+    }
+
+    // Add event listeners for the sidebar functionality
+    if (toggleToolkitBtn) {
+        toggleToolkitBtn.addEventListener('click', function() {
+            sidebar.classList.add('active');
+            sidebarOverlay.classList.add('active');
+        });
+    }
+
+    if (closeSidebarBtn) {
+        closeSidebarBtn.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
     }
 
     // Function to start the profile collection process
@@ -435,3 +465,197 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             quizContainer.style.transform = 'translateY(0)';
         }, 300);
     };
+
+    // Function to finish profile collection and enable chat interface
+    function finishProfileCollection() {
+        // Update user profile data
+        userProfile.physicalVessel = currentQuizAnswers.physiology;
+        userProfile.consciousIntent = currentQuizAnswers.goals;
+        userProfile.dailyRhythms = currentQuizAnswers.occupation;
+        userProfile.profileComplete = true;
+        
+        // Hide quiz container and show chat interface
+        quizContainer.style.display = 'none';
+        chatContainer.style.display = 'block';
+        form.style.display = 'flex';
+        
+        // Update progress indicators
+        updateProfileProgress(4);
+        
+        // Send profile data to AI
+        sendProfileToAI();
+    }
+
+    // Function to send profile data to AI
+    function sendProfileToAI() {
+        // Create message from profile data
+        let profileMessage = "Here's my information:\n\n";
+        
+        // Physical data
+        profileMessage += "Physical Vessel:\n";
+        for (const [question, answer] of Object.entries(userProfile.physicalVessel)) {
+            profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
+        }
+        
+        // Goals data
+        profileMessage += "\nConscious Intent:\n";
+        for (const [question, answer] of Object.entries(userProfile.consciousIntent)) {
+            profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
+        }
+        
+        // Occupation data
+        profileMessage += "\nDaily Rhythms:\n";
+        for (const [question, answer] of Object.entries(userProfile.dailyRhythms)) {
+            profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
+        }
+        
+        // Add to conversation history
+        addUserMessage(profileMessage);
+        
+        // Generate AI response
+        getAIResponse();
+    }
+
+    // Function to add user message to chat
+    function addUserMessage(text) {
+        // Add to UI
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message user-message';
+        messageDiv.textContent = text;
+        chatContainer.appendChild(messageDiv);
+        
+        // Add to conversation history
+        conversationHistory.push({ role: "user", parts: [{ text: text }] });
+        
+        // Scroll to bottom
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Function to add AI message to chat
+    function addAIMessage(text) {
+        // Add to UI
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message ai-message';
+        messageDiv.innerHTML = formatAIMessage(text);
+        chatContainer.appendChild(messageDiv);
+        
+        // Add to conversation history
+        conversationHistory.push({ role: "model", parts: [{ text: text }] });
+        
+        // Scroll to bottom
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Function to format AI message with rich formatting
+    function formatAIMessage(text) {
+        // Convert line breaks to HTML
+        let formattedText = text.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
+        
+        // Wrap in paragraph
+        formattedText = `<p>${formattedText}</p>`;
+        
+        // Format section titles
+        formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        return formattedText;
+    }
+
+    // Function to show "AI is thinking" indicator
+    function showThinkingIndicator() {
+        const thinkingDiv = document.createElement('div');
+        thinkingDiv.className = 'message ai-message thinking';
+        thinkingDiv.id = 'thinking-indicator';
+        
+        const dotsDiv = document.createElement('div');
+        dotsDiv.className = 'thinking-dots';
+        
+        for (let i = 0; i < 3; i++) {
+            const dotSpan = document.createElement('span');
+            dotsDiv.appendChild(dotSpan);
+        }
+        
+        thinkingDiv.appendChild(dotsDiv);
+        chatContainer.appendChild(thinkingDiv);
+        
+        // Scroll to bottom
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    // Function to remove thinking indicator
+    function removeThinkingIndicator() {
+        const indicator = document.getElementById('thinking-indicator');
+        if (indicator) {
+            indicator.remove();
+        }
+    }
+
+    // Function to get AI response
+    async function getAIResponse() {
+        // Show thinking indicator
+        showThinkingIndicator();
+        
+        try {
+            // Prepare request
+            const requestBody = {
+                history: conversationHistory
+            };
+            
+            // Make API call
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            });
+            
+            // Process response
+            const data = await response.json();
+            
+            // Remove thinking indicator
+            removeThinkingIndicator();
+            
+            if (data.error) {
+                console.error('API Error:', data.error);
+                addAIMessage('I apologize, but I encountered an issue processing your request. Please try again later.');
+            } else {
+                // Add AI message to chat
+                addAIMessage(data.aiResponse);
+            }
+        } catch (error) {
+            console.error('Chat Error:', error);
+            
+            // Remove thinking indicator
+            removeThinkingIndicator();
+            
+            // Show error message
+            addAIMessage('I apologize, but I encountered an issue connecting to the server. Please check your internet connection and try again.');
+        }
+    }
+
+    // Initialize the game
+    function init() {
+        // Start profile collection once loading screen is gone
+        setTimeout(() => {
+            startProfileCollection();
+        }, 2000);
+
+        // Add form submit event listener
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userText = input.value.trim();
+            
+            if (userText) {
+                // Add user message
+                addUserMessage(userText);
+                
+                // Clear input
+                input.value = '';
+                
+                // Get AI response
+                getAIResponse();
+            }
+        });
+    }
+
+    // Initialize the app
+    init();
+});
