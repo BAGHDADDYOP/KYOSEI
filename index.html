@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kyōsei: Symbiotic Wellness - Discover the interconnected harmony between mind, body, and consciousness">
+    <meta name="description" content="Kyōsei: Symbiotic Wellness - Discover the interconnected harmony between wellness">
     <meta name="theme-color" content="#000000">
     <title>Kyōsei: Symbiotic Wellness</title>
     <link rel="stylesheet" href="style.css">
@@ -12,10 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=Helvetica+Neue:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Simplified header -->
+    <!-- Simplified header with just one title -->
     <header>
         <h1 class="animated-header">KNOWLEDGE EMPOWERS FREEDOM.</h1>
-        <div class="header-subtitle">MIND • BODY • CONSCIOUSNESS</div>
     </header>
 
     <!-- Enhanced loading screen with symbiotic elements -->
@@ -24,42 +23,61 @@
         <div class="loader-text">Connecting</div>
     </div>
 
-    <main>
-        <!-- Enhanced profile collection progress indicator -->
-        <div class="profile-progress" id="profile-progress">
-            <div class="progress-step" id="step-1"></div>
-            <div class="progress-step" id="step-2"></div>
-            <div class="progress-step" id="step-3"></div>
+    <!-- Sidebar for Knowledge Toolkit -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Knowledge Toolkit</h2>
+            <button class="close-sidebar" id="close-sidebar">×</button>
         </div>
-        <div class="progress-labels" id="progress-labels">
-            <div class="progress-label" id="label-1">Physical Vessel</div>
-            <div class="progress-label" id="label-2">Conscious Intent</div>
-            <div class="progress-label" id="label-3">Daily Rhythms</div>
+        <div class="sidebar-content" id="sidebar-content">
+            <!-- Protocol cards will be added here via JavaScript -->
         </div>
-        
-        <!-- Enhanced welcome animation with symbiotic elements -->
-        <div class="welcome-animation" id="welcome-animation">
-            <div class="pulse-dot"></div>
-            <div class="pulse-dot"></div>
-            <div class="pulse-dot"></div>
-        </div>
-        
-        <!-- Enhanced quiz container with organic styling -->
-        <div class="quiz-container" id="quiz-container">
-            <!-- Quiz content will be inserted here via JavaScript -->
-        </div>
-        
-        <!-- Improved chat container with organic transitions -->
-        <div id="chat-container">
-            <!-- Chat messages will appear here -->
-        </div>
-        
-        <!-- Enhanced input form -->
-        <form id="input-form">
-            <input type="text" id="user-input" autocomplete="off" placeholder="Begin your journey...">
-            <button type="submit">Send</button>
-        </form>
-    </main>
+    </div>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    
+    <div class="main-container">
+        <main>
+            <!-- Enhanced profile collection progress indicator -->
+            <div class="profile-progress" id="profile-progress">
+                <div class="progress-step" id="step-1"></div>
+                <div class="progress-step" id="step-2"></div>
+                <div class="progress-step" id="step-3"></div>
+            </div>
+            <div class="progress-labels" id="progress-labels">
+                <div class="progress-label" id="label-1">Physical Vessel</div>
+                <div class="progress-label" id="label-2">Goals</div>
+                <div class="progress-label" id="label-3">Daily Routine</div>
+            </div>
+            
+            <!-- Enhanced welcome animation with symbiotic elements -->
+            <div class="welcome-animation" id="welcome-animation">
+                <div class="pulse-dot"></div>
+                <div class="pulse-dot"></div>
+                <div class="pulse-dot"></div>
+            </div>
+            
+            <!-- Enhanced quiz container with organic styling -->
+            <div class="quiz-container" id="quiz-container">
+                <!-- Quiz content will be inserted here via JavaScript -->
+            </div>
+            
+            <!-- Improved chat container with organic transitions -->
+            <div id="chat-container">
+                <!-- Chat messages will appear here -->
+            </div>
+            
+            <!-- Enhanced input form -->
+            <form id="input-form">
+                <input type="text" id="user-input" autocomplete="off" placeholder="Ask a question...">
+                <button type="submit">Send</button>
+            </form>
+            
+            <!-- Knowledge Toolkit button -->
+            <button class="toggle-toolkit-btn" id="toggle-toolkit-btn">
+                <span>OPEN KNOWLEDGE TOOLKIT</span>
+            </button>
+        </main>
+    </div>
 
     <!-- Interactive background elements -->
     <div class="symbiotic-bg-container">
