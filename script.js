@@ -904,7 +904,7 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         // Add toggle button with fluid animation
         const toggleButton = document.createElement('button');
         toggleButton.className = 'toggle-protocols-btn';
-        toggleButton.innerHTML = '<span>Knowledge Toolkit</span>';
+        toggleButton.innerHTML = '<span>KNOWLEDGE TOOLKIT</span>';
         toggleButton.addEventListener('click', function() {
             const isHidden = protocolContainer.style.display === 'none';
             
