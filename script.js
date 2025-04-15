@@ -1,4 +1,4 @@
-// Modified script.js that properly removes the loading screen
+// Enhanced script.js with complete functionality and aesthetic improvements
 
 document.addEventListener('DOMContentLoaded', function() {
     // Cache DOM elements for better performance
@@ -9,18 +9,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const mainElement = document.querySelector('main');
     const welcomeAnimation = document.getElementById('welcome-animation');
     const loadingScreen = document.getElementById('loading-screen');
+    const loaderText = document.querySelector('.loader-text');
     const sidebar = document.getElementById('sidebar');
+    const sidebarContent = document.getElementById('sidebar-content');
     const sidebarOverlay = document.getElementById('sidebar-overlay');
     const toggleToolkitBtn = document.getElementById('toggle-toolkit-btn');
     const closeSidebarBtn = document.getElementById('close-sidebar');
     
-    // Add this code to remove the loading screen after a short delay
+    // Add loading animation text sequence
+    const connectingTexts = ['Connecting', 'Harmonizing', 'Synchronizing', 'Aligning'];
+    let textIndex = 0;
+
+    // Animate the loading text before fading out
+    const loadingTextInterval = setInterval(function() {
+        if (loaderText) {
+            loaderText.textContent = connectingTexts[textIndex] + '...';
+            textIndex = (textIndex + 1) % connectingTexts.length;
+        }
+    }, 800);
+    
+    // Remove the loading screen after animation completes
     setTimeout(function() {
-        loadingScreen.classList.add('fade-out');
+        clearInterval(loadingTextInterval);
+        if (loaderText) loaderText.textContent = 'Welcome to Kyōsei';
+        
         setTimeout(function() {
-            loadingScreen.style.display = 'none';
-        }, 500);
-    }, 1500); // Adjust this delay as needed (1.5 seconds)
+            loadingScreen.classList.add('fade-out');
+            setTimeout(function() {
+                loadingScreen.style.display = 'none';
+                animateSymbioticBackground();
+            }, 600);
+        }, 800);
+    }, 2500);
     
     // Track user profile data
     let userProfile = {
@@ -143,6 +163,70 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         ]
     };
 
+    // Define knowledge toolkit protocols to populate sidebar
+    const knowledgeProtocols = [
+        {
+            title: "Sleep Optimization",
+            icon: "🌙",
+            content: `<h3>Sleep Optimization Protocol</h3>
+                      <p>Enhance your sleep quality through interconnected approaches:</p>
+                      <ul>
+                          <li><strong>Morning Light Exposure:</strong> 10-20 minutes of morning sunlight resets your circadian rhythm</li>
+                          <li><strong>Temperature Regulation:</strong> Cooler sleeping environment (65-68°F/18-20°C) facilitates deeper sleep</li>
+                          <li><strong>Consistent Cycles:</strong> Regular sleep-wake times harmonize your body's internal clock</li>
+                          <li><strong>Evening Wind-Down:</strong> Reduce blue light 1-2 hours before sleep to enhance melatonin production</li>
+                      </ul>`
+        },
+        {
+            title: "Stress Management",
+            icon: "🧘",
+            content: `<h3>Stress Management Protocol</h3>
+                      <p>Develop resilience through proven techniques:</p>
+                      <ul>
+                          <li><strong>Breathwork:</strong> Physiological sighs (double inhale, extended exhale) calm your nervous system</li>
+                          <li><strong>Temperature Contrast:</strong> Cold/heat exposure builds physical and mental adaptability</li>
+                          <li><strong>Movement:</strong> Regular exercise releases tension and builds stress tolerance</li>
+                          <li><strong>Presence Practice:</strong> Daily mindfulness strengthens your attention control networks</li>
+                      </ul>`
+        },
+        {
+            title: "Focus & Performance",
+            icon: "🎯",
+            content: `<h3>Focus & Performance Protocol</h3>
+                      <p>Optimize your cognitive function:</p>
+                      <ul>
+                          <li><strong>Ultradian Rhythm:</strong> 90-minute focus blocks with 15-20 minute breaks align with natural attention cycles</li>
+                          <li><strong>Nutrition Support:</strong> Protein, healthy fats, and complex carbs provide sustained mental energy</li>
+                          <li><strong>Environment Design:</strong> Create spaces that minimize distractions and support deep work</li>
+                          <li><strong>Recovery:</strong> Integrate micro-breaks with movement to restore mental capacity</li>
+                      </ul>`
+        },
+        {
+            title: "Physical Training",
+            icon: "💪",
+            content: `<h3>Physical Training Protocol</h3>
+                      <p>Build strength and resilience through balanced approaches:</p>
+                      <ul>
+                          <li><strong>Zone 2 Cardio:</strong> Moderate-intensity exercise where you can maintain conversation builds cardiovascular base</li>
+                          <li><strong>Resistance:</strong> Progressive overload through increased weight, reps, or density builds functional strength</li>
+                          <li><strong>Recovery:</strong> Protein timing, sleep quality, and active recovery optimize adaptation</li>
+                          <li><strong>Movement Variety:</strong> Diverse motion patterns prevent adaptations and build broader capacities</li>
+                      </ul>`
+        },
+        {
+            title: "Nutrition Foundations",
+            icon: "🥗",
+            content: `<h3>Nutrition Foundations Protocol</h3>
+                      <p>Nourish your body with evidence-based approaches:</p>
+                      <ul>
+                          <li><strong>Time-Restricted Eating:</strong> Aligning food intake with your circadian rhythm enhances metabolic health</li>
+                          <li><strong>Protein Priority:</strong> Adequate protein (1.6-2.2g/kg) supports muscle maintenance and satiety</li>
+                          <li><strong>Whole Foods:</strong> Minimally processed foods provide micronutrients and support gut microbiome</li>
+                          <li><strong>Hydration:</strong> Consistent water intake supports all physiological processes</li>
+                      </ul>`
+        }
+    ];
+
     // Current quiz data
     let currentQuizSection = 'physiology';
     let currentQuizQuestionIndex = 0;
@@ -161,25 +245,90 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         };
     }
 
-    // Add event listeners for the sidebar functionality
+    // Add event listeners for sidebar functionality
     if (toggleToolkitBtn) {
         toggleToolkitBtn.addEventListener('click', function() {
             sidebar.classList.add('active');
             sidebarOverlay.classList.add('active');
+            
+            // Animate sidebar elements entrance
+            const sidebarItems = document.querySelectorAll('.protocol-card');
+            sidebarItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('active');
+                }, 100 * index);
+            });
         });
     }
 
     if (closeSidebarBtn) {
-        closeSidebarBtn.addEventListener('click', function() {
-            sidebar.classList.remove('active');
-            sidebarOverlay.classList.remove('active');
-        });
+        closeSidebarBtn.addEventListener('click', closeSidebar);
     }
 
     if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', function() {
+        sidebarOverlay.addEventListener('click', closeSidebar);
+    }
+
+    // Function to close sidebar with animation
+    function closeSidebar() {
+        // Animate sidebar items exit
+        const sidebarItems = document.querySelectorAll('.protocol-card');
+        sidebarItems.forEach((item) => {
+            item.classList.remove('active');
+        });
+        
+        // Delay sidebar closing to allow for animations
+        setTimeout(() => {
             sidebar.classList.remove('active');
             sidebarOverlay.classList.remove('active');
+        }, 200);
+    }
+
+    // Populate sidebar with knowledge protocols
+    function populateSidebar() {
+        if (!sidebarContent) return;
+        
+        knowledgeProtocols.forEach((protocol, index) => {
+            const card = document.createElement('div');
+            card.className = 'protocol-card';
+            card.innerHTML = `
+                <div class="protocol-header">
+                    <span class="protocol-icon">${protocol.icon}</span>
+                    <h3 class="protocol-title">${protocol.title}</h3>
+                </div>
+                <div class="protocol-content">
+                    ${protocol.content}
+                </div>
+            `;
+            
+            // Add click event to expand/collapse
+            const header = card.querySelector('.protocol-header');
+            header.addEventListener('click', function() {
+                card.classList.toggle('expanded');
+            });
+            
+            sidebarContent.appendChild(card);
+        });
+    }
+
+    // Animate symbiotic background elements
+    function animateSymbioticBackground() {
+        const shapes = document.querySelectorAll('.symbiotic-shape');
+        shapes.forEach((shape, index) => {
+            // Set random initial positions
+            const randomX = Math.random() * 100;
+            const randomY = Math.random() * 100;
+            shape.style.left = `${randomX}%`;
+            shape.style.top = `${randomY}%`;
+            
+            // Set animation properties
+            shape.style.animationDelay = `${index * 0.7}s`;
+            shape.style.animationDuration = `${20 + (index * 5)}s`;
+            
+            // Add animation class
+            setTimeout(() => {
+                shape.classList.add('animate');
+            }, 500 * index);
         });
     }
 
@@ -194,6 +343,16 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         
         // Update progress indicators
         updateProfileProgress(1);
+        
+        // Add subtle entrance animation to quiz container
+        quizContainer.animate([
+            { opacity: 0, transform: 'translateY(20px)' },
+            { opacity: 1, transform: 'translateY(0)' }
+        ], {
+            duration: 800,
+            easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+            fill: 'forwards'
+        });
     }
 
     // Function to show the current quiz question with enhanced animation
@@ -261,6 +420,18 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
                     if (customInput) customInput.focus();
                 }, 100);
             }
+            
+            // Add staggered animation to options
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach((option, index) => {
+                option.style.opacity = 0;
+                option.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    option.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                    option.style.opacity = 1;
+                    option.style.transform = 'translateY(0)';
+                }, 50 * index);
+            });
         }, 300);
     }
 
@@ -270,6 +441,8 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         for (let i = 1; i <= 3; i++) {
             const progressStep = document.getElementById(`step-${i}`);
             const progressLabel = document.getElementById(`label-${i}`);
+            
+            if (!progressStep || !progressLabel) continue;
             
             if (i < step) {
                 progressStep.classList.add('complete');
@@ -306,8 +479,11 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         
         // Hide progress when at step 4 (profile complete)
         if (step === 4) {
-            document.getElementById('profile-progress').classList.add('complete');
-            document.getElementById('progress-labels').classList.add('complete');
+            const progressEl = document.getElementById('profile-progress');
+            const labelsEl = document.getElementById('progress-labels');
+            
+            if (progressEl) progressEl.classList.add('complete');
+            if (labelsEl) labelsEl.classList.add('complete');
         }
     }
 
@@ -474,16 +650,49 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         userProfile.dailyRhythms = currentQuizAnswers.occupation;
         userProfile.profileComplete = true;
         
-        // Hide quiz container and show chat interface
-        quizContainer.style.display = 'none';
-        chatContainer.style.display = 'block';
-        form.style.display = 'flex';
+        // Hide quiz elements with animation
+        quizContainer.animate([
+            { opacity: 1, transform: 'translateY(0)' },
+            { opacity: 0, transform: 'translateY(-20px)' }
+        ], {
+            duration: 600,
+            easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+            fill: 'forwards'
+        });
         
-        // Update progress indicators
-        updateProfileProgress(4);
-        
-        // Send profile data to AI
-        sendProfileToAI();
+        setTimeout(() => {
+            // Hide quiz container and show chat interface
+            quizContainer.style.display = 'none';
+            chatContainer.style.display = 'block';
+            form.style.display = 'flex';
+            
+            // Animate chat container entrance
+            chatContainer.animate([
+                { opacity: 0, transform: 'translateY(20px)' },
+                { opacity: 1, transform: 'translateY(0)' }
+            ], {
+                duration: 800,
+                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                fill: 'forwards'
+            });
+            
+            // Animate form entrance
+            form.animate([
+                { opacity: 0, transform: 'translateY(20px)' },
+                { opacity: 1, transform: 'translateY(0)' }
+            ], {
+                duration: 800,
+                delay: 200,
+                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                fill: 'forwards'
+            });
+            
+            // Update progress indicators
+            updateProfileProgress(4);
+            
+            // Send profile data to AI
+            sendProfileToAI();
+        }, 600);
     }
 
     // Function to send profile data to AI
@@ -522,7 +731,19 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message user-message';
         messageDiv.textContent = text;
+        
+        // Set initial state for animation
+        messageDiv.style.opacity = 0;
+        messageDiv.style.transform = 'translateY(10px)';
+        
         chatContainer.appendChild(messageDiv);
+        
+        // Animate entrance
+        setTimeout(() => {
+            messageDiv.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
+            messageDiv.style.opacity = 1;
+            messageDiv.style.transform = 'translateY(0)';
+        }, 10);
         
         // Add to conversation history
         conversationHistory.push({ role: "user", parts: [{ text: text }] });
@@ -537,7 +758,19 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message ai-message';
         messageDiv.innerHTML = formatAIMessage(text);
+        
+        // Set initial state for animation
+        messageDiv.style.opacity = 0;
+        messageDiv.style.transform = 'translateY(10px)';
+        
         chatContainer.appendChild(messageDiv);
+        
+        // Animate entrance
+        setTimeout(() => {
+            messageDiv.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
+            messageDiv.style.opacity = 1;
+            messageDiv.style.transform = 'translateY(0)';
+        }, 10);
         
         // Add to conversation history
         conversationHistory.push({ role: "model", parts: [{ text: text }] });
@@ -545,7 +778,7 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         // Scroll to bottom
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
-
+    
     // Function to format AI message with rich formatting
     function formatAIMessage(text) {
         // Convert line breaks to HTML
@@ -554,12 +787,13 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         // Wrap in paragraph
         formattedText = `<p>${formattedText}</p>`;
         
-        // Format section titles
+        // Format section titles and emphasis
         formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        formattedText = formattedText.replace(/\*(.*?)\*/g, '<em>$1</em>');
         
         return formattedText;
     }
-
+    
     // Function to show "AI is thinking" indicator
     function showThinkingIndicator() {
         const thinkingDiv = document.createElement('div');
@@ -580,15 +814,21 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
         // Scroll to bottom
         chatContainer.scrollTop = chatContainer.scrollHeight;
     }
-
+    
     // Function to remove thinking indicator
     function removeThinkingIndicator() {
         const indicator = document.getElementById('thinking-indicator');
         if (indicator) {
-            indicator.remove();
+            // Fade out animation
+            indicator.style.opacity = '0';
+            indicator.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                indicator.remove();
+            }, 300);
         }
     }
-
+    
     // Function to get AI response
     async function getAIResponse() {
         // Show thinking indicator
@@ -630,13 +870,16 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
             addAIMessage('I apologize, but I encountered an issue connecting to the server. Please check your internet connection and try again.');
         }
     }
-
-    // Initialize the game
+    
+    // Initialize the app
     function init() {
+        // Populate the sidebar with knowledge protocols
+        populateSidebar();
+        
         // Start profile collection once loading screen is gone
         setTimeout(() => {
             startProfileCollection();
-        }, 2000);
+        }, 3000);
 
         // Add form submit event listener
         form.addEventListener('submit', function(e) {
@@ -652,6 +895,28 @@ Frame recommendations to show how they benefit multiple systems simultaneously.`
                 
                 // Get AI response
                 getAIResponse();
+            }
+        });
+        
+        // Add input animations
+        input.addEventListener('focus', function() {
+            form.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+            form.classList.remove('focused');
+        });
+        
+        // Enable offline detection
+        window.addEventListener('online', function() {
+            if (chatContainer.style.display === 'block') {
+                addAIMessage("I notice you're back online. How can I assist you further?");
+            }
+        });
+        
+        window.addEventListener('offline', function() {
+            if (chatContainer.style.display === 'block') {
+                addAIMessage("It seems you've gone offline. Your previous interactions are saved, and I'll be here when your connection returns.");
             }
         });
     }
