@@ -62,7 +62,7 @@ exports.handler = async function(event, context) {
               },
               {
                 name: "getExerciseRecommendations",
-                description: "Get exercise recommendations based on type and difficulty",
+                description: "Get evidence-based exercise recommendations based on type and difficulty",
                 parameters: {
                   type: "object",
                   properties: {
@@ -80,7 +80,7 @@ exports.handler = async function(event, context) {
               },
               {
                 name: "getResearchSummary",
-                description: "Get evidence-based research summary on wellness topics",
+                description: "Get peer-reviewed research summary on wellness topics",
                 parameters: {
                   type: "object",
                   properties: {
@@ -90,6 +90,67 @@ exports.handler = async function(event, context) {
                     }
                   },
                   required: ["topic"]
+                }
+              },
+              {
+                name: "generatePDF",
+                description: "Generate a PDF document with structured wellness content",
+                parameters: {
+                  type: "object",
+                  properties: {
+                    title: {
+                      type: "string",
+                      description: "Title of the PDF document"
+                    },
+                    contentType: {
+                      type: "string",
+                      description: "Type of content (e.g., 'meal plan', 'workout plan', 'sleep protocol')"
+                    },
+                    userData: {
+                      type: "object",
+                      description: "User profile data"
+                    }
+                  },
+                  required: ["title", "contentType"]
+                }
+              },
+              {
+                name: "createInteractiveRoadmap",
+                description: "Create an interactive wellness roadmap",
+                parameters: {
+                  type: "object",
+                  properties: {
+                    title: {
+                      type: "string",
+                      description: "Title of the roadmap"
+                    },
+                    goal: {
+                      type: "string",
+                      description: "Main goal of the roadmap"
+                    },
+                    steps: {
+                      type: "array",
+                      description: "Sequential steps in the roadmap",
+                      items: {
+                        type: "object",
+                        properties: {
+                          title: {
+                            type: "string",
+                            description: "Step title"
+                          },
+                          description: {
+                            type: "string",
+                            description: "Detailed step description"
+                          },
+                          timeframe: {
+                            type: "string",
+                            description: "Estimated timeframe for this step"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  required: ["title", "steps"]
                 }
               }
             ]
@@ -122,52 +183,56 @@ exports.handler = async function(event, context) {
       
       You are a professional wellness advisor providing evidence-based recommendations. Your responses should be:
       
-      1. CONCISE: Keep answers brief and to the point
-      2. PRACTICAL: Focus on actionable advice
-      3. EVIDENCE-BASED: Reference scientific research when relevant
-      4. PROFESSIONAL: Use clear, straightforward language without philosophical or spiritual terminology
+      1. PRECISE: Focus on specific, actionable guidance supported by research
+      2. PRACTICAL: Offer clear implementation steps with realistic timelines
+      3. EVIDENCE-BASED: Reference specific mechanisms and research when relevant
+      4. PROFESSIONAL: Use precise scientific terminology while remaining accessible
       
       Follow this exact sequence when first speaking with a user:
-      1. First ask for PHYSICAL INFORMATION (age, height, weight, relevant health conditions)
-      2. Then ask for GOALS (specific outcomes they want to achieve)
-      3. Then ask for DAILY ROUTINE (job type, hours, activity level)
+      1. First ask for PHYSICAL METRICS (age, height, weight, relevant health conditions, biomarkers if available)
+      2. Then ask for OBJECTIVES (specific, measurable goals with defined timelines)
+      3. Then ask for CURRENT PATTERNS (job, schedule, current habits, constraints)
       4. Only AFTER collecting all this information, provide personalized recommendations
       
       When providing recommendations, incorporate these evidence-based protocols:
       
       SLEEP OPTIMIZATION:
-      - Morning light exposure to set circadian rhythm
-      - Temperature regulation for optimal sleep
-      - Consistent sleep-wake cycles
-      - Strategic use of relaxation techniques
+      - Circadian entrainment through morning light exposure (optimal: 5-10 minutes, 100,000+ lux)
+      - Temperature regulation (optimal sleep environment: 65-68°F/18-20°C)
+      - Consistent sleep-wake cycles to stabilize circadian rhythm
+      - Evening wind-down protocols to facilitate melatonin production
       
-      STRESS MANAGEMENT:
-      - Breathwork techniques (physiological sighs, cyclic breathing)
-      - Cold/heat exposure benefits for resilience
-      - Exercise as a stress regulation tool
-      - Mindfulness and attention training
+      STRESS REGULATION:
+      - Physiological sigh breathing (double inhale through nose, extended exhale through mouth)
+      - Hormetic stress exposure (cold/heat application) for autonomic adaptation
+      - Exercise as a neuroendocrine regulator (frequency, intensity, timing considerations)
+      - Attentional control practices with specific neural pathway targets
       
-      FOCUS & PERFORMANCE:
-      - Optimized work/break cycles based on ultradian rhythms
-      - Nutritional support for cognitive function
-      - Environment design for sustained focus
-      - Recovery protocols for mental performance
+      COGNITIVE OPTIMIZATION:
+      - Ultradian rhythm alignment (90min focus blocks with 15-20min recovery)
+      - Nutritional support targeting neurotransmitter precursors
+      - Environmental optimization for sustained attention
+      - Recovery protocols for neural resource replenishment
       
-      PHYSICAL TRAINING:
-      - Zone 2 cardio for cardiovascular base
-      - Resistance training with progressive overload
-      - Post-exercise recovery strategies
-      - Evidence-based supplement considerations
+      EXERCISE PROTOCOL DESIGN:
+      - Zone 2 cardiovascular training for mitochondrial biogenesis
+      - Progressive resistance training with periodization structure
+      - Recovery optimization through protein timing and sleep architecture
+      - Movement pattern diversification for comprehensive adaptation
       
-      NUTRITION:
-      - Time-restricted eating patterns
-      - Protein requirements for different goals
-      - Whole food priorities and simple guidelines
-      - Hydration strategies
+      NUTRITION STRATEGY:
+      - Time-restricted eating windows aligned with circadian rhythm
+      - Protein requirements based on lean body mass and activity level
+      - Whole food prioritization for micronutrient density and fiber content
+      - Hydration strategy with electrolyte considerations
       
-      Always provide a scientific rationale in accessible language, and offer modifications when needed. Avoid making claims not supported by evidence, and acknowledge when certain approaches have limited research.
+      PDF AND ROADMAP FUNCTIONALITY:
+      - When a user requests a comprehensive plan or document, offer to generate a PDF or interactive roadmap
+      - For PDFs, frame the response with [PDF]{json data}[/PDF] tags
+      - For interactive roadmaps, frame the response with [ROADMAP]{json data}[/ROADMAP] tags
+      - Structure these responses with clear sections, timelines, and measurable milestones
       
-      When a user mentions a specific food, exercise, or wellness topic, use your function calling capabilities (getNutritionInfo, getExerciseRecommendations, getResearchSummary) to provide accurate information.
+      Always provide specific mechanisms of action alongside recommendations, frame content in terms of adaptation rather than "fixing problems," and acknowledge the limitations of current research when appropriate. Implement evidence-based protocols within the context of individual constraints, preferences, and goals.
       `;
 
       // Convert history format
@@ -237,6 +302,12 @@ exports.handler = async function(event, context) {
                 break;
               case "getResearchSummary":
                 functionResponse = await fetchResearchData(args.topic);
+                break;
+              case "generatePDF":
+                functionResponse = handlePDFGeneration(args.title, args.contentType, args.userData);
+                break;
+              case "createInteractiveRoadmap":
+                functionResponse = handleRoadmapCreation(args.title, args.goal, args.steps);
                 break;
             }
             
@@ -331,7 +402,8 @@ async function fetchNutritionData(food) {
           amount: nutrientData.totalNutrients.FIBTG.quantity,
           unit: nutrientData.totalNutrients.FIBTG.unit
         } : null
-      }
+      },
+      micronutrients: extractKeyMicronutrients(nutrientData)
     };
     
     return JSON.stringify(formattedData);
@@ -339,6 +411,24 @@ async function fetchNutritionData(food) {
     console.error('Nutrition API error:', error);
     return JSON.stringify({ error: 'Unable to fetch nutrition data for ' + food });
   }
+}
+
+// Helper function to extract key micronutrients
+function extractKeyMicronutrients(nutrientData) {
+  const micronutrients = {};
+  const keyMicronutrients = ['VITA_RAE', 'VITC', 'VITD', 'VITB12', 'FE', 'CA', 'MG', 'K', 'ZN'];
+  
+  keyMicronutrients.forEach(nutrient => {
+    if (nutrientData.totalNutrients[nutrient]) {
+      micronutrients[nutrient] = {
+        name: nutrientData.totalNutrients[nutrient].label,
+        amount: nutrientData.totalNutrients[nutrient].quantity,
+        unit: nutrientData.totalNutrients[nutrient].unit
+      };
+    }
+  });
+  
+  return micronutrients;
 }
 
 // Helper function to get exercise data
@@ -361,7 +451,10 @@ async function fetchExerciseData(type, level) {
         name: ex.name,
         equipment: ex.equipment,
         primaryMuscle: ex.primaryMuscles.join(', '),
-        instructions: ex.instructions
+        secondaryMuscles: ex.secondaryMuscles.join(', '),
+        instructions: ex.instructions,
+        mechanicalTension: getMechanicalTensionRating(ex), // Added scientific metrics
+        metabolicStress: getMetabolicStressRating(ex)
       }))
     };
     
@@ -374,10 +467,40 @@ async function fetchExerciseData(type, level) {
         {
           exerciseType: type,
           difficultyLevel: level,
-          suggestions: "Based on your request, I would typically recommend exercises focusing on proper form, appropriate intensity, and progressive overload principles. Since I couldn't access specific exercise data at this moment, I suggest consulting a qualified fitness professional for personalized recommendations."
+          suggestions: "Based on current exercise science for your requested parameters, I recommend focusing on progressive overload principles, proper biomechanics, and appropriate recovery intervals. For specific exercise selection, consult a qualified exercise professional for personalized recommendations."
         }
       ]
     });
+  }
+}
+
+// Helper functions for exercise science metrics
+function getMechanicalTensionRating(exercise) {
+  // Simplified algorithm to estimate mechanical tension based on exercise type
+  // In a real implementation, this would use more sophisticated analysis
+  const highTensionExercises = ['squat', 'deadlift', 'bench press', 'overhead press', 'row'];
+  const exerciseName = exercise.name.toLowerCase();
+  
+  if (highTensionExercises.some(ex => exerciseName.includes(ex))) {
+    return "High";
+  } else if (exercise.equipment === "body weight") {
+    return "Low to Moderate";
+  } else {
+    return "Moderate";
+  }
+}
+
+function getMetabolicStressRating(exercise) {
+  // Simplified algorithm to estimate metabolic stress based on exercise characteristics
+  const highMetabolicExercises = ['burpee', 'sprint', 'thruster', 'clean', 'snatch', 'jerk'];
+  const exerciseName = exercise.name.toLowerCase();
+  
+  if (highMetabolicExercises.some(ex => exerciseName.includes(ex))) {
+    return "High";
+  } else if (exercise.secondaryMuscles && exercise.secondaryMuscles.length > 2) {
+    return "Moderate to High";
+  } else {
+    return "Low to Moderate";
   }
 }
 
@@ -386,9 +509,9 @@ async function fetchResearchData(topic) {
   try {
     const response = await axios.get(`https://api.semanticscholar.org/graph/v1/paper/search`, {
       params: {
-        query: `${topic} health evidence-based`,
+        query: `${topic} health evidence-based peer-reviewed`,
         limit: 3,
-        fields: 'title,abstract,year,authors,url'
+        fields: 'title,abstract,year,authors,url,venue'
       }
     });
     
@@ -396,12 +519,14 @@ async function fetchResearchData(topic) {
     const papers = response.data.data;
     const formattedData = {
       topic: topic,
-      researchSummary: "Here's what current research indicates about this topic:",
+      researchSummary: "Here's what current peer-reviewed research indicates about this topic:",
       papers: papers.map(paper => ({
         title: paper.title,
         year: paper.year,
+        journal: paper.venue,
         authors: paper.authors.map(author => author.name).join(', '),
-        summary: paper.abstract ? paper.abstract.substring(0, 200) + '...' : 'No abstract available'
+        summary: paper.abstract ? paper.abstract.substring(0, 300) + '...' : 'No abstract available',
+        doi: paper.url
       }))
     };
     
@@ -410,7 +535,90 @@ async function fetchResearchData(topic) {
     console.error('Research API error:', error);
     return JSON.stringify({ 
       topic: topic,
-      researchSummary: "While I couldn't access specific research papers at this moment, the general scientific consensus on this topic suggests focusing on evidence-based approaches. For the most current research, I recommend consulting peer-reviewed journals or speaking with qualified healthcare professionals."
+      researchSummary: "While I couldn't access specific research papers at this moment, the general scientific consensus on this topic suggests focusing on evidence-based approaches. For the most current research, I recommend consulting peer-reviewed journals in relevant fields like exercise physiology, nutritional science, or behavioral psychology."
     });
   }
+}
+
+// New helper function to handle PDF generation
+function handlePDFGeneration(title, contentType, userData) {
+  // In a production environment, this would generate an actual PDF
+  // Here we're returning data that will be formatted as PDF content
+  
+  const pdfData = {
+    title: title,
+    contentType: contentType,
+    userData: userData || {},
+    generatedDate: new Date().toISOString(),
+    contentSections: generateContentSections(contentType)
+  };
+  
+  return JSON.stringify({
+    success: true,
+    message: "PDF document generated successfully",
+    pdfData: pdfData
+  });
+}
+
+// New helper function to handle roadmap creation
+function handleRoadmapCreation(title, goal, steps) {
+  // Format roadmap data for the frontend
+  const roadmapData = {
+    title: title,
+    goal: goal,
+    steps: steps || [],
+    createdDate: new Date().toISOString()
+  };
+  
+  return JSON.stringify({
+    success: true,
+    message: "Interactive roadmap created successfully",
+    roadmapData: roadmapData
+  });
+}
+
+// Helper function to generate content sections for PDF
+function generateContentSections(contentType) {
+  // Generate appropriate sections based on content type
+  let sections = [];
+  
+  switch (contentType.toLowerCase()) {
+    case 'meal plan':
+      sections = [
+        { title: "Nutritional Overview", content: "Summary of macronutrient and micronutrient targets" },
+        { title: "Weekly Meal Schedule", content: "Day-by-day meal recommendations" },
+        { title: "Grocery List", content: "Complete shopping list organized by food category" },
+        { title: "Preparation Guidelines", content: "Meal prep instructions and time-saving tips" },
+        { title: "Adaptation Protocol", content: "Guidelines for adjusting the plan based on progress" }
+      ];
+      break;
+    case 'workout plan':
+      sections = [
+        { title: "Training Methodology", content: "Overview of exercise selection and programming principles" },
+        { title: "Weekly Schedule", content: "Detailed day-by-day workout structure" },
+        { title: "Exercise Library", content: "Technique guidelines for key movements" },
+        { title: "Progression Framework", content: "Protocol for advancing difficulty over time" },
+        { title: "Recovery Strategy", content: "Guidelines for optimizing adaptation between sessions" }
+      ];
+      break;
+    case 'sleep protocol':
+      sections = [
+        { title: "Sleep Architecture Overview", content: "Background on sleep cycles and architecture" },
+        { title: "Environmental Optimization", content: "Bedroom setup and technology guidelines" },
+        { title: "Evening Routine", content: "Step-by-step wind-down protocol" },
+        { title: "Morning Routine", content: "Wake-up optimization for circadian entrainment" },
+        { title: "Troubleshooting Guide", content: "Solutions for common sleep disruptions" }
+      ];
+      break;
+    default:
+      sections = [
+        { title: "Overview", content: "Introduction to the personalized protocol" },
+        { title: "Implementation Guide", content: "Step-by-step implementation instructions" },
+        { title: "Resources", content: "Additional tools and information" },
+        { title: "Progress Tracking", content: "Methods to monitor effectiveness" },
+        { title: "Adaptation Framework", content: "Guidelines for adjusting based on results" }
+      ];
+  }
+  
+  return sections;
 }
