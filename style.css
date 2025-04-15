@@ -279,3 +279,133 @@ main.conversation-active {
         min-height: 350px;
     }
 }
+/* Add these styles to your style.css file */
+
+/* Profile collection progress indicator */
+.profile-progress {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.profile-progress.complete {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    transition: opacity 0.5s ease, height 0.5s ease, margin 0.5s ease;
+}
+
+.progress-step {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #333;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.progress-step.active {
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.progress-step.complete {
+    background-color: #4a4a4a;
+}
+
+/* Progress labels */
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    max-width: 400px;
+    margin: 5px auto 0;
+    font-size: 0.7em;
+    color: #777;
+    transition: opacity 0.3s ease;
+}
+
+.progress-labels.complete {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    transition: opacity 0.5s ease, height 0.5s ease, margin 0.5s ease;
+}
+
+.progress-label {
+    text-align: center;
+    flex: 1;
+    transition: all 0.3s ease;
+}
+
+.progress-label.active {
+    color: #fff;
+    font-weight: 500;
+}
+
+.progress-label.complete {
+    color: #555;
+}
+
+/* Initial message style */
+.initial-message {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    font-size: 1.1em;
+    line-height: 1.5;
+    color: #aaa;
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Message category indicators */
+.message.user-message {
+    position: relative;
+}
+
+.message-category {
+    position: absolute;
+    top: -20px;
+    right: 10px;
+    font-size: 0.7em;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Welcome animation */
+.welcome-animation {
+    text-align: center;
+    margin-bottom: 25px;
+    height: 40px;
+}
+
+.pulse-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #fff;
+    margin: 0 5px;
+    animation: pulse 1.5s infinite;
+}
+
+.pulse-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.pulse-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(0.8); opacity: 0.5; }
+}
