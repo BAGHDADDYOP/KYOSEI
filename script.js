@@ -3,8 +3,9 @@
 const form = document.getElementById('input-form');
 const input = document.getElementById('user-input');
 const chatContainer = document.getElementById('chat-container');
+const mainElement = document.querySelector('main');
 
-// System Instruction (Keep this)
+// System Instruction
 const SYSTEM_INSTRUCTION = `You are a helpful AI assistant focused **exclusively** on providing information about:
 1.  Healthcare (general information, disease explanations)
 2.  Nutrition (healthy eating, macronutrients, micronutrients, diet types)
@@ -15,17 +16,46 @@ Keep your answers concise, informative, and easy to understand.
 Structure information clearly, using bullet points or numbered lists where appropriate.
 **Strictly refuse** to answer questions outside these topics. If asked about something unrelated, politely state that you can only discuss healthcare, nutrition, fitness, and behavioral tools.`;
 
-// Store conversation history (Keep this)
+// Store conversation history
 let conversationHistory = [
     { role: "user", parts: [{ text: SYSTEM_INSTRUCTION }] },
     { role: "model", parts: [{ text: "Understood. I will focus on healthcare, nutrition, fitness, and behavioral tools. How can I help?" }] }
 ];
 
-// Enhanced addMessage function with animated typing effect for AI
+// Improved content formatting for AI responses
+function formatAIContent(text) {
+    // Format section titles (e.g., **I. Nutrition**)
+    let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    
+    // Format subsection titles with proper spacing
+    formatted = formatted.replace(/\*\s(.*?)\*/g, '<div class="section-title">$1</div>');
+    
+    // Handle bullet points with proper spacing and structure
+    formatted = formatted.replace(/^\s*[\*\-]\s(.*)$/gm, '<div class="bullet-point">$1</div>');
+    
+    // Handle numbered lists with proper spacing
+    formatted = formatted.replace(/^\s*(\d+)\.\s(.*)$/gm, '<div class="bullet-point"><strong>$1.</strong> $2</div>');
+    
+    // Handle paragraphs
+    formatted = formatted.replace(/\n\n/g, '</p><p>');
+    
+    // Handle line breaks
+    formatted = formatted.replace(/\n/g, '<br>');
+    
+    // Wrap in paragraph if not already
+    if (!formatted.startsWith('<p>')) {
+        formatted = '<p>' + formatted + '</p>';
+    }
+    
+    return formatted;
+}
+
+// Enhanced addMessage function
 function addMessage(sender, text) {
-    if (sender === 'ai') {
-        // Make chat container visible when AI responds
+    // Make chat container visible when conversation starts
+    if (chatContainer.style.display !== 'block') {
         chatContainer.style.display = 'block';
+        mainElement.classList.add('conversation-active');
     }
     
     const messageDiv = document.createElement('div');
@@ -40,20 +70,10 @@ function addMessage(sender, text) {
         messageDiv.classList.add('ai-message');
         chatContainer.appendChild(messageDiv);
         
-        // Text formatting to handle markdown-style formatting
-        let formattedText = text
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // Bold
-            .replace(/\*(.*?)\*/g, '<em>$1</em>')              // Italic
-            .replace(/\n\n/g, '<br><br>')                      // Paragraphs
-            .replace(/\n/g, '<br>');                          // Line breaks
+        // Apply formatting for better readability
+        const formattedText = formatAIContent(text);
         
-        // Handle bullet points
-        formattedText = formattedText.replace(/- (.*?)(<br>|$)/g, '• $1$2');
-        
-        // Handle numbered lists
-        formattedText = formattedText.replace(/(\d+)\. (.*?)(<br>|$)/g, '<span class="list-number">$1.</span> $2$3');
-
-        // Simulate typing effect
+        // Add content with gradual reveal
         let i = 0;
         const speed = 5; // Lower number = faster typing
         messageDiv.innerHTML = ''; // Start empty
@@ -76,7 +96,7 @@ function addMessage(sender, text) {
                 }
                 
                 // Speed up typing for very long responses
-                const timeoutDelay = formattedText.length > 500 ? 1 : speed;
+                const timeoutDelay = formattedText.length > 1000 ? 1 : speed;
                 setTimeout(typeWriter, timeoutDelay);
                 chatContainer.scrollTop = chatContainer.scrollHeight;
             }
@@ -97,7 +117,11 @@ async function getAiResponse(userText) {
     thinkingDiv.innerHTML = '<span class="thinking">AI thinking<span class="dots">...</span></span>';
     
     // Make chat container visible when sending message
-    chatContainer.style.display = 'block';
+    if (chatContainer.style.display !== 'block') {
+        chatContainer.style.display = 'block';
+        mainElement.classList.add('conversation-active');
+    }
+    
     chatContainer.appendChild(thinkingDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
 
@@ -135,7 +159,7 @@ async function getAiResponse(userText) {
         // Add AI response to history
         conversationHistory.push({ role: "model", parts: [{ text: aiText }] });
 
-        // Add the final AI message with typing effect
+        // Add the final AI message
         addMessage('ai', aiText);
 
     } catch (error) {
