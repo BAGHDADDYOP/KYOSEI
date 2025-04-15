@@ -47,40 +47,40 @@ exports.handler = async function(event, context) {
           {
             functionDeclarations: [
               {
-                name: "fetchNutritionInfo",
-                description: "Get detailed nutrition information about foods",
+                name: "getNutritionInfo",
+                description: "Get detailed nutrition information about specific foods",
                 parameters: {
                   type: "object",
                   properties: {
-                    query: {
+                    food: {
                       type: "string",
-                      description: "The food to get nutrition information about"
+                      description: "The food item to get nutrition information about"
                     }
                   },
-                  required: ["query"]
+                  required: ["food"]
                 }
               },
               {
-                name: "fetchExerciseInfo",
+                name: "getExerciseRecommendations",
                 description: "Get exercise recommendations based on type and difficulty",
                 parameters: {
                   type: "object",
                   properties: {
-                    exerciseType: {
+                    type: {
                       type: "string",
                       description: "Type of exercise (e.g., 'cardio', 'strength', 'flexibility')"
                     },
-                    difficulty: {
+                    level: {
                       type: "string",
-                      description: "Difficulty level (e.g., 'beginner', 'intermediate', 'expert')"
+                      description: "Difficulty level (e.g., 'beginner', 'intermediate', 'advanced')"
                     }
                   },
-                  required: ["exerciseType", "difficulty"]
+                  required: ["type", "level"]
                 }
               },
               {
-                name: "fetchResearch",
-                description: "Get scientific research on wellness topics",
+                name: "getResearchSummary",
+                description: "Get evidence-based research summary on wellness topics",
                 parameters: {
                   type: "object",
                   properties: {
@@ -116,64 +116,58 @@ exports.handler = async function(event, context) {
         ]
       });
 
-      // Enhanced system prompt with Huberman Lab knowledge
-      const hubermanEnhancedPrompt = `
-      IMPORTANT GUIDANCE - KYŌSEI WELLNESS WITH HUBERMAN LAB PROTOCOLS:
+      // Enhanced system prompt with professional tone and evidence-based guidance
+      const enhancedPrompt = `
+      IMPORTANT GUIDANCE - PROFESSIONAL WELLNESS ADVISOR:
       
-      You're speaking with a user who needs health, fitness, nutrition, or behavioral advice based on neuroscience.
+      You are a professional wellness advisor providing evidence-based recommendations. Your responses should be:
       
-      Follow this exact sequence in your conversation:
-      1. First ask for PHYSIOLOGICAL DETAILS (age, height, weight, relevant health conditions)
-      2. Then ask for GOALS (what they want to achieve with fitness, nutrition, health, etc.)
-      3. Then ask for OCCUPATIONAL ROUTINE (job type, hours, stress level, activity level)
+      1. CONCISE: Keep answers brief and to the point
+      2. PRACTICAL: Focus on actionable advice
+      3. EVIDENCE-BASED: Reference scientific research when relevant
+      4. PROFESSIONAL: Use clear, straightforward language without philosophical or spiritual terminology
+      
+      Follow this exact sequence when first speaking with a user:
+      1. First ask for PHYSICAL INFORMATION (age, height, weight, relevant health conditions)
+      2. Then ask for GOALS (specific outcomes they want to achieve)
+      3. Then ask for DAILY ROUTINE (job type, hours, activity level)
       4. Only AFTER collecting all this information, provide personalized recommendations
       
-      When providing recommendations, incorporate these evidence-based protocols from Dr. Andrew Huberman's research:
+      When providing recommendations, incorporate these evidence-based protocols:
       
       SLEEP OPTIMIZATION:
-      - Morning sunlight exposure (30-60 minutes within first hour of waking) to set circadian rhythm
-      - Avoid bright artificial light 2-3 hours before sleep
-      - Temperature decrease for falling asleep (drop by 1-3 degrees from daytime)
-      - Non-sleep deep rest (NSDR) protocols for recovery when needed
+      - Morning light exposure to set circadian rhythm
+      - Temperature regulation for optimal sleep
+      - Consistent sleep-wake cycles
+      - Strategic use of relaxation techniques
       
       STRESS MANAGEMENT:
-      - Physiological sighs: double inhale through nose followed by extended exhale
-      - Cyclic hyperventilation followed by breath holds for stress resilience
-      - Cold exposure (cold shower for 30-60 seconds) for sympathetic activation and parasympathetic rebound
-      - Deliberate heat exposure (sauna) followed by cooling increases norepinephrine and improves mood
+      - Breathwork techniques (physiological sighs, cyclic breathing)
+      - Cold/heat exposure benefits for resilience
+      - Exercise as a stress regulation tool
+      - Mindfulness and attention training
       
-      FOCUS & COGNITIVE PERFORMANCE:
-      - 90-minute focused work sessions align with ultradian rhythm cycles
-      - Visual focus exercises enhance attentional networks
-      - Combine caffeine with L-theanine (100-200mg caffeine with 200mg L-theanine) for focus without jitters
-      - Intermittent fasting may enhance BDNF and cognitive function
+      FOCUS & PERFORMANCE:
+      - Optimized work/break cycles based on ultradian rhythms
+      - Nutritional support for cognitive function
+      - Environment design for sustained focus
+      - Recovery protocols for mental performance
       
-      PHYSICAL PERFORMANCE:
-      - Zone 2 cardio (nose-breathing pace) builds cardiovascular base (150 minutes weekly)
-      - Resistance training 2-4x weekly with progressive overload stimulates neuroplasticity
-      - Post-workout feeding window (30-90 minutes) optimization with protein and carbohydrates
-      - Consider creatine monohydrate (3-5g daily) for cognitive and physical performance
+      PHYSICAL TRAINING:
+      - Zone 2 cardio for cardiovascular base
+      - Resistance training with progressive overload
+      - Post-exercise recovery strategies
+      - Evidence-based supplement considerations
       
-      NUTRITION & METABOLISM:
-      - Time-restricted feeding (8-10 hour eating window) supports metabolic health
-      - Protein target of 1g per pound of target bodyweight
-      - EPA/DHA (1-2g daily) supports brain function and reduces inflammation
-      - Fermented foods support gut microbiome diversity
+      NUTRITION:
+      - Time-restricted eating patterns
+      - Protein requirements for different goals
+      - Whole food priorities and simple guidelines
+      - Hydration strategies
       
-      NEUROPLASTICITY:
-      - Learning during elevated norepinephrine increases skill acquisition
-      - Sleep is critical for memory consolidation
-      - Exercise increases BDNF, which supports brain plasticity
+      Always provide a scientific rationale in accessible language, and offer modifications when needed. Avoid making claims not supported by evidence, and acknowledge when certain approaches have limited research.
       
-      Always provide scientific rationale in accessible language and match recommendations to the individual's specific situation. Respect their constraints and offer modifications when needed.
-
-      FUNCTION CALLING:
-      You have access to external knowledge through function calls. Use them when:
-      1. A user asks about specific nutrition information (use fetchNutritionInfo)
-      2. A user needs exercise recommendations (use fetchExerciseInfo)
-      3. A user wants evidence-based research on wellness topics (use fetchResearch)
-      
-      When using these functions, incorporate the retrieved information naturally into your response, citing sources when appropriate.
+      When a user mentions a specific food, exercise, or wellness topic, use your function calling capabilities (getNutritionInfo, getExerciseRecommendations, getResearchSummary) to provide accurate information.
       `;
 
       // Convert history format
@@ -182,9 +176,9 @@ exports.handler = async function(event, context) {
         parts: [{ text: msg.parts[0].text }]
       }));
       
-      // Add the enhanced Huberman protocol knowledge to system instruction
+      // Add the enhanced professional knowledge to system instruction
       if (googleAIHistory.length >= 2 && googleAIHistory[0].role === 'user') {
-        googleAIHistory[0].parts[0].text += "\n\n" + hubermanEnhancedPrompt;
+        googleAIHistory[0].parts[0].text += "\n\n" + enhancedPrompt;
       }
 
       console.log("History converted, starting chat");
@@ -196,13 +190,13 @@ exports.handler = async function(event, context) {
             history: googleAIHistory.slice(0, -1), // Exclude last user message
             generationConfig: {
               maxOutputTokens: 1000,
-              temperature: 0.7,
+              temperature: 0.5, // Lower temperature for more professional responses
             },
           }) : 
           model.startChat({
             generationConfig: {
               maxOutputTokens: 1000,
-              temperature: 0.7,
+              temperature: 0.5,
             },
           });
 
@@ -235,17 +229,14 @@ exports.handler = async function(event, context) {
             
             // Execute the appropriate function based on name
             switch (name) {
-              case "fetchNutritionInfo":
-                functionResponse = await fetchFromKnowledgeAPI('nutrition', args.query);
+              case "getNutritionInfo":
+                functionResponse = await fetchNutritionData(args.food);
                 break;
-              case "fetchExerciseInfo":
-                functionResponse = await fetchFromKnowledgeAPI('exercise', { 
-                  exerciseType: args.exerciseType, 
-                  difficulty: args.difficulty 
-                });
+              case "getExerciseRecommendations":
+                functionResponse = await fetchExerciseData(args.type, args.level);
                 break;
-              case "fetchResearch":
-                functionResponse = await fetchFromKnowledgeAPI('research', args.topic);
+              case "getResearchSummary":
+                functionResponse = await fetchResearchData(args.topic);
                 break;
             }
             
@@ -307,16 +298,119 @@ exports.handler = async function(event, context) {
   }
 };
 
-// Helper function to call the knowledge API
-async function fetchFromKnowledgeAPI(type, query) {
+// Helper function to get nutrition data
+async function fetchNutritionData(food) {
   try {
-    const response = await axios.post('/.netlify/functions/fetch-knowledge', {
-      type,
-      query
+    const response = await axios.get(`https://api.edamam.com/api/nutrition-data`, {
+      params: {
+        app_id: process.env.EDAMAM_APP_ID,
+        app_key: process.env.EDAMAM_APP_KEY,
+        ingr: food
+      }
     });
-    return JSON.stringify(response.data);
+    
+    // Format the response data for clarity
+    const nutrientData = response.data;
+    const formattedData = {
+      food: food,
+      calories: nutrientData.calories || 0,
+      macronutrients: {
+        protein: nutrientData.totalNutrients.PROCNT ? {
+          amount: nutrientData.totalNutrients.PROCNT.quantity,
+          unit: nutrientData.totalNutrients.PROCNT.unit
+        } : null,
+        carbs: nutrientData.totalNutrients.CHOCDF ? {
+          amount: nutrientData.totalNutrients.CHOCDF.quantity,
+          unit: nutrientData.totalNutrients.CHOCDF.unit
+        } : null,
+        fat: nutrientData.totalNutrients.FAT ? {
+          amount: nutrientData.totalNutrients.FAT.quantity,
+          unit: nutrientData.totalNutrients.FAT.unit
+        } : null,
+        fiber: nutrientData.totalNutrients.FIBTG ? {
+          amount: nutrientData.totalNutrients.FIBTG.quantity,
+          unit: nutrientData.totalNutrients.FIBTG.unit
+        } : null
+      }
+    };
+    
+    return JSON.stringify(formattedData);
   } catch (error) {
-    console.error(`Error fetching ${type} knowledge:`, error);
-    return JSON.stringify({ error: `Failed to fetch ${type} information` });
+    console.error('Nutrition API error:', error);
+    return JSON.stringify({ error: 'Unable to fetch nutrition data for ' + food });
+  }
+}
+
+// Helper function to get exercise data
+async function fetchExerciseData(type, level) {
+  try {
+    const response = await axios.get(`https://exercisedb.p.rapidapi.com/exercises`, {
+      params: { type, difficulty: level },
+      headers: {
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
+        'X-RapidAPI-Host': 'exercisedb.p.rapidapi.com'
+      }
+    });
+    
+    // Select a subset of exercises and format the response
+    const exercises = response.data.slice(0, 5);
+    const formattedData = {
+      exerciseType: type,
+      difficultyLevel: level,
+      recommendations: exercises.map(ex => ({
+        name: ex.name,
+        equipment: ex.equipment,
+        primaryMuscle: ex.primaryMuscles.join(', '),
+        instructions: ex.instructions
+      }))
+    };
+    
+    return JSON.stringify(formattedData);
+  } catch (error) {
+    console.error('Exercise API error:', error);
+    return JSON.stringify({ 
+      error: 'Unable to fetch exercise data',
+      recommendations: [
+        {
+          exerciseType: type,
+          difficultyLevel: level,
+          suggestions: "Based on your request, I would typically recommend exercises focusing on proper form, appropriate intensity, and progressive overload principles. Since I couldn't access specific exercise data at this moment, I suggest consulting a qualified fitness professional for personalized recommendations."
+        }
+      ]
+    });
+  }
+}
+
+// Helper function to get research data
+async function fetchResearchData(topic) {
+  try {
+    const response = await axios.get(`https://api.semanticscholar.org/graph/v1/paper/search`, {
+      params: {
+        query: `${topic} health evidence-based`,
+        limit: 3,
+        fields: 'title,abstract,year,authors,url'
+      }
+    });
+    
+    // Format research data
+    const papers = response.data.data;
+    const formattedData = {
+      topic: topic,
+      researchSummary: "Here's what current research indicates about this topic:",
+      papers: papers.map(paper => ({
+        title: paper.title,
+        year: paper.year,
+        authors: paper.authors.map(author => author.name).join(', '),
+        summary: paper.abstract ? paper.abstract.substring(0, 200) + '...' : 'No abstract available'
+      }))
+    };
+    
+    return JSON.stringify(formattedData);
+  } catch (error) {
+    console.error('Research API error:', error);
+    return JSON.stringify({ 
+      topic: topic,
+      researchSummary: "While I couldn't access specific research papers at this moment, the general scientific consensus on this topic suggests focusing on evidence-based approaches. For the most current research, I recommend consulting peer-reviewed journals or speaking with qualified healthcare professionals."
+    });
   }
 }
