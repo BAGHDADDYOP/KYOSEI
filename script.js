@@ -595,3 +595,245 @@ document.head.insertAdjacentHTML('beforeend', `
     }
     </style>
 `);
+// Add this to your script.js or create a new file
+
+function createHubermanProtocolCards() {
+  // Create a container for protocol cards
+  const protocolContainer = document.createElement('div');
+  protocolContainer.className = 'protocol-cards-container';
+  protocolContainer.style.display = 'none'; // Hidden by default
+  
+  // Create cards for different topics
+  const protocolTopics = [
+    {
+      title: "Optimizing Sleep",
+      icon: "🌙",
+      protocols: [
+        "Get 30-60 min of morning sunlight within 30-60 min of waking",
+        "Avoid bright artificial light 2-3 hours before sleep",
+        "Lower room temperature by 1-3°F at night",
+        "Maintain consistent sleep-wake times",
+        "Try NSDR (Non-Sleep Deep Rest) for midday recovery"
+      ]
+    },
+    {
+      title: "Managing Stress",
+      icon: "🧘",
+      protocols: [
+        "Practice physiological sighs (double inhale, extended exhale)",
+        "Try cyclical hyperventilation and breath holds",
+        "Use deliberate cold exposure (30-60 sec cold shower)",
+        "Consider heat exposure (sauna) followed by cooling",
+        "Incorporate mindfulness practices with specific durations"
+      ]
+    },
+    {
+      title: "Focus & Cognition",
+      icon: "🧠",
+      protocols: [
+        "Work in 90-minute focused sessions with 5-15 min breaks",
+        "Practice visual focus exercises daily",
+        "Consider caffeine + L-theanine for focus",
+        "Use ultradian rhythms (90 min work/20 min rest)",
+        "Combine specific nutritional support with behavioral protocols"
+      ]
+    },
+    {
+      title: "Physical Performance",
+      icon: "💪",
+      protocols: [
+        "Include Zone 2 cardio (nose-breathing pace) 150 min/week",
+        "Resistance train 2-4x weekly with progressive overload",
+        "Optimize post-workout nutrition within 30-90 min window",
+        "Balance training intensity with recovery protocols",
+        "Use specific supplement protocols when appropriate"
+      ]
+    }
+  ];
+  
+  // Create each card
+  protocolTopics.forEach(topic => {
+    const card = document.createElement('div');
+    card.className = 'protocol-card';
+    
+    const cardHeader = document.createElement('div');
+    cardHeader.className = 'card-header';
+    
+    const icon = document.createElement('span');
+    icon.className = 'card-icon';
+    icon.textContent = topic.icon;
+    
+    const title = document.createElement('h3');
+    title.className = 'card-title';
+    title.textContent = topic.title;
+    
+    cardHeader.appendChild(icon);
+    cardHeader.appendChild(title);
+    
+    const cardContent = document.createElement('div');
+    cardContent.className = 'card-content';
+    
+    const protocolList = document.createElement('ul');
+    protocolList.className = 'protocol-list';
+    
+    topic.protocols.forEach(protocol => {
+      const item = document.createElement('li');
+      item.textContent = protocol;
+      protocolList.appendChild(item);
+    });
+    
+    cardContent.appendChild(protocolList);
+    
+    // Learn more button
+    const learnMoreBtn = document.createElement('button');
+    learnMoreBtn.className = 'learn-more-btn';
+    learnMoreBtn.textContent = 'Ask About This';
+    learnMoreBtn.setAttribute('data-topic', topic.title);
+    learnMoreBtn.addEventListener('click', function() {
+      const userInput = document.getElementById('user-input');
+      userInput.value = `Tell me more about ${this.getAttribute('data-topic')} protocols from Dr. Huberman's research`;
+      userInput.focus();
+    });
+    
+    card.appendChild(cardHeader);
+    card.appendChild(cardContent);
+    card.appendChild(learnMoreBtn);
+    
+    protocolContainer.appendChild(card);
+  });
+  
+  // Add toggle button
+  const toggleButton = document.createElement('button');
+  toggleButton.className = 'toggle-protocols-btn';
+  toggleButton.textContent = 'Huberman Protocols';
+  toggleButton.addEventListener('click', function() {
+    if (protocolContainer.style.display === 'none') {
+      protocolContainer.style.display = 'flex';
+      this.classList.add('active');
+    } else {
+      protocolContainer.style.display = 'none';
+      this.classList.remove('active');
+    }
+  });
+  
+  // Add to the page
+  const mainElement = document.querySelector('main');
+  mainElement.appendChild(toggleButton);
+  mainElement.appendChild(protocolContainer);
+  
+  // Add styles
+  const style = document.createElement('style');
+  style.textContent = `
+    .toggle-protocols-btn {
+      background-color: rgba(30, 30, 30, 0.8);
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin: 15px 0;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+    
+    .toggle-protocols-btn.active {
+      background-color: rgba(50, 50, 50, 0.8);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+    
+    .protocol-cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin: 10px 0 25px;
+      width: 100%;
+    }
+    
+    .protocol-card {
+      background-color: rgba(20, 20, 20, 0.7);
+      border: 1px solid #333;
+      border-radius: 12px;
+      width: calc(50% - 15px);
+      min-width: 250px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .protocol-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      border-color: #444;
+    }
+    
+    .card-header {
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      background-color: rgba(30, 30, 30, 0.8);
+      border-bottom: 1px solid #333;
+    }
+    
+    .card-icon {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+    
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .card-content {
+      padding: 15px;
+    }
+    
+    .protocol-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .protocol-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(60, 60, 60, 0.3);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    .protocol-list li:last-child {
+      border-bottom: none;
+    }
+    
+    .learn-more-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: rgba(40, 40, 40, 0.8);
+      border: none;
+      border-top: 1px solid #333;
+      color: #fff;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .learn-more-btn:hover {
+      background-color: rgba(60, 60, 60, 0.8);
+    }
+    
+    @media (max-width: 768px) {
+      .protocol-card {
+        width: 100%;
+      }
+    }
+  `;
+  
+  document.head.appendChild(style);
+}
+
+// Call this function after the chat is initialized
+document.addEventListener('DOMContentLoaded', function() {
+  // Add this line to your existing DOMContentLoaded event handler
+  setTimeout(createHubermanProtocolCards, 1500);
+});
