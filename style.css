@@ -673,3 +673,121 @@ main {
 
 /* Font Addition - Optional but improves overall look */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Add to your style.css file */
+
+/* Protocol Cards Styles */
+.toggle-protocols-btn {
+  background-color: rgba(30, 30, 30, 0.8);
+  color: #fff;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin: 15px 0;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  align-self: center;
+}
+
+.toggle-protocols-btn.active {
+  background-color: rgba(50, 50, 50, 0.8);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.protocol-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin: 10px 0 25px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.protocol-card {
+  background-color: rgba(20, 20, 20, 0.7);
+  border: 1px solid #333;
+  border-radius: 12px;
+  width: calc(50% - 15px);
+  min-width: 250px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.protocol-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border-color: #444;
+}
+
+.card-header {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  background-color: rgba(30, 30, 30, 0.8);
+  border-bottom: 1px solid #333;
+}
+
+.card-icon {
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.card-content {
+  padding: 15px;
+}
+
+.protocol-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.protocol-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(60, 60, 60, 0.3);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  position: relative;
+  padding-left: 15px;
+}
+
+.protocol-list li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #666;
+}
+
+.protocol-list li:last-child {
+  border-bottom: none;
+}
+
+.learn-more-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: rgba(40, 40, 40, 0.8);
+  border: none;
+  border-top: 1px solid #333;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.learn-more-btn:hover {
+  background-color: rgba(60, 60, 60, 0.8);
+}
+
+@media (max-width: 768px) {
+  .protocol-card {
+    width: 100%;
+  }
+}
