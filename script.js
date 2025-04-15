@@ -1,4 +1,4 @@
-// script.js (Modified for minimal UI)
+// script.js (Enhanced for better UI experience)
 
 const form = document.getElementById('input-form');
 const input = document.getElementById('user-input');
@@ -21,7 +21,7 @@ let conversationHistory = [
     { role: "model", parts: [{ text: "Understood. I will focus on healthcare, nutrition, fitness, and behavioral tools. How can I help?" }] }
 ];
 
-// addMessage function - Modified to show responses when needed
+// Enhanced addMessage function with animated typing effect for AI
 function addMessage(sender, text) {
     if (sender === 'ai') {
         // Make chat container visible when AI responds
@@ -34,14 +34,56 @@ function addMessage(sender, text) {
     if (sender === 'user') {
         messageDiv.classList.add('user-message');
         messageDiv.textContent = text;
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
     } else { // sender === 'ai'
         messageDiv.classList.add('ai-message');
-        let formattedText = text.replace(/\n/g, '<br>');
-        messageDiv.innerHTML = formattedText;
-    }
+        chatContainer.appendChild(messageDiv);
+        
+        // Text formatting to handle markdown-style formatting
+        let formattedText = text
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // Bold
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')              // Italic
+            .replace(/\n\n/g, '<br><br>')                      // Paragraphs
+            .replace(/\n/g, '<br>');                          // Line breaks
+        
+        // Handle bullet points
+        formattedText = formattedText.replace(/- (.*?)(<br>|$)/g, '• $1$2');
+        
+        // Handle numbered lists
+        formattedText = formattedText.replace(/(\d+)\. (.*?)(<br>|$)/g, '<span class="list-number">$1.</span> $2$3');
 
-    chatContainer.appendChild(messageDiv);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+        // Simulate typing effect
+        let i = 0;
+        const speed = 5; // Lower number = faster typing
+        messageDiv.innerHTML = ''; // Start empty
+        
+        function typeWriter() {
+            if (i < formattedText.length) {
+                // Handle HTML tags - add them all at once
+                if (formattedText.charAt(i) === '<') {
+                    const closeTagIndex = formattedText.indexOf('>', i);
+                    if (closeTagIndex !== -1) {
+                        messageDiv.innerHTML += formattedText.substring(i, closeTagIndex + 1);
+                        i = closeTagIndex + 1;
+                    } else {
+                        messageDiv.innerHTML += formattedText.charAt(i);
+                        i++;
+                    }
+                } else {
+                    messageDiv.innerHTML += formattedText.charAt(i);
+                    i++;
+                }
+                
+                // Speed up typing for very long responses
+                const timeoutDelay = formattedText.length > 500 ? 1 : speed;
+                setTimeout(typeWriter, timeoutDelay);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        }
+        
+        typeWriter();
+    }
 }
 
 // Function to call backend API endpoint (/api/chat)
@@ -52,12 +94,19 @@ async function getAiResponse(userText) {
     // Add thinking indicator
     const thinkingDiv = document.createElement('div');
     thinkingDiv.classList.add('message', 'ai-message');
-    thinkingDiv.innerHTML = '<i>Thinking...</i>';
+    thinkingDiv.innerHTML = '<span class="thinking">AI thinking<span class="dots">...</span></span>';
     
     // Make chat container visible when sending message
     chatContainer.style.display = 'block';
     chatContainer.appendChild(thinkingDiv);
     chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    // Animate the thinking dots
+    const dots = thinkingDiv.querySelector('.dots');
+    const thinkingAnimation = setInterval(() => {
+        if (dots.textContent === '...') dots.textContent = '';
+        else dots.textContent += '.';
+    }, 500);
 
     try {
         // Call serverless function
@@ -69,6 +118,8 @@ async function getAiResponse(userText) {
             body: JSON.stringify({ history: conversationHistory }),
         });
 
+        // Stop thinking animation
+        clearInterval(thinkingAnimation);
         // Remove thinking indicator
         chatContainer.removeChild(thinkingDiv);
 
@@ -84,16 +135,18 @@ async function getAiResponse(userText) {
         // Add AI response to history
         conversationHistory.push({ role: "model", parts: [{ text: aiText }] });
 
-        // Add the final AI message
+        // Add the final AI message with typing effect
         addMessage('ai', aiText);
 
     } catch (error) {
+        // Stop thinking animation
+        clearInterval(thinkingAnimation);
         // Remove thinking indicator on error
         if (chatContainer.contains(thinkingDiv)) {
             chatContainer.removeChild(thinkingDiv);
         }
         console.error('Error fetching AI response via backend:', error);
-        addMessage('ai', `Error: ${error.message}. Please check the console for details.`);
+        addMessage('ai', `Error: ${error.message}. Please try again later.`);
     }
 }
 
@@ -108,4 +161,19 @@ form.addEventListener('submit', (event) => {
     }
 });
 
-// No initial welcome message - chat starts completely blank
+// Add focus to input when page loads
+window.addEventListener('load', () => {
+    input.focus();
+});
+
+// Add a blinking cursor style to empty input
+input.addEventListener('input', () => {
+    if (input.value.length === 0) {
+        input.classList.add('blinking-cursor');
+    } else {
+        input.classList.remove('blinking-cursor');
+    }
+});
+
+// Initial class for cursor
+input.classList.add('blinking-cursor');
