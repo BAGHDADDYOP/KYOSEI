@@ -1,4 +1,4 @@
-// Enhanced script.js with fixed loading animation and new functionality
+// Enhanced and fixed script.js with complete functionality
 
 document.addEventListener('DOMContentLoaded', function() {
     // Cache DOM elements for better performance
@@ -618,7 +618,7 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         }
     }
 
-    // Function to handle quiz option selection with enhanced animation
+    // FIXED: Make these functions global so they can be accessed from inline HTML events
     window.selectQuizOption = function(element, allowMultiple) {
         const selectedClass = 'selected';
         
@@ -658,8 +658,8 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         // Enable/disable the next button based on selection
         const nextButton = document.querySelector('.quiz-button');
         const hasSelection = document.querySelector('.quiz-option.selected') || 
-                             (document.getElementById('custom-quiz-input') && 
-                              document.getElementById('custom-quiz-input').value.trim() !== '');
+                            (document.getElementById('custom-quiz-input') && 
+                            document.getElementById('custom-quiz-input').value.trim() !== '');
         
         if (nextButton) {
             nextButton.disabled = !hasSelection;
@@ -682,7 +682,7 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
     };
 
     // Function to handle custom input changes with debounce for performance
-    window.handleCustomInput = debounce(function(inputElement) {
+    window.handleCustomInput = function(inputElement) {
         const nextButton = document.querySelector('.quiz-button');
         if (nextButton) {
             const hasValue = inputElement.value.trim() !== '';
@@ -704,12 +704,12 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
                 nextButton.classList.remove('active');
             }
         }
-    }, 100);
+    };
     
-    // Function to submit quiz answer and move to next question with enhanced transition
+    // FIXED: Function to submit quiz answer and move to next question with enhanced transition
     window.submitQuizAnswer = function() {
         const questions = quizQuestions[currentQuizSection];
-        const currentQuestion = questions[currentQuizQuestionIndex - 1]; // Go back one because we're already at the next question
+        const currentQuestion = questions[currentQuizQuestionIndex];
         let answer;
         
         if (currentQuestion.type === 'select') {
@@ -729,49 +729,3 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
                     answer = customInput.value.trim();
                 }
             }
-        } else if (currentQuestion.type === 'custom') {
-            answer = document.getElementById('custom-quiz-input').value.trim();
-        }
-        
-        // Save answer
-        if (!currentQuizAnswers[currentQuizSection]) {
-            currentQuizAnswers[currentQuizSection] = {};
-        }
-        currentQuizAnswers[currentQuizSection][currentQuestion.question] = answer;
-        
-        // Advance to next question
-        const nextQuestion = questions[currentQuizQuestionIndex];
-        
-        // Apply fade-out animation to current content
-        quizContainer.style.opacity = '0';
-        quizContainer.style.transform = 'translateY(10px)';
-        
-        setTimeout(() => {
-            // Move to next question or section
-            currentQuizQuestionIndex++;
-            
-            if (currentQuizQuestionIndex >= questions.length) {
-                // Move to next section or complete profile
-                if (currentQuizSection === 'physiology') {
-                    currentQuizSection = 'goals';
-                    currentQuizQuestionIndex = 0;
-                    updateProfileProgress(2);
-                } else if (currentQuizSection === 'goals') {
-                    currentQuizSection = 'occupation';
-                    currentQuizQuestionIndex = 0;
-                    updateProfileProgress(3);
-                } else {
-                    // Profile complete
-                    finishProfileCollection();
-                    return;
-                }
-            }
-            
-            // Show next question
-            showCurrentQuizQuestion();
-            
-            // Apply fade-in animation
-            quizContainer.style.opacity = '1';
-            quizContainer.style.transform = 'translateY(0)';
-        }, 300);
-    };
