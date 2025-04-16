@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleToolkitBtn = document.getElementById('toggle-toolkit-btn');
     const closeSidebarBtn = document.getElementById('close-sidebar');
     
-    // FIXED: Loading animation text sequence
-    const connectingTexts = ['Initializing', 'Processing', 'Analyzing', 'Preparing'];
+    // FIXED: Loading animation text sequence - changed "Initializing" to "Connecting"
+    const connectingTexts = ['Connecting', 'Processing', 'Analyzing', 'Preparing'];
     let textIndex = 0;
 
     // Add loading animation text sequence with proper fallback
@@ -39,6 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(function() {
                     loadingScreen.style.display = 'none';
                     animateSymbioticBackground();
+                    // FIXED: Explicitly start profile collection after loading screen is removed
+                    startProfileCollection();
                 }, 600);
             }
         }, 800);
@@ -535,380 +537,6 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         quizContainer.style.transform = 'translateY(10px)';
         
         setTimeout(() => {
-            // Move to next question or section
-            currentQuizQuestionIndex++;
-            
-            if (currentQuizQuestionIndex >= questions.length) {
-                // Move to next section or complete profile
-                if (currentQuizSection === 'physiology') {
-                    currentQuizSection = 'goals';
-                    currentQuizQuestionIndex = 0;
-                    updateProfileProgress(2);
-                } else if (currentQuizSection === 'goals') {
-                    currentQuizSection = 'occupation';
-                    currentQuizQuestionIndex = 0;
-                    updateProfileProgress(3);
-                } else {
-                    // Profile complete
-                    finishProfileCollection();
-                    return;
-                }
-            }
-            
-            // Show next question
-            showCurrentQuizQuestion();
-            
-            // Apply fade-in animation
-            quizContainer.style.opacity = '1';
-            quizContainer.style.transform = 'translateY(0)';
-        }, 300);
-    };
-
-    // Function to finish profile collection and enable chat interface
-    function finishProfileCollection() {
-        // Update user profile data
-        userProfile.physicalVessel = currentQuizAnswers.physiology;
-        userProfile.consciousIntent = currentQuizAnswers.goals;
-        userProfile.dailyRhythms = currentQuizAnswers.occupation;
-        userProfile.profileComplete = true;
-        
-        // Hide quiz elements with animation
-        quizContainer.animate([
-            { opacity: 1, transform: 'translateY(0)' },
-            { opacity: 0, transform: 'translateY(-20px)' }
-        ], {
-            duration: 600,
-            easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-            fill: 'forwards'
-        });
-        
-        setTimeout(() => {
-            // Hide quiz container and show chat interface
-            quizContainer.style.display = 'none';
-            chatContainer.style.display = 'block';
-            form.style.display = 'flex';
-            
-            // Animate chat container entrance
-            chatContainer.animate([
-                { opacity: 0, transform: 'translateY(20px)' },
-                { opacity: 1, transform: 'translateY(0)' }
-            ], {
-                duration: 800,
-                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-                fill: 'forwards'
-            });
-            
-            // Animate form entrance
-            form.animate([
-                { opacity: 0, transform: 'translateY(20px)' },
-                { opacity: 1, transform: 'translateY(0)' }
-            ], {
-                duration: 800,
-                delay: 200,
-                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-                fill: 'forwards'
-            });
-            
-            // Update progress indicators
-            updateProfileProgress(4);
-            
-            // Send profile data to AI
-            sendProfileToAI();
-        }, 600);
-    }
-
-    // Function to send profile data to AI
-    function sendProfileToAI() {
-        // Create message from profile data
-        let profileMessage = "Here's my information:\n\n";
-        
-        // Physical data
-        profileMessage += "Physical Vessel:\n";
-        for (const [question, answer] of Object.entries(userProfile.physicalVessel)) {
-            profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
-        }
-        
-        // Goals data
-        profileMessage += "\nConscious Effort:\n";
-        for (const [question, answer] of Object.entries(userProfile.consciousIntent)) {
-            profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
-        }
-        
-        // Occupation data
-        profileMessage += "\nDaily Rhythms:\n";
-        for (const [question, answer] of Object.entries(userProfile.dailyRhythms)) {
-            profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
-        }
-        
-        // Add to conversation history
-        addUserMessage(profileMessage);
-        
-        // Generate AI response
-        getAIResponse();
-    }
-
-    // Function to add user message to chat
-    function addUserMessage(text) {
-        // Add to UI
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message user-message';
-        messageDiv.textContent = text;
-        
-        // Set initial state for animation
-        messageDiv.style.opacity = 0;
-        messageDiv.style.transform = 'translateY(10px)';
-        
-        chatContainer.appendChild(messageDiv);
-        
-        // Animate entrance
-        setTimeout(() => {
-            messageDiv.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
-            messageDiv.style.opacity = 1;
-            messageDiv.style.transform = 'translateY(0)';
-        }, 10);
-        
-        // Add to conversation history
-        conversationHistory.push({ role: "user", parts: [{ text: text }] });
-        
-        // Scroll to bottom
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-
-    // Function to add AI message to chat
-    function addAIMessage(text) {
-        // Add to UI
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message ai-message';
-        messageDiv.innerHTML = formatAIMessage(text);
-        
-        // Set initial state for animation
-        messageDiv.style.opacity = 0;
-        messageDiv.style.transform = 'translateY(10px)';
-        
-        chatContainer.appendChild(messageDiv);
-        
-        // Animate entrance
-        setTimeout(() => {
-            messageDiv.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
-            messageDiv.style.opacity = 1;
-            messageDiv.style.transform = 'translateY(0)';
-        }, 10);
-        
-        // Add to conversation history
-        conversationHistory.push({ role: "model", parts: [{ text: text }] });
-        
-        // Scroll to bottom
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-    
-    // Function to format AI message with rich formatting
-    function formatAIMessage(text) {
-        // Convert line breaks to HTML
-        let formattedText = text.replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>');
-        
-        // Wrap in paragraph
-        formattedText = `<p>${formattedText}</p>`;
-        
-        // Format section titles and emphasis
-        formattedText = formattedText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-        formattedText = formattedText.replace(/\*(.*?)\*/g, '<em>$1</em>');
-        
-        return formattedText;
-    }
-    
-    // Function to show "AI is thinking" indicator
-    function showThinkingIndicator() {
-        const thinkingDiv = document.createElement('div');
-        thinkingDiv.className = 'message ai-message thinking';
-        thinkingDiv.id = 'thinking-indicator';
-        
-        const dotsDiv = document.createElement('div');
-        dotsDiv.className = 'thinking-dots';
-        
-        for (let i = 0; i < 3; i++) {
-            const dotSpan = document.createElement('span');
-            dotsDiv.appendChild(dotSpan);
-        }
-        
-        thinkingDiv.appendChild(dotsDiv);
-        chatContainer.appendChild(thinkingDiv);
-        
-        // Scroll to bottom
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-    }
-    
-    // Function to remove thinking indicator
-    function removeThinkingIndicator() {
-        const indicator = document.getElementById('thinking-indicator');
-        if (indicator) {
-            // Fade out animation
-            indicator.style.opacity = '0';
-            indicator.style.transform = 'translateY(10px)';
-            
-            setTimeout(() => {
-                indicator.remove();
-            }, 300);
-        }
-    }
-    
-    // Function to get AI response
-    async function getAIResponse() {
-        // Show thinking indicator
-        showThinkingIndicator();
-        
-        try {
-            // Prepare request
-            const requestBody = {
-                history: conversationHistory
-            };
-            
-            // Make API call
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestBody)
-            });
-            
-            // Process response
-            const data = await response.json();
-            
-            // Remove thinking indicator
-            removeThinkingIndicator();
-            
-            if (data.error) {
-                console.error('API Error:', data.error);
-                addAIMessage('I apologize, but I encountered an issue processing your request. Please try again later.');
-            } else {
-                // Check if response contains roadmap request
-                if (data.aiResponse.includes('[ROADMAP]')) {
-                    handleRoadmapRequest(data.aiResponse);
-                } else if (data.aiResponse.includes('[PDF]')) {
-                    handlePDFRequest(data.aiResponse);
-                } else {
-                    // Add AI message to chat
-                    addAIMessage(data.aiResponse);
-                }
-            }
-        } catch (error) {
-            console.error('Chat Error:', error);
-            
-            // Remove thinking indicator
-            removeThinkingIndicator();
-            
-            // Show error message
-            addAIMessage('I apologize, but I encountered an issue connecting to the server. Please check your internet connection and try again.');
-        }
-    }
-    
-    // NEW: Handle roadmap request from AI response
-    function handleRoadmapRequest(aiResponse) {
-        // Extract roadmap data from AI response
-        const roadmapMatch = aiResponse.match(/\[ROADMAP\]([\s\S]*?)\[\/ROADMAP\]/);
-        
-        if (roadmapMatch && roadmapMatch[1]) {
-            try {
-                // Remove the roadmap tags from the response
-                const cleanResponse = aiResponse.replace(/\[ROADMAP\]([\s\S]*?)\[\/ROADMAP\]/, '');
-                addAIMessage(cleanResponse);
-                
-                // Parse the roadmap data
-                const roadmapData = JSON.parse(roadmapMatch[1]);
-                
-                // Create interactive roadmap
-                createInteractiveRoadmap(roadmapData.title, roadmapData.steps);
-            } catch (error) {
-                console.error('Roadmap parsing error:', error);
-                addAIMessage('I created a personalized plan for you, but there was an issue displaying it in an interactive format.');
-            }
-        } else {
-            // If no valid roadmap data found, just display the response
-            addAIMessage(aiResponse);
-        }
-    }
-    
-    // NEW: Handle PDF request from AI response
-    function handlePDFRequest(aiResponse) {
-        // Extract PDF data from AI response
-        const pdfMatch = aiResponse.match(/\[PDF\]([\s\S]*?)\[\/PDF\]/);
-        
-        if (pdfMatch && pdfMatch[1]) {
-            try {
-                // Remove the PDF tags from the response
-                const cleanResponse = aiResponse.replace(/\[PDF\]([\s\S]*?)\[\/PDF\]/, '');
-                addAIMessage(cleanResponse);
-                
-                // Parse the PDF data
-                const pdfData = JSON.parse(pdfMatch[1]);
-                
-                // Generate PDF
-                generatePDF(pdfData.title, pdfData.content);
-            } catch (error) {
-                console.error('PDF parsing error:', error);
-                addAIMessage('I prepared a document for you, but there was an issue generating the PDF.');
-            }
-        } else {
-            // If no valid PDF data found, just display the response
-            addAIMessage(aiResponse);
-        }
-    }
-    
-    // Initialize the app
-    function init() {
-        // Populate the sidebar with knowledge protocols
-        populateSidebar();
-        
-        // Start profile collection once loading screen is gone
-        setTimeout(() => {
-            startProfileCollection();
-        }, 3000);
-
-        // Add form submit event listener
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const userText = input.value.trim();
-            
-            if (userText) {
-                // Add user message
-                addUserMessage(userText);
-                
-                // Clear input
-                input.value = '';
-                
-                // Get AI response
-                getAIResponse();
-            }
-        });
-        
-        // Add input animations
-        input.addEventListener('focus', function() {
-            form.classList.add('focused');
-        });
-        
-        input.addEventListener('blur', function() {
-            form.classList.remove('focused');
-        });
-        
-        // Enable offline detection
-        window.addEventListener('online', function() {
-            if (chatContainer.style.display === 'block') {
-                addAIMessage("I notice you're back online. How can I assist you further?");
-            }
-        });
-        
-        window.addEventListener('offline', function() {
-            if (chatContainer.style.display === 'block') {
-                addAIMessage("It seems you've gone offline. Your previous interactions are saved, and I'll be here when your connection returns.");
-            }
-        });
-    }
-
-    // Initialize the app
-    init();
-}); fade-out animation to current content
-        quizContainer.style.opacity = '0';
-        quizContainer.style.transform = 'translateY(10px)';
-        
-        setTimeout(() => {
             // Update content
             quizContainer.innerHTML = quizHTML;
             
@@ -1081,7 +709,7 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
     // Function to submit quiz answer and move to next question with enhanced transition
     window.submitQuizAnswer = function() {
         const questions = quizQuestions[currentQuizSection];
-        const currentQuestion = questions[currentQuizQuestionIndex];
+        const currentQuestion = questions[currentQuizQuestionIndex - 1]; // Go back one because we're already at the next question
         let answer;
         
         if (currentQuestion.type === 'select') {
@@ -1111,4 +739,39 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         }
         currentQuizAnswers[currentQuizSection][currentQuestion.question] = answer;
         
-        // Apply
+        // Advance to next question
+        const nextQuestion = questions[currentQuizQuestionIndex];
+        
+        // Apply fade-out animation to current content
+        quizContainer.style.opacity = '0';
+        quizContainer.style.transform = 'translateY(10px)';
+        
+        setTimeout(() => {
+            // Move to next question or section
+            currentQuizQuestionIndex++;
+            
+            if (currentQuizQuestionIndex >= questions.length) {
+                // Move to next section or complete profile
+                if (currentQuizSection === 'physiology') {
+                    currentQuizSection = 'goals';
+                    currentQuizQuestionIndex = 0;
+                    updateProfileProgress(2);
+                } else if (currentQuizSection === 'goals') {
+                    currentQuizSection = 'occupation';
+                    currentQuizQuestionIndex = 0;
+                    updateProfileProgress(3);
+                } else {
+                    // Profile complete
+                    finishProfileCollection();
+                    return;
+                }
+            }
+            
+            // Show next question
+            showCurrentQuizQuestion();
+            
+            // Apply fade-in animation
+            quizContainer.style.opacity = '1';
+            quizContainer.style.transform = 'translateY(0)';
+        }, 300);
+    };
