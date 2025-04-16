@@ -67,9 +67,9 @@ Always emphasize:
 Present wellness as a process of targeted optimization rather than a deficit-correction model. Use professional, evidence-focused terminology reflecting current biomedical understanding. Draw from established principles in exercise physiology, nutritional science, sleep medicine, and cognitive performance optimization.
 
 IMPORTANT: When a user first engages with you, ALWAYS follow this flow:
-1. First, ask about their physical metrics (age, height, weight, medical conditions, biomarkers if available).
-2. Second, ask about their objectives (specific, measurable goals and areas for improvement).
-3. Third, ask about their current patterns (occupation, sleep schedule, stress factors, current routines).
+1. First, ask about their physical vessel (age, height, weight, medical conditions, biomarkers if available).
+2. Second, ask about their conscious effort (specific, measurable goals and areas for improvement).
+3. Third, ask about their daily rhythms (occupation, sleep schedule, stress factors, current routines).
 4. Only AFTER collecting this information should you provide personalized, evidence-based recommendations.
 
 Frame recommendations to highlight specific physiological mechanisms and outcomes supported by research.`;
@@ -77,10 +77,10 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
     // Store conversation history
     let conversationHistory = [
         { role: "user", parts: [{ text: SYSTEM_INSTRUCTION }] },
-        { role: "model", parts: [{ text: "Welcome! To provide you with personalized health and fitness guidance, I'd like to learn a bit about you first.\n\nCould you please share some details about your physical metrics such as your age, height, weight, and any health conditions or limitations you may have?" }] },
+        { role: "model", parts: [{ text: "Welcome! To provide you with personalized health and fitness guidance, I'd like to learn a bit about you first.\n\nCould you please share some details about your physical vessel such as your age, height, weight, and any health conditions or limitations you may have?" }] },
     ];
 
-    // Define quiz questions with more professional language
+    // Define quiz questions with updated terminology
     const quizQuestions = {
         physiology: [
             {
@@ -165,72 +165,72 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         ]
     };
 
-    // Define knowledge toolkit protocols with professional content and no emojis
+    // Define knowledge toolkit protocols with monochromatic styling
     const knowledgeProtocols = [
         {
             title: "Sleep Optimization",
             icon: "S",
-            content: `<h3>Sleep Optimization Protocol</h3>
-                      <p>Enhance sleep quality through evidence-based approaches:</p>
-                      <ul>
-                          <li><strong>Circadian Entrainment:</strong> 10-20 minutes of morning sunlight exposure to regulate melatonin production</li>
-                          <li><strong>Temperature Regulation:</strong> Cooler sleeping environment (65-68°F/18-20°C) facilitates deeper slow-wave sleep</li>
-                          <li><strong>Consistent Schedule:</strong> Regular sleep-wake times stabilize circadian rhythm and optimize sleep architecture</li>
-                          <li><strong>Evening Wind-Down:</strong> Reduce blue light exposure 1-2 hours before sleep to enhance melatonin production</li>
-                      </ul>
-                      <button class="inquire-button" data-protocol="Sleep Optimization">Inquire about this protocol</button>`
+            content: `<h3>Sleep Optimization</h3>
+                    <p>Enhance sleep quality through evidence-based approaches:</p>
+                    <ul>
+                        <li><strong>Circadian Entrainment:</strong> 10-20 minutes of morning sunlight exposure to regulate melatonin production</li>
+                        <li><strong>Temperature Regulation:</strong> Cooler sleeping environment (65-68°F/18-20°C) facilitates deeper slow-wave sleep</li>
+                        <li><strong>Consistent Schedule:</strong> Regular sleep-wake times stabilize circadian rhythm and optimize sleep architecture</li>
+                        <li><strong>Evening Wind-Down:</strong> Reduce blue light exposure 1-2 hours before sleep to enhance melatonin production</li>
+                    </ul>
+                    <button class="inquire-button" data-protocol="Sleep Optimization">Inquire about this protocol</button>`
         },
         {
             title: "Stress Management",
             icon: "SM",
-            content: `<h3>Stress Management Protocol</h3>
-                      <p>Develop resilience through validated techniques:</p>
-                      <ul>
-                          <li><strong>Respiratory Regulation:</strong> Physiological sighs (double inhale, extended exhale) downregulate sympathetic activation</li>
-                          <li><strong>Thermal Exposure:</strong> Cold/heat exposure triggers beneficial hormetic stress response and adaptation</li>
-                          <li><strong>Targeted Exercise:</strong> Regular physical activity optimizes cortisol regulation and HPA axis function</li>
-                          <li><strong>Attentional Control:</strong> Structured mindfulness practice enhances prefrontal regulation of limbic response</li>
-                      </ul>
-                      <button class="inquire-button" data-protocol="Stress Management">Inquire about this protocol</button>`
+            content: `<h3>Stress Management</h3>
+                    <p>Develop resilience through validated techniques:</p>
+                    <ul>
+                        <li><strong>Respiratory Regulation:</strong> Physiological sighs (double inhale, extended exhale) downregulate sympathetic activation</li>
+                        <li><strong>Thermal Exposure:</strong> Cold/heat exposure triggers beneficial hormetic stress response and adaptation</li>
+                        <li><strong>Targeted Exercise:</strong> Regular physical activity optimizes cortisol regulation and HPA axis function</li>
+                        <li><strong>Attentional Control:</strong> Structured mindfulness practice enhances prefrontal regulation of limbic response</li>
+                    </ul>
+                    <button class="inquire-button" data-protocol="Stress Management">Inquire about this protocol</button>`
         },
         {
             title: "Focus & Performance",
             icon: "FP",
-            content: `<h3>Focus & Performance Protocol</h3>
-                      <p>Optimize cognitive function through validated methods:</p>
-                      <ul>
-                          <li><strong>Ultradian Rhythm Management:</strong> 90-minute focus blocks with 15-20 minute breaks align with natural attention cycles</li>
-                          <li><strong>Nutritional Support:</strong> Protein, healthy fats, and complex carbohydrates provide optimal substrate for neurotransmitter production</li>
-                          <li><strong>Environment Optimization:</strong> Structured workspace minimizes attentional switching costs and supports sustained focus</li>
-                          <li><strong>Recovery Integration:</strong> Strategic micro-breaks with movement maintain prefrontal energy reserves</li>
-                      </ul>
-                      <button class="inquire-button" data-protocol="Focus & Performance">Inquire about this protocol</button>`
+            content: `<h3>Focus & Performance</h3>
+                    <p>Optimize cognitive function through validated methods:</p>
+                    <ul>
+                        <li><strong>Ultradian Rhythm Management:</strong> 90-minute focus blocks with 15-20 minute breaks align with natural attention cycles</li>
+                        <li><strong>Nutritional Support:</strong> Protein, healthy fats, and complex carbohydrates provide optimal substrate for neurotransmitter production</li>
+                        <li><strong>Environment Optimization:</strong> Structured workspace minimizes attentional switching costs and supports sustained focus</li>
+                        <li><strong>Recovery Integration:</strong> Strategic micro-breaks with movement maintain prefrontal energy reserves</li>
+                    </ul>
+                    <button class="inquire-button" data-protocol="Focus & Performance">Inquire about this protocol</button>`
         },
         {
             title: "Physical Training",
             icon: "PT",
-            content: `<h3>Physical Training Protocol</h3>
-                      <p>Build capacity through validated training principles:</p>
-                      <ul>
-                          <li><strong>Zone 2 Cardiovascular Training:</strong> Moderate-intensity exercise at ventilatory threshold 1 maximizes mitochondrial development</li>
-                          <li><strong>Resistance Training:</strong> Progressive tension overload through periodized programming optimizes muscle adaptation</li>
-                          <li><strong>Recovery Optimization:</strong> Strategic protein timing, sleep hygiene, and parasympathetic activation enhance adaptation response</li>
-                          <li><strong>Movement Pattern Diversity:</strong> Varied stimulus prevents adaptation plateaus and builds broader movement competency</li>
-                      </ul>
-                      <button class="inquire-button" data-protocol="Physical Training">Inquire about this protocol</button>`
+            content: `<h3>Physical Training</h3>
+                    <p>Build capacity through validated training principles:</p>
+                    <ul>
+                        <li><strong>Zone 2 Cardiovascular Training:</strong> Moderate-intensity exercise at ventilatory threshold 1 maximizes mitochondrial development</li>
+                        <li><strong>Resistance Training:</strong> Progressive tension overload through periodized programming optimizes muscle adaptation</li>
+                        <li><strong>Recovery Optimization:</strong> Strategic protein timing, sleep hygiene, and parasympathetic activation enhance adaptation response</li>
+                        <li><strong>Movement Pattern Diversity:</strong> Varied stimulus prevents adaptation plateaus and builds broader movement competency</li>
+                    </ul>
+                    <button class="inquire-button" data-protocol="Physical Training">Inquire about this protocol</button>`
         },
         {
             title: "Nutrition Foundations",
             icon: "NF",
-            content: `<h3>Nutrition Foundations Protocol</h3>
-                      <p>Optimize physiological function through evidence-based nutrition:</p>
-                      <ul>
-                          <li><strong>Time-Restricted Feeding:</strong> Aligning food intake with circadian rhythm enhances metabolic flexibility and autophagy</li>
-                          <li><strong>Protein Optimization:</strong> Strategic protein distribution (1.6-2.2g/kg) supports muscle protein synthesis and satiety</li>
-                          <li><strong>Whole Food Prioritization:</strong> Minimally processed foods maximize micronutrient density and support gut microbiome diversity</li>
-                          <li><strong>Hydration Strategy:</strong> Consistent water intake supports optimal cellular function and metabolic processes</li>
-                      </ul>
-                      <button class="inquire-button" data-protocol="Nutrition Foundations">Inquire about this protocol</button>`
+            content: `<h3>Nutrition Foundations</h3>
+                    <p>Optimize physiological function through evidence-based nutrition:</p>
+                    <ul>
+                        <li><strong>Time-Restricted Feeding:</strong> Aligning food intake with circadian rhythm enhances metabolic flexibility and autophagy</li>
+                        <li><strong>Protein Optimization:</strong> Strategic protein distribution (1.6-2.2g/kg) supports muscle protein synthesis and satiety</li>
+                        <li><strong>Whole Food Prioritization:</strong> Minimally processed foods maximize micronutrient density and support gut microbiome diversity</li>
+                        <li><strong>Hydration Strategy:</strong> Consistent water intake supports optimal cellular function and metabolic processes</li>
+                    </ul>
+                    <button class="inquire-button" data-protocol="Nutrition Foundations">Inquire about this protocol</button>`
         }
     ];
 
@@ -393,9 +393,12 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         }, 200);
     }
 
-    // Populate sidebar with knowledge protocols
+    // Populate sidebar with knowledge protocols - Fixed function to avoid duplications
     function populateSidebar() {
         if (!sidebarContent) return;
+        
+        // Clear any existing content first
+        sidebarContent.innerHTML = '';
         
         knowledgeProtocols.forEach((protocol, index) => {
             const card = document.createElement('div');
@@ -527,213 +530,6 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
             <button class="quiz-button" onclick="submitQuizAnswer()" disabled>Next</button>
         `;
         
-        // Apply fade-out animation to current content
-        quizContainer.style.opacity = '0';
-        quizContainer.style.transform = 'translateY(10px)';
-        
-        setTimeout(() => {
-            // Update content
-            quizContainer.innerHTML = quizHTML;
-            
-            // Apply fade-in animation
-            quizContainer.style.opacity = '1';
-            quizContainer.style.transform = 'translateY(0)';
-            
-            // Add focus to the custom input if it's a custom question
-            if (currentQuestion.type === 'custom') {
-                setTimeout(() => {
-                    const customInput = document.getElementById('custom-quiz-input');
-                    if (customInput) customInput.focus();
-                }, 100);
-            }
-            
-            // Add staggered animation to options
-            const options = document.querySelectorAll('.quiz-option');
-            options.forEach((option, index) => {
-                option.style.opacity = 0;
-                option.style.transform = 'translateY(10px)';
-                setTimeout(() => {
-                    option.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
-                    option.style.opacity = 1;
-                    option.style.transform = 'translateY(0)';
-                }, 50 * index);
-            });
-        }, 300);
-    }
-
-    // Function to update profile progress indicators with enhanced animation
-    function updateProfileProgress(step) {
-        // Update progress steps
-        for (let i = 1; i <= 3; i++) {
-            const progressStep = document.getElementById(`step-${i}`);
-            const progressLabel = document.getElementById(`label-${i}`);
-            
-            if (!progressStep || !progressLabel) continue;
-            
-            if (i < step) {
-                progressStep.classList.add('complete');
-                progressLabel.classList.add('complete');
-            } else if (i === step) {
-                progressStep.classList.add('active');
-                progressLabel.classList.add('active');
-                
-                // Add subtle animation to active step
-                progressStep.animate([
-                    { transform: 'scale(1)', opacity: 0.8 },
-                    { transform: 'scale(1.2)', opacity: 1 },
-                    { transform: 'scale(1.1)', opacity: 1 }
-                ], {
-                    duration: 600,
-                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-                    fill: 'forwards'
-                });
-                
-                // Add subtle animation to active label
-                progressLabel.animate([
-                    { opacity: 0.8, transform: 'translateY(3px)' },
-                    { opacity: 1, transform: 'translateY(0)' }
-                ], {
-                    duration: 500,
-                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-                    fill: 'forwards'
-                });
-            } else {
-                progressStep.classList.remove('active', 'complete');
-                progressLabel.classList.remove('active', 'complete');
-            }
-        }
-        
-        // Hide progress when at step 4 (profile complete)
-        if (step === 4) {
-            const progressEl = document.getElementById('profile-progress');
-            const labelsEl = document.getElementById('progress-labels');
-            
-            if (progressEl) progressEl.classList.add('complete');
-            if (labelsEl) labelsEl.classList.add('complete');
-        }
-    }
-
-    // Function to handle quiz option selection with enhanced animation
-    window.selectQuizOption = function(element, allowMultiple) {
-        const selectedClass = 'selected';
-        
-        if (allowMultiple) {
-            // Toggle selection for multiple-choice options
-            element.classList.toggle(selectedClass);
-            
-            // Add subtle animation for selection
-            if (element.classList.contains(selectedClass)) {
-                element.animate([
-                    { transform: 'translateY(0)' },
-                    { transform: 'translateY(-3px)' },
-                    { transform: 'translateY(-1px)' }
-                ], {
-                    duration: 300,
-                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
-                });
-            }
-        } else {
-            // For single-choice options, deselect all others
-            document.querySelectorAll('.quiz-option').forEach(opt => {
-                opt.classList.remove(selectedClass);
-            });
-            
-            // Select the clicked option with animation
-            element.classList.add(selectedClass);
-            element.animate([
-                { transform: 'translateY(0)' },
-                { transform: 'translateY(-3px)' },
-                { transform: 'translateY(-1px)' }
-            ], {
-                duration: 300,
-                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
-            });
-        }
-        
-        // Enable/disable the next button based on selection
-        const nextButton = document.querySelector('.quiz-button');
-        const hasSelection = document.querySelector('.quiz-option.selected') || 
-                             (document.getElementById('custom-quiz-input') && 
-                              document.getElementById('custom-quiz-input').value.trim() !== '');
-        
-        if (nextButton) {
-            nextButton.disabled = !hasSelection;
-            if (hasSelection) {
-                nextButton.classList.add('active');
-                
-                // Add button activation animation
-                nextButton.animate([
-                    { opacity: 0.5, transform: 'scale(0.98)' },
-                    { opacity: 1, transform: 'scale(1)' }
-                ], {
-                    duration: 300,
-                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-                    fill: 'forwards'
-                });
-            } else {
-                nextButton.classList.remove('active');
-            }
-        }
-    };
-
-    // Function to handle custom input changes with debounce for performance
-    window.handleCustomInput = debounce(function(inputElement) {
-        const nextButton = document.querySelector('.quiz-button');
-        if (nextButton) {
-            const hasValue = inputElement.value.trim() !== '';
-            nextButton.disabled = !hasValue;
-            
-            if (hasValue) {
-                nextButton.classList.add('active');
-                
-                // Subtle button activation animation 
-                nextButton.animate([
-                    { opacity: 0.5, transform: 'scale(0.98)' },
-                    { opacity: 1, transform: 'scale(1)' }
-                ], {
-                    duration: 300,
-                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-                    fill: 'forwards'
-                });
-            } else {
-                nextButton.classList.remove('active');
-            }
-        }
-    }, 100);
-    
-    // Function to submit quiz answer and move to next question with enhanced transition
-    window.submitQuizAnswer = function() {
-        const questions = quizQuestions[currentQuizSection];
-        const currentQuestion = questions[currentQuizQuestionIndex];
-        let answer;
-        
-        if (currentQuestion.type === 'select') {
-            if (currentQuestion.allowMultiple) {
-                answer = Array.from(document.querySelectorAll('.quiz-option.selected')).map(el => el.dataset.value);
-            } else {
-                const selected = document.querySelector('.quiz-option.selected');
-                answer = selected ? selected.dataset.value : null;
-            }
-            
-            // Handle custom input if present
-            const customInput = document.getElementById('custom-quiz-input');
-            if (customInput && customInput.value.trim()) {
-                if (Array.isArray(answer)) {
-                    answer.push(customInput.value.trim());
-                } else if (!answer) {
-                    answer = customInput.value.trim();
-                }
-            }
-        } else if (currentQuestion.type === 'custom') {
-            answer = document.getElementById('custom-quiz-input').value.trim();
-        }
-        
-        // Save answer
-        if (!currentQuizAnswers[currentQuizSection]) {
-            currentQuizAnswers[currentQuizSection] = {};
-        }
-        currentQuizAnswers[currentQuizSection][currentQuestion.question] = answer;
-        
         // Apply transition animation
         quizContainer.style.opacity = '0';
         quizContainer.style.transform = 'translateY(10px)';
@@ -827,19 +623,19 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         let profileMessage = "Here's my information:\n\n";
         
         // Physical data
-        profileMessage += "Physical Metrics:\n";
+        profileMessage += "Physical Vessel:\n";
         for (const [question, answer] of Object.entries(userProfile.physicalVessel)) {
             profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
         }
         
         // Goals data
-        profileMessage += "\nObjectives:\n";
+        profileMessage += "\nConscious Effort:\n";
         for (const [question, answer] of Object.entries(userProfile.consciousIntent)) {
             profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
         }
         
         // Occupation data
-        profileMessage += "\nCurrent Patterns:\n";
+        profileMessage += "\nDaily Rhythms:\n";
         for (const [question, answer] of Object.entries(userProfile.dailyRhythms)) {
             profileMessage += `- ${question}: ${Array.isArray(answer) ? answer.join(", ") : answer}\n`;
         }
@@ -1108,4 +904,211 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
 
     // Initialize the app
     init();
-});
+}); fade-out animation to current content
+        quizContainer.style.opacity = '0';
+        quizContainer.style.transform = 'translateY(10px)';
+        
+        setTimeout(() => {
+            // Update content
+            quizContainer.innerHTML = quizHTML;
+            
+            // Apply fade-in animation
+            quizContainer.style.opacity = '1';
+            quizContainer.style.transform = 'translateY(0)';
+            
+            // Add focus to the custom input if it's a custom question
+            if (currentQuestion.type === 'custom') {
+                setTimeout(() => {
+                    const customInput = document.getElementById('custom-quiz-input');
+                    if (customInput) customInput.focus();
+                }, 100);
+            }
+            
+            // Add staggered animation to options
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach((option, index) => {
+                option.style.opacity = 0;
+                option.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    option.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                    option.style.opacity = 1;
+                    option.style.transform = 'translateY(0)';
+                }, 50 * index);
+            });
+        }, 300);
+    }
+
+    // Function to update profile progress indicators with enhanced animation
+    function updateProfileProgress(step) {
+        // Update progress steps
+        for (let i = 1; i <= 3; i++) {
+            const progressStep = document.getElementById(`step-${i}`);
+            const progressLabel = document.getElementById(`label-${i}`);
+            
+            if (!progressStep || !progressLabel) continue;
+            
+            if (i < step) {
+                progressStep.classList.add('complete');
+                progressLabel.classList.add('complete');
+            } else if (i === step) {
+                progressStep.classList.add('active');
+                progressLabel.classList.add('active');
+                
+                // Add subtle animation to active step
+                progressStep.animate([
+                    { transform: 'scale(1)', opacity: 0.8 },
+                    { transform: 'scale(1.2)', opacity: 1 },
+                    { transform: 'scale(1.1)', opacity: 1 }
+                ], {
+                    duration: 600,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
+                
+                // Add subtle animation to active label
+                progressLabel.animate([
+                    { opacity: 0.8, transform: 'translateY(3px)' },
+                    { opacity: 1, transform: 'translateY(0)' }
+                ], {
+                    duration: 500,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
+            } else {
+                progressStep.classList.remove('active', 'complete');
+                progressLabel.classList.remove('active', 'complete');
+            }
+        }
+        
+        // Hide progress when at step 4 (profile complete)
+        if (step === 4) {
+            const progressEl = document.getElementById('profile-progress');
+            const labelsEl = document.getElementById('progress-labels');
+            
+            if (progressEl) progressEl.classList.add('complete');
+            if (labelsEl) labelsEl.classList.add('complete');
+        }
+    }
+
+    // Function to handle quiz option selection with enhanced animation
+    window.selectQuizOption = function(element, allowMultiple) {
+        const selectedClass = 'selected';
+        
+        if (allowMultiple) {
+            // Toggle selection for multiple-choice options
+            element.classList.toggle(selectedClass);
+            
+            // Add subtle animation for selection
+            if (element.classList.contains(selectedClass)) {
+                element.animate([
+                    { transform: 'translateY(0)' },
+                    { transform: 'translateY(-3px)' },
+                    { transform: 'translateY(-1px)' }
+                ], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+                });
+            }
+        } else {
+            // For single-choice options, deselect all others
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove(selectedClass);
+            });
+            
+            // Select the clicked option with animation
+            element.classList.add(selectedClass);
+            element.animate([
+                { transform: 'translateY(0)' },
+                { transform: 'translateY(-3px)' },
+                { transform: 'translateY(-1px)' }
+            ], {
+                duration: 300,
+                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+            });
+        }
+        
+        // Enable/disable the next button based on selection
+        const nextButton = document.querySelector('.quiz-button');
+        const hasSelection = document.querySelector('.quiz-option.selected') || 
+                             (document.getElementById('custom-quiz-input') && 
+                              document.getElementById('custom-quiz-input').value.trim() !== '');
+        
+        if (nextButton) {
+            nextButton.disabled = !hasSelection;
+            if (hasSelection) {
+                nextButton.classList.add('active');
+                
+                // Add button activation animation
+                nextButton.animate([
+                    { opacity: 0.5, transform: 'scale(0.98)' },
+                    { opacity: 1, transform: 'scale(1)' }
+                ], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
+            } else {
+                nextButton.classList.remove('active');
+            }
+        }
+    };
+
+    // Function to handle custom input changes with debounce for performance
+    window.handleCustomInput = debounce(function(inputElement) {
+        const nextButton = document.querySelector('.quiz-button');
+        if (nextButton) {
+            const hasValue = inputElement.value.trim() !== '';
+            nextButton.disabled = !hasValue;
+            
+            if (hasValue) {
+                nextButton.classList.add('active');
+                
+                // Subtle button activation animation 
+                nextButton.animate([
+                    { opacity: 0.5, transform: 'scale(0.98)' },
+                    { opacity: 1, transform: 'scale(1)' }
+                ], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
+            } else {
+                nextButton.classList.remove('active');
+            }
+        }
+    }, 100);
+    
+    // Function to submit quiz answer and move to next question with enhanced transition
+    window.submitQuizAnswer = function() {
+        const questions = quizQuestions[currentQuizSection];
+        const currentQuestion = questions[currentQuizQuestionIndex];
+        let answer;
+        
+        if (currentQuestion.type === 'select') {
+            if (currentQuestion.allowMultiple) {
+                answer = Array.from(document.querySelectorAll('.quiz-option.selected')).map(el => el.dataset.value);
+            } else {
+                const selected = document.querySelector('.quiz-option.selected');
+                answer = selected ? selected.dataset.value : null;
+            }
+            
+            // Handle custom input if present
+            const customInput = document.getElementById('custom-quiz-input');
+            if (customInput && customInput.value.trim()) {
+                if (Array.isArray(answer)) {
+                    answer.push(customInput.value.trim());
+                } else if (!answer) {
+                    answer = customInput.value.trim();
+                }
+            }
+        } else if (currentQuestion.type === 'custom') {
+            answer = document.getElementById('custom-quiz-input').value.trim();
+        }
+        
+        // Save answer
+        if (!currentQuizAnswers[currentQuizSection]) {
+            currentQuizAnswers[currentQuizSection] = {};
+        }
+        currentQuizAnswers[currentQuizSection][currentQuestion.question] = answer;
+        
+        // Apply
