@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleToolkitBtn = document.getElementById('toggle-toolkit-btn');
     const closeSidebarBtn = document.getElementById('close-sidebar');
     
-    // Loading animation text sequence - changed "Initializing" to "Connecting"
+    // Loading animation text sequence
     const connectingTexts = ['Connecting', 'Processing', 'Analyzing', 'Preparing'];
     let textIndex = 0;
 
@@ -585,7 +585,43 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         }, 300);
     }
 
-} else {
+    // Function to update profile progress indicators with enhanced animation
+    function updateProfileProgress(step) {
+        // Update progress steps
+        for (let i = 1; i <= 3; i++) {
+            const progressStep = document.getElementById(`step-${i}`);
+            const progressLabel = document.getElementById(`label-${i}`);
+            
+            if (!progressStep || !progressLabel) continue;
+            
+            if (i < step) {
+                progressStep.classList.add('complete');
+                progressLabel.classList.add('complete');
+            } else if (i === step) {
+                progressStep.classList.add('active');
+                progressLabel.classList.add('active');
+                
+                // Add subtle animation to active step
+                progressStep.animate([
+                    { transform: 'scale(1)', opacity: 0.8 },
+                    { transform: 'scale(1.2)', opacity: 1 },
+                    { transform: 'scale(1.1)', opacity: 1 }
+                ], {
+                    duration: 600,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
+                
+                // Add subtle animation to active label
+                progressLabel.animate([
+                    { opacity: 0.8, transform: 'translateY(3px)' },
+                    { opacity: 1, transform: 'translateY(0)' }
+                ], {
+                    duration: 500,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
+            } else {
                 progressStep.classList.remove('active', 'complete');
                 progressLabel.classList.remove('active', 'complete');
             }
