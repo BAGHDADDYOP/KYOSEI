@@ -26,7 +26,7 @@
 }
 
 body {
-    font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: var(--primary-bg);
     color: var(--text-primary);
     display: flex;
@@ -35,6 +35,7 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
+    font-size: 0.95rem;
 }
 
 /* Improved subtle background animation */
@@ -84,7 +85,7 @@ header {
 /* Glowing Text Effect */
 .glow-text {
     animation: textGlow 2s infinite alternate;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 800;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -104,7 +105,7 @@ header {
 
 /* Enhanced Animated Header */
 .animated-header {
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 800;
     text-transform: uppercase;
     font-size: clamp(1.8rem, 5vw, 2.6rem);
@@ -166,15 +167,15 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     }
 }
 
-/* Enhanced Profile Progress Indicators */
+/* Enhanced Profile Progress Indicators with smaller font/spacing */
 .profile-progress {
     display: flex;
     justify-content: center;
-    margin: 10px 0 20px;
+    margin: 5px 0 10px; /* Reduced margins */
     opacity: 0.9;
     transition: var(--transition-smooth);
     width: 100%;
-    max-width: 500px;
+    max-width: 400px; /* Reduced width */
     position: relative;
 }
 
@@ -200,8 +201,8 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
 }
 
 .progress-step {
-    width: 16px;
-    height: 16px;
+    width: 12px; /* Smaller steps */
+    height: 12px;
     border-radius: 50%;
     background-color: #222;
     margin: 0;
@@ -209,7 +210,7 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     z-index: 1;
     transition: var(--transition-smooth);
     border: 2px solid #000;
-    flex: 0 0 16px;
+    flex: 0 0 12px;
     overflow: hidden;
 }
 
@@ -244,18 +245,18 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     background-color: #555;
 }
 
-/* Progress labels with improved styling */
+/* Progress labels with improved styling and smaller font */
 .progress-labels {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    max-width: 500px;
-    margin: 0 auto 30px;
-    font-size: 0.9rem;
+    max-width: 400px; /* Reduced width */
+    margin: 0 auto 15px; /* Reduced margin bottom */
+    font-size: 0.8rem; /* Smaller font */
     color: #777;
     transition: var(--transition-smooth);
     padding: 0 5px;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-transform: uppercase;
     font-weight: 700;
 }
@@ -332,7 +333,7 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     letter-spacing: 1px;
     font-weight: 300;
     position: relative;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 /* Redesign pulse dots to look more professional */
@@ -426,6 +427,7 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     word-wrap: break-word;
     line-height: 1.5;
     position: relative;
+    font-size: 0.92rem;
 }
 
 .user-message {
@@ -501,7 +503,7 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     overflow: hidden;
     background-color: var(--card-bg);
     box-shadow: var(--shadow-soft);
-    display: none;
+    display: none; /* Hidden by default, shown after quiz */
 }
 
 #input-form.focused {
@@ -515,8 +517,8 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     border: none;
     background-color: transparent;
     color: var(--text-primary);
-    font-size: 1rem;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 0.95rem;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 #user-input:focus {
@@ -535,8 +537,9 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     cursor: pointer;
     transition: var(--transition-smooth);
     font-weight: 800;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-transform: uppercase;
+    font-size: 0.9rem;
 }
 
 #input-form button:hover {
@@ -573,9 +576,9 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
 
 .quiz-question {
     margin-bottom: 24px;
-    font-size: 1.3rem;
+    font-size: 1.1rem; /* Reduced font size */
     line-height: 1.6;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 600;
     letter-spacing: 0.5px;
     color: var(--text-primary);
@@ -607,16 +610,16 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     background-color: rgba(20, 20, 20, 0.6);
     border: 1px solid #2d2d2d;
     border-radius: 10px;
-    padding: 16px 20px;
+    padding: 14px 18px; /* Slightly smaller padding */
     cursor: pointer;
     transition: var(--transition-smooth);
     text-align: left;
-    font-size: 1.05rem;
+    font-size: 0.95rem; /* Smaller font */
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: center;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .quiz-option::before {
@@ -632,8 +635,8 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
 
 .quiz-option::after {
     content: '';
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     border: 1px solid #444;
     display: inline-block;
@@ -674,13 +677,13 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     background-color: rgba(20, 20, 20, 0.6);
     border: 1px solid #333;
     border-radius: 10px;
-    padding: 16px;
+    padding: 14px; /* Slightly smaller padding */
     width: 100%;
     margin: 5px 0 20px;
     color: var(--text-primary);
-    font-size: 1.05rem;
+    font-size: 0.95rem; /* Smaller font */
     transition: var(--transition-smooth);
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .quiz-custom-input:focus {
@@ -695,9 +698,9 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     color: black;
     border: none;
     border-radius: 10px;
-    padding: 16px 30px;
+    padding: 14px 25px; /* Slightly smaller padding */
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 0.95rem; /* Smaller font */
     letter-spacing: 1px;
     transition: var(--transition-smooth);
     margin: 15px auto 0;
@@ -705,7 +708,7 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     min-width: 140px;
     position: relative;
     overflow: hidden;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 800;
     text-transform: uppercase;
 }
@@ -807,10 +810,10 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
 }
 
 .sidebar-header h2 {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 800;
     letter-spacing: 1px;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .close-sidebar {
@@ -893,17 +896,17 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     background-color: white;
     border-radius: 50%;
     color: black;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     font-weight: 800;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .protocol-title {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     font-weight: 800;
     letter-spacing: 0.5px;
     flex: 1;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     text-transform: uppercase;
 }
 
@@ -920,20 +923,20 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
 }
 
 .protocol-content h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 12px;
     color: #eee;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 800;
     text-transform: uppercase;
 }
 
 .protocol-content p {
     margin-bottom: 12px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #bbb;
     line-height: 1.5;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .protocol-content ul {
@@ -943,11 +946,11 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
 
 .protocol-content li {
     margin-bottom: 10px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: #aaa;
     position: relative;
     padding-left: 16px;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .protocol-content li::before {
@@ -962,7 +965,7 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     font-weight: 500;
 }
 
-/* New: Inquire button in protocol cards */
+/* Inquire button in protocol cards */
 .inquire-button {
     display: inline-block;
     background-color: white;
@@ -975,7 +978,7 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     cursor: pointer;
     transition: var(--transition-smooth);
     text-align: center;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 800;
     text-transform: uppercase;
 }
@@ -1010,11 +1013,11 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     color: black;
     border: none;
     border-radius: 8px;
-    padding: 12px 20px;
+    padding: 10px 18px;
     margin: 15px 0;
     cursor: pointer;
-    font-size: 0.9rem;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 0.85rem;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 800;
     letter-spacing: 1.5px;
     text-transform: uppercase;
@@ -1022,6 +1025,7 @@ main > *:nth-child(5) { animation-delay: 0.5s; }
     align-self: center;
     position: relative;
     overflow: hidden;
+    display: none; /* Hidden by default, shown after quiz */
 }
 
 .toggle-toolkit-btn::before {
@@ -1061,10 +1065,10 @@ footer {
 }
 
 .footer-text {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: white;
     letter-spacing: 1px;
-    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 800;
 }
 
@@ -1139,11 +1143,11 @@ footer {
     }
     
     .protocol-title {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
     
     .quiz-question {
-        font-size: 1.1rem;
+        font-size: 1rem;
     }
     
     .quiz-option {
