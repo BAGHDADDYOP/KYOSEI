@@ -1,4 +1,4 @@
-// Enhanced and fixed script.js with complete functionality
+// Enhanced script.js with complete functionality
 
 document.addEventListener('DOMContentLoaded', function() {
     // Cache DOM elements for better performance
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleToolkitBtn = document.getElementById('toggle-toolkit-btn');
     const closeSidebarBtn = document.getElementById('close-sidebar');
     
-    // FIXED: Loading animation text sequence - changed "Initializing" to "Connecting"
+    // Loading animation text sequence - changed "Initializing" to "Connecting"
     const connectingTexts = ['Connecting', 'Processing', 'Analyzing', 'Preparing'];
     let textIndex = 0;
 
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(function() {
                     loadingScreen.style.display = 'none';
                     animateSymbioticBackground();
-                    // FIXED: Explicitly start profile collection after loading screen is removed
+                    // Explicitly start profile collection after loading screen is removed
                     startProfileCollection();
                 }, 600);
             }
@@ -82,7 +82,7 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         { role: "model", parts: [{ text: "Welcome! To provide you with personalized health and fitness guidance, I'd like to learn a bit about you first.\n\nCould you please share some details about your physical vessel such as your age, height, weight, and any health conditions or limitations you may have?" }] },
     ];
 
-    // Define quiz questions with updated terminology
+    // Enhanced quiz questions with more personalized options
     const quizQuestions = {
         physiology: [
             {
@@ -105,64 +105,77 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
             {
                 question: "Do you have any health conditions or limitations?",
                 type: "select",
-                options: ["None", "High blood pressure", "Diabetes", "Joint pain/arthritis", "Back problems", "Heart condition", "Respiratory issues"],
+                options: ["None", "High blood pressure", "Diabetes", "Joint pain/arthritis", "Back problems", "Heart condition", "Respiratory issues", "Digestive disorders", "Hormonal imbalances", "Autoimmune conditions"],
                 allowCustom: true,
                 customLabel: "Enter other health conditions",
                 allowMultiple: true
             },
             {
-                question: "How would you describe your digestive health?",
+                question: "How would you describe your current energy levels?",
                 type: "select",
-                options: ["Excellent - No issues", "Good - Occasional discomfort", "Fair - Regular minor issues", "Poor - Frequent discomfort"]
+                options: ["Very low - Frequently exhausted", "Low - Often tired", "Moderate - Occasional fatigue", "Good - Mostly energetic", "Excellent - Consistently energetic"]
+            },
+            {
+                question: "How would you rate your sleep quality?",
+                type: "select",
+                options: ["Poor - Difficulty falling/staying asleep", "Fair - Inconsistent quality", "Average - Adequate but not refreshing", "Good - Mostly restful", "Excellent - Consistently restorative"]
             }
         ],
         goals: [
             {
-                question: "What are your primary fitness goals?",
+                question: "What are your primary wellness goals?",
                 type: "select",
-                options: ["Weight loss", "Muscle gain", "Improved endurance", "Better flexibility", "Overall health", "Sports performance", "Rehabilitation"],
+                options: ["Weight management", "Muscle development", "Cardiovascular health", "Flexibility & mobility", "Energy optimization", "Stress reduction", "Sleep improvement", "Cognitive performance", "Longevity & healthspan"],
                 allowMultiple: true
             },
             {
                 question: "How would you describe your current fitness level?",
                 type: "select",
-                options: ["Beginner - New to exercise", "Intermediate - Exercise occasionally", "Advanced - Regular exercise", "Athletic - Trained regularly for years"]
+                options: ["Beginner - New to structured exercise", "Novice - Exercise occasionally", "Intermediate - Regular activity", "Advanced - Consistent training", "Athletic - Sport-specific training"]
             },
             {
-                question: "What specific areas would you like to focus on?",
+                question: "Which aspects of your physical capacity would you like to develop?",
                 type: "select",
-                options: ["Full body", "Upper body", "Lower body", "Core strength", "Cardiovascular health", "Functional mobility"],
+                options: ["Strength", "Endurance", "Speed", "Power", "Balance", "Coordination", "Flexibility", "Metabolic efficiency"],
                 allowMultiple: true
             },
             {
-                question: "Which aspect of your wellbeing do you want to prioritize?",
+                question: "What specific outcomes are you hoping to achieve in the next 3 months?",
                 type: "select",
-                options: ["Cognitive performance", "Stress management", "Energy levels", "Recovery optimization", "Sleep quality"],
+                options: ["Body composition change", "Performance improvement", "Habit formation", "Stress management", "Recovery optimization", "Sleep quality enhancement", "Custom plan development"],
+                allowCustom: true,
+                customLabel: "Enter your specific goal",
                 allowMultiple: true
             }
         ],
-        occupation: [
+        lifestyle: [
             {
-                question: "What is your occupation or job type?",
+                question: "What is your occupation or primary daily activity?",
                 type: "select",
-                options: ["Office/Desk job", "Physical/Manual labor", "Healthcare", "Education", "Service industry", "Remote/Work from home", "Student", "Retired"],
+                options: ["Office/Desk work", "Physical/Manual labor", "Healthcare", "Education", "Service industry", "Remote/Work from home", "Student", "Retired", "Caregiver"],
                 allowCustom: true,
                 customLabel: "Enter your specific occupation"
             },
             {
-                question: "How many hours do you typically work per day?",
+                question: "How would you describe your typical daily movement pattern?",
                 type: "select",
-                options: ["Less than 4 hours", "4-6 hours", "7-8 hours", "9-10 hours", "More than 10 hours", "Variable schedule"]
+                options: ["Mostly sedentary (sitting)", "Light activity (occasional walking)", "Moderate activity (regular walking/standing)", "Active (frequent movement)", "Very active (constant movement)"]
             },
             {
-                question: "How would you rate your daily activity level at work?",
+                question: "What is your typical sleep schedule?",
                 type: "select",
-                options: ["Mostly sedentary (sitting)", "Light activity (occasional walking)", "Moderate activity (regular walking/standing)", "High activity (physically demanding)"]
+                options: ["Early riser (5-6am wake)", "Standard schedule (6-8am wake)", "Later schedule (8-10am wake)", "Night owl (10am+ wake)", "Irregular/shift work pattern"]
             },
             {
-                question: "How would you rate your work stress level?",
+                question: "How would you rate your current stress levels?",
                 type: "select",
-                options: ["Low stress", "Moderate stress", "High stress", "Variable/depends on the day"]
+                options: ["Low - Minimal stress", "Moderate - Manageable stress", "High - Frequent stress", "Very high - Constant stress", "Variable - Fluctuating levels"]
+            },
+            {
+                question: "Which daily habits would you like to establish or improve?",
+                type: "select",
+                options: ["Morning routine", "Exercise consistency", "Nutrition planning", "Hydration", "Stress management practice", "Digital detox", "Sleep hygiene", "Recovery protocols"],
+                allowMultiple: true
             }
         ]
     };
@@ -236,7 +249,7 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         }
     ];
 
-    // NEW: PDF Generation functionality
+    // PDF Generation functionality
     function generatePDF(contentType, data) {
         // Simulate PDF generation - In a real implementation, this would use a PDF library
         const pdfMessage = `Your personalized ${contentType} PDF has been generated. In a production environment, this would create a downloadable PDF document containing: ${JSON.stringify(data).substring(0, 100)}...`;
@@ -262,7 +275,7 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         
         // Add functionality to buttons
         modal.querySelector('.pdf-download-btn').addEventListener('click', function() {
-            modal.querySelector('.pdf-download-btn').textContent = 'Downloaded!';
+            this.textContent = 'Downloaded!';
             setTimeout(() => {
                 document.body.removeChild(modal);
             }, 1500);
@@ -273,7 +286,7 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         });
     }
 
-    // NEW: Interactive roadmap visualization
+    // Interactive roadmap visualization
     function createInteractiveRoadmap(title, steps) {
         const roadmapContainer = document.createElement('div');
         roadmapContainer.className = 'roadmap-container';
@@ -435,11 +448,11 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         });
     }
 
-    // NEW: Function to handle protocol inquiries
+    // Function to handle protocol inquiries
     function inquireAboutProtocol(protocolName) {
         const inquiryMessage = `I'd like to learn more about the ${protocolName} protocol. Can you provide detailed information and how I can implement it?`;
         addUserMessage(inquiryMessage);
-        getAIResponse();
+        getAIResponse(inquiryMessage);
     }
 
     // Animate symbiotic background elements
@@ -466,8 +479,8 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
     // Function to start the profile collection process
     function startProfileCollection() {
         // Hide standard input form and show quiz
-        form.style.display = 'none';
-        quizContainer.style.display = 'block';
+        if (form) form.style.display = 'none';
+        if (quizContainer) quizContainer.style.display = 'block';
         
         // Initialize the first question
         showCurrentQuizQuestion();
@@ -476,19 +489,25 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         updateProfileProgress(1);
         
         // Add subtle entrance animation to quiz container
-        quizContainer.animate([
-            { opacity: 0, transform: 'translateY(20px)' },
-            { opacity: 1, transform: 'translateY(0)' }
-        ], {
-            duration: 800,
-            easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-            fill: 'forwards'
-        });
+        if (quizContainer) {
+            quizContainer.animate([
+                { opacity: 0, transform: 'translateY(20px)' },
+                { opacity: 1, transform: 'translateY(0)' }
+            ], {
+                duration: 800,
+                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                fill: 'forwards'
+            });
+        }
     }
 
     // Function to show the current quiz question with enhanced animation
     function showCurrentQuizQuestion() {
+        if (!quizContainer) return;
+        
         const questions = quizQuestions[currentQuizSection];
+        if (!questions || !questions[currentQuizQuestionIndex]) return;
+        
         const currentQuestion = questions[currentQuizQuestionIndex];
         
         // Create quiz HTML
@@ -566,43 +585,7 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         }, 300);
     }
 
-    // Function to update profile progress indicators with enhanced animation
-    function updateProfileProgress(step) {
-        // Update progress steps
-        for (let i = 1; i <= 3; i++) {
-            const progressStep = document.getElementById(`step-${i}`);
-            const progressLabel = document.getElementById(`label-${i}`);
-            
-            if (!progressStep || !progressLabel) continue;
-            
-            if (i < step) {
-                progressStep.classList.add('complete');
-                progressLabel.classList.add('complete');
-            } else if (i === step) {
-                progressStep.classList.add('active');
-                progressLabel.classList.add('active');
-                
-                // Add subtle animation to active step
-                progressStep.animate([
-                    { transform: 'scale(1)', opacity: 0.8 },
-                    { transform: 'scale(1.2)', opacity: 1 },
-                    { transform: 'scale(1.1)', opacity: 1 }
-                ], {
-                    duration: 600,
-                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-                    fill: 'forwards'
-                });
-                
-                // Add subtle animation to active label
-                progressLabel.animate([
-                    { opacity: 0.8, transform: 'translateY(3px)' },
-                    { opacity: 1, transform: 'translateY(0)' }
-                ], {
-                    duration: 500,
-                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-                    fill: 'forwards'
-                });
-            } else {
+} else {
                 progressStep.classList.remove('active', 'complete');
                 progressLabel.classList.remove('active', 'complete');
             }
@@ -617,115 +600,3 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
             if (labelsEl) labelsEl.classList.add('complete');
         }
     }
-
-    // FIXED: Make these functions global so they can be accessed from inline HTML events
-    window.selectQuizOption = function(element, allowMultiple) {
-        const selectedClass = 'selected';
-        
-        if (allowMultiple) {
-            // Toggle selection for multiple-choice options
-            element.classList.toggle(selectedClass);
-            
-            // Add subtle animation for selection
-            if (element.classList.contains(selectedClass)) {
-                element.animate([
-                    { transform: 'translateY(0)' },
-                    { transform: 'translateY(-3px)' },
-                    { transform: 'translateY(-1px)' }
-                ], {
-                    duration: 300,
-                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
-                });
-            }
-        } else {
-            // For single-choice options, deselect all others
-            document.querySelectorAll('.quiz-option').forEach(opt => {
-                opt.classList.remove(selectedClass);
-            });
-            
-            // Select the clicked option with animation
-            element.classList.add(selectedClass);
-            element.animate([
-                { transform: 'translateY(0)' },
-                { transform: 'translateY(-3px)' },
-                { transform: 'translateY(-1px)' }
-            ], {
-                duration: 300,
-                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
-            });
-        }
-        
-        // Enable/disable the next button based on selection
-        const nextButton = document.querySelector('.quiz-button');
-        const hasSelection = document.querySelector('.quiz-option.selected') || 
-                            (document.getElementById('custom-quiz-input') && 
-                            document.getElementById('custom-quiz-input').value.trim() !== '');
-        
-        if (nextButton) {
-            nextButton.disabled = !hasSelection;
-            if (hasSelection) {
-                nextButton.classList.add('active');
-                
-                // Add button activation animation
-                nextButton.animate([
-                    { opacity: 0.5, transform: 'scale(0.98)' },
-                    { opacity: 1, transform: 'scale(1)' }
-                ], {
-                    duration: 300,
-                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-                    fill: 'forwards'
-                });
-            } else {
-                nextButton.classList.remove('active');
-            }
-        }
-    };
-
-    // Function to handle custom input changes with debounce for performance
-    window.handleCustomInput = function(inputElement) {
-        const nextButton = document.querySelector('.quiz-button');
-        if (nextButton) {
-            const hasValue = inputElement.value.trim() !== '';
-            nextButton.disabled = !hasValue;
-            
-            if (hasValue) {
-                nextButton.classList.add('active');
-                
-                // Subtle button activation animation 
-                nextButton.animate([
-                    { opacity: 0.5, transform: 'scale(0.98)' },
-                    { opacity: 1, transform: 'scale(1)' }
-                ], {
-                    duration: 300,
-                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
-                    fill: 'forwards'
-                });
-            } else {
-                nextButton.classList.remove('active');
-            }
-        }
-    };
-    
-    // FIXED: Function to submit quiz answer and move to next question with enhanced transition
-    window.submitQuizAnswer = function() {
-        const questions = quizQuestions[currentQuizSection];
-        const currentQuestion = questions[currentQuizQuestionIndex];
-        let answer;
-        
-        if (currentQuestion.type === 'select') {
-            if (currentQuestion.allowMultiple) {
-                answer = Array.from(document.querySelectorAll('.quiz-option.selected')).map(el => el.dataset.value);
-            } else {
-                const selected = document.querySelector('.quiz-option.selected');
-                answer = selected ? selected.dataset.value : null;
-            }
-            
-            // Handle custom input if present
-            const customInput = document.getElementById('custom-quiz-input');
-            if (customInput && customInput.value.trim()) {
-                if (Array.isArray(answer)) {
-                    answer.push(customInput.value.trim());
-                } else if (!answer) {
-                    answer = customInput.value.trim();
-                }
-            }
