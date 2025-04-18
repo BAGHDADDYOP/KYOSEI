@@ -13,6 +13,44 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Helvetica', Arial, sans-serif;
+}
+
+.pdf-modal-content {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.pdf-modal-content h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #fff;
+    font-family: 'Helvetica', Arial, sans-serif;
+    font-weight: 700;
+}
+
+.pdf-modal-content p {
+    margin-bottom: 20px;
+    color: #ccc;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.pdf-thumbnail {
+    background-color: #111;
+    width: 150px;
+    height: 200px;
+    margin: 0 auto 20px;
+    border: 1px solid #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
@@ -44,6 +82,8 @@
     cursor: pointer;
     font-weight: 500;
     transition: all 0.2s ease;
+    font-family: 'Helvetica', Arial, sans-serif;
+    font-size: 0.9rem;
 }
 
 .pdf-download-btn:hover, .pdf-close-btn:hover {
@@ -68,6 +108,7 @@
     padding: 20px;
     margin-top: 15px;
     border: 1px solid #333;
+    font-family: 'Helvetica', Arial, sans-serif;
 }
 
 .roadmap-header {
@@ -83,6 +124,8 @@
     font-size: 1.2rem;
     color: #fff;
     margin: 0;
+    font-family: 'Helvetica', Arial, sans-serif;
+    font-weight: 700;
 }
 
 .roadmap-controls {
@@ -99,6 +142,7 @@
     font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-family: 'Helvetica', Arial, sans-serif;
 }
 
 .roadmap-fullscreen-btn:hover, .roadmap-pdf-btn:hover {
@@ -143,6 +187,8 @@
     z-index: 2;
     font-weight: bold;
     flex-shrink: 0;
+    color: white;
+    font-family: 'Helvetica', Arial, sans-serif;
 }
 
 .roadmap-step-content {
@@ -157,12 +203,16 @@
     margin-top: 0;
     margin-bottom: 8px;
     color: #fff;
+    font-family: 'Helvetica', Arial, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
 }
 
 .roadmap-step-content p {
     margin-bottom: 10px;
     color: #aaa;
     font-size: 0.9rem;
+    line-height: 1.5;
 }
 
 .roadmap-step-timeframe {
@@ -191,37 +241,37 @@
     max-height: 90vh;
     overflow-y: auto;
     margin: 0;
-}items: center;
 }
 
-.pdf-modal-content {
-    background-color: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 10px;
-    padding: 30px;
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+.roadmap-close-fullscreen-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
 }
 
-.pdf-modal-content h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: #fff;
+.roadmap-close-fullscreen-btn:hover {
+    opacity: 1;
 }
 
-.pdf-modal-content p {
-    margin-bottom: 20px;
-    color: #ccc;
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+    .pdf-modal-content {
+        padding: 20px;
+        width: 95%;
+    }
+    
+    .roadmap-step-content {
+        padding: 12px;
+    }
+    
+    .roadmap-fullscreen {
+        padding: 20px;
+    }
 }
-
-.pdf-thumbnail {
-    background-color: #111;
-    width: 150px;
-    height: 200px;
-    margin: 0 auto 20px;
-    border: 1px solid #333;
-    display: flex;
-    justify-content: center;
-    align-
