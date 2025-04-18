@@ -37,7 +37,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (loadingScreen) {
                 loadingScreen.classList.add('fade-out');
                 setTimeout(function() {
-                    loadingScreen.style.display = 'none';
+                    if (loadingScreen) {
+                        loadingScreen.style.display = 'none';
+                    }
                     animateSymbioticBackground();
                     // Explicitly start profile collection after loading screen is removed
                     startProfileCollection();
@@ -57,28 +59,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Profile collection stage
     let profileCollectionStage = 0;
 
-    // System Instruction with more professional language
-    const SYSTEM_INSTRUCTION = `You represent Kyōsei, a professional wellness guide focused on evidence-based approaches to optimize health. Your purpose is to provide scientifically validated information about the interconnected systems of physical health, mental wellbeing, and physiological balance.
-
-Always emphasize:
-1. Evidence-based approaches backed by peer-reviewed research
-2. How physiological systems interact for optimal health outcomes
-3. Neuroplasticity and adaptation mechanisms in response to lifestyle interventions
-4. The importance of individualized approach based on assessment data
-
-Present wellness as a process of targeted optimization rather than a deficit-correction model. Use professional, evidence-focused terminology reflecting current biomedical understanding. Draw from established principles in exercise physiology, nutritional science, sleep medicine, and cognitive performance optimization.
-
-IMPORTANT: When a user first engages with you, ALWAYS follow this flow:
-1. First, ask about their physical vessel (age, height, weight, medical conditions, biomarkers if available).
-2. Second, ask about their conscious effort (specific, measurable goals and areas for improvement).
-3. Third, ask about their daily rhythms (occupation, sleep schedule, stress factors, current routines).
-4. Only AFTER collecting this information should you provide personalized, evidence-based recommendations.
-
-Frame recommendations to highlight specific physiological mechanisms and outcomes supported by research.`;
-
     // Store conversation history
     let conversationHistory = [
-        { role: "user", parts: [{ text: SYSTEM_INSTRUCTION }] },
+        { role: "user", parts: [{ text: "Welcome!" }] },
         { role: "model", parts: [{ text: "Welcome! To provide you with personalized health and fitness guidance, I'd like to learn a bit about you first.\n\nCould you please share some details about your physical vessel such as your age, height, weight, and any health conditions or limitations you may have?" }] },
     ];
 
@@ -114,11 +97,6 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
                 question: "How would you describe your current energy levels?",
                 type: "select",
                 options: ["Very low - Frequently exhausted", "Low - Often tired", "Moderate - Occasional fatigue", "Good - Mostly energetic", "Excellent - Consistently energetic"]
-            },
-            {
-                question: "How would you rate your sleep quality?",
-                type: "select",
-                options: ["Poor - Difficulty falling/staying asleep", "Fair - Inconsistent quality", "Average - Adequate but not refreshing", "Good - Mostly restful", "Excellent - Consistently restorative"]
             }
         ],
         goals: [
@@ -137,14 +115,6 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
                 question: "Which aspects of your physical capacity would you like to develop?",
                 type: "select",
                 options: ["Strength", "Endurance", "Speed", "Power", "Balance", "Coordination", "Flexibility", "Metabolic efficiency"],
-                allowMultiple: true
-            },
-            {
-                question: "What specific outcomes are you hoping to achieve in the next 3 months?",
-                type: "select",
-                options: ["Body composition change", "Performance improvement", "Habit formation", "Stress management", "Recovery optimization", "Sleep quality enhancement", "Custom plan development"],
-                allowCustom: true,
-                customLabel: "Enter your specific goal",
                 allowMultiple: true
             }
         ],
@@ -165,22 +135,11 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
                 question: "What is your typical sleep schedule?",
                 type: "select",
                 options: ["Early riser (5-6am wake)", "Standard schedule (6-8am wake)", "Later schedule (8-10am wake)", "Night owl (10am+ wake)", "Irregular/shift work pattern"]
-            },
-            {
-                question: "How would you rate your current stress levels?",
-                type: "select",
-                options: ["Low - Minimal stress", "Moderate - Manageable stress", "High - Frequent stress", "Very high - Constant stress", "Variable - Fluctuating levels"]
-            },
-            {
-                question: "Which daily habits would you like to establish or improve?",
-                type: "select",
-                options: ["Morning routine", "Exercise consistency", "Nutrition planning", "Hydration", "Stress management practice", "Digital detox", "Sleep hygiene", "Recovery protocols"],
-                allowMultiple: true
             }
         ]
     };
 
-    // Define knowledge toolkit protocols with monochromatic styling
+    // Define knowledge toolkit protocols
     const knowledgeProtocols = [
         {
             title: "Sleep Optimization",
@@ -249,215 +208,11 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
         }
     ];
 
-    // PDF Generation functionality
-    function generatePDF(contentType, data) {
-        // Simulate PDF generation - In a real implementation, this would use a PDF library
-        const pdfMessage = `Your personalized ${contentType} PDF has been generated. In a production environment, this would create a downloadable PDF document containing: ${JSON.stringify(data).substring(0, 100)}...`;
-        
-        addAIMessage(pdfMessage);
-        
-        // Show a modal dialog to simulate PDF generation
-        const modal = document.createElement('div');
-        modal.className = 'pdf-modal';
-        modal.innerHTML = `
-            <div class="pdf-modal-content">
-                <h3>PDF Generated</h3>
-                <p>Your personalized ${contentType} document has been created.</p>
-                <div class="pdf-thumbnail">
-                    <div class="pdf-icon">PDF</div>
-                </div>
-                <button class="pdf-download-btn">Download PDF</button>
-                <button class="pdf-close-btn">Close</button>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Add functionality to buttons
-        modal.querySelector('.pdf-download-btn').addEventListener('click', function() {
-            this.textContent = 'Downloaded!';
-            setTimeout(() => {
-                document.body.removeChild(modal);
-            }, 1500);
-        });
-        
-        modal.querySelector('.pdf-close-btn').addEventListener('click', function() {
-            document.body.removeChild(modal);
-        });
-    }
-
-    // Interactive roadmap visualization
-    function createInteractiveRoadmap(title, steps) {
-        const roadmapContainer = document.createElement('div');
-        roadmapContainer.className = 'roadmap-container';
-        
-        const roadmapHeader = document.createElement('div');
-        roadmapHeader.className = 'roadmap-header';
-        roadmapHeader.innerHTML = `
-            <h3>${title}</h3>
-            <div class="roadmap-controls">
-                <button class="roadmap-fullscreen-btn">Expand</button>
-                <button class="roadmap-pdf-btn">Save as PDF</button>
-            </div>
-        `;
-        
-        const roadmapContent = document.createElement('div');
-        roadmapContent.className = 'roadmap-content';
-        
-        // Create timeline elements
-        const timeline = document.createElement('div');
-        timeline.className = 'roadmap-timeline';
-        
-        steps.forEach((step, index) => {
-            const stepElement = document.createElement('div');
-            stepElement.className = 'roadmap-step';
-            stepElement.innerHTML = `
-                <div class="roadmap-step-number">${index + 1}</div>
-                <div class="roadmap-step-content">
-                    <h4>${step.title}</h4>
-                    <p>${step.description}</p>
-                    <div class="roadmap-step-timeframe">${step.timeframe}</div>
-                </div>
-            `;
-            
-            timeline.appendChild(stepElement);
-        });
-        
-        roadmapContent.appendChild(timeline);
-        roadmapContainer.appendChild(roadmapHeader);
-        roadmapContainer.appendChild(roadmapContent);
-        
-        // Add to chat
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message ai-message';
-        messageDiv.appendChild(roadmapContainer);
-        
-        chatContainer.appendChild(messageDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-        
-        // Add event listeners
-        messageDiv.querySelector('.roadmap-fullscreen-btn').addEventListener('click', function() {
-            messageDiv.classList.toggle('roadmap-fullscreen');
-            this.textContent = messageDiv.classList.contains('roadmap-fullscreen') ? 'Minimize' : 'Expand';
-        });
-        
-        messageDiv.querySelector('.roadmap-pdf-btn').addEventListener('click', function() {
-            generatePDF('Roadmap', {
-                title: title,
-                steps: steps
-            });
-        });
-        
-        return roadmapContainer;
-    }
-
-    // Current quiz data
-    let currentQuizSection = 'physiology';
-    let currentQuizQuestionIndex = 0;
-    let currentQuizAnswers = {};
-
-    // Debounce function to optimize event handlers
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    // Add event listeners for sidebar functionality
-    if (toggleToolkitBtn) {
-        toggleToolkitBtn.addEventListener('click', function() {
-            sidebar.classList.add('active');
-            sidebarOverlay.classList.add('active');
-            
-            // Animate sidebar elements entrance
-            const sidebarItems = document.querySelectorAll('.protocol-card');
-            sidebarItems.forEach((item, index) => {
-                setTimeout(() => {
-                    item.classList.add('active');
-                }, 100 * index);
-            });
-        });
-    }
-
-    if (closeSidebarBtn) {
-        closeSidebarBtn.addEventListener('click', closeSidebar);
-    }
-
-    if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', closeSidebar);
-    }
-
-    // Function to close sidebar with animation
-    function closeSidebar() {
-        // Animate sidebar items exit
-        const sidebarItems = document.querySelectorAll('.protocol-card');
-        sidebarItems.forEach((item) => {
-            item.classList.remove('active');
-        });
-        
-        // Delay sidebar closing to allow for animations
-        setTimeout(() => {
-            sidebar.classList.remove('active');
-            sidebarOverlay.classList.remove('active');
-        }, 200);
-    }
-
-    // Populate sidebar with knowledge protocols - Fixed function to avoid duplications
-    function populateSidebar() {
-        if (!sidebarContent) return;
-        
-        // Clear any existing content first
-        sidebarContent.innerHTML = '';
-        
-        knowledgeProtocols.forEach((protocol, index) => {
-            const card = document.createElement('div');
-            card.className = 'protocol-card';
-            card.innerHTML = `
-                <div class="protocol-header">
-                    <div class="protocol-icon">${protocol.icon}</div>
-                    <h3 class="protocol-title">${protocol.title}</h3>
-                </div>
-                <div class="protocol-content">
-                    ${protocol.content}
-                </div>
-            `;
-            
-            // Add click event to expand/collapse
-            const header = card.querySelector('.protocol-header');
-            header.addEventListener('click', function() {
-                card.classList.toggle('expanded');
-            });
-            
-            sidebarContent.appendChild(card);
-        });
-        
-        // Add event listeners to all inquire buttons
-        document.querySelectorAll('.inquire-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent the expand/collapse from triggering
-                const protocol = this.getAttribute('data-protocol');
-                inquireAboutProtocol(protocol);
-                closeSidebar();
-            });
-        });
-    }
-
-    // Function to handle protocol inquiries
-    function inquireAboutProtocol(protocolName) {
-        const inquiryMessage = `I'd like to learn more about the ${protocolName} protocol. Can you provide detailed information and how I can implement it?`;
-        addUserMessage(inquiryMessage);
-        getAIResponse(inquiryMessage);
-    }
-
     // Animate symbiotic background elements
     function animateSymbioticBackground() {
         const shapes = document.querySelectorAll('.symbiotic-shape');
+        if (!shapes || shapes.length === 0) return;
+        
         shapes.forEach((shape, index) => {
             // Set random initial positions
             const randomX = Math.random() * 100;
@@ -500,6 +255,11 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
             });
         }
     }
+    
+    // Current quiz data
+    let currentQuizSection = 'physiology';
+    let currentQuizQuestionIndex = 0;
+    let currentQuizAnswers = {};
 
     // Function to show the current quiz question with enhanced animation
     function showCurrentQuizQuestion() {
@@ -636,3 +396,460 @@ Frame recommendations to highlight specific physiological mechanisms and outcome
             if (labelsEl) labelsEl.classList.add('complete');
         }
     }
+
+    // Make these functions global so they can be accessed from inline HTML events
+    window.selectQuizOption = function(element, allowMultiple) {
+        const selectedClass = 'selected';
+        
+        if (allowMultiple) {
+            // Toggle selection for multiple-choice options
+            element.classList.toggle(selectedClass);
+            
+            // Add subtle animation for selection
+            if (element.classList.contains(selectedClass)) {
+                element.animate([
+                    { transform: 'translateY(0)' },
+                    { transform: 'translateY(-3px)' },
+                    { transform: 'translateY(-1px)' }
+                ], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+                });
+            }
+        } else {
+            // For single-choice options, deselect all others
+            document.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove(selectedClass);
+            });
+            
+            // Select the clicked option with animation
+            element.classList.add(selectedClass);
+            element.animate([
+                { transform: 'translateY(0)' },
+                { transform: 'translateY(-3px)' },
+                { transform: 'translateY(-1px)' }
+            ], {
+                duration: 300,
+                easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)'
+            });
+        }
+        
+        // Enable/disable the next button based on selection
+        const nextButton = document.querySelector('.quiz-button');
+        const hasSelection = document.querySelector('.quiz-option.selected') || 
+                            (document.getElementById('custom-quiz-input') && 
+                            document.getElementById('custom-quiz-input').value.trim() !== '');
+        
+        if (nextButton) {
+            nextButton.disabled = !hasSelection;
+            if (hasSelection) {
+                nextButton.classList.add('active');
+                
+                // Add button activation animation
+                nextButton.animate([
+                    { opacity: 0.5, transform: 'scale(0.98)' },
+                    { opacity: 1, transform: 'scale(1)' }
+                ], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
+            } else {
+                nextButton.classList.remove('active');
+            }
+        }
+    };
+
+    // Function to handle custom input changes with debounce for performance
+    window.handleCustomInput = function(inputElement) {
+        const nextButton = document.querySelector('.quiz-button');
+        if (nextButton) {
+            const hasValue = inputElement.value.trim() !== '';
+            nextButton.disabled = !hasValue;
+            
+            if (hasValue) {
+                nextButton.classList.add('active');
+                
+                // Subtle button activation animation 
+                nextButton.animate([
+                    { opacity: 0.5, transform: 'scale(0.98)' },
+                    { opacity: 1, transform: 'scale(1)' }
+                ], {
+                    duration: 300,
+                    easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+                    fill: 'forwards'
+                });
+            } else {
+                nextButton.classList.remove('active');
+            }
+        }
+    };
+
+    // Function to submit quiz answer and move to next question with enhanced transition
+    window.submitQuizAnswer = function() {
+        const questions = quizQuestions[currentQuizSection];
+        if (!questions) return;
+        
+        const currentQuestion = questions[currentQuizQuestionIndex];
+        if (!currentQuestion) return;
+        
+        let answer;
+        
+        if (currentQuestion.type === 'select') {
+            if (currentQuestion.allowMultiple) {
+                answer = Array.from(document.querySelectorAll('.quiz-option.selected')).map(el => el.dataset.value);
+            } else {
+                const selected = document.querySelector('.quiz-option.selected');
+                answer = selected ? selected.dataset.value : null;
+            }
+            
+            // Handle custom input if present
+            const customInput = document.getElementById('custom-quiz-input');
+            if (customInput && customInput.value.trim()) {
+                if (Array.isArray(answer)) {
+                    answer.push(customInput.value.trim());
+                } else if (!answer) {
+                    answer = customInput.value.trim();
+                }
+            }
+        } else if (currentQuestion.type === 'custom') {
+            const customInput = document.getElementById('custom-quiz-input');
+            answer = customInput ? customInput.value.trim() : null;
+        }
+        
+        // Store answer
+        if (!currentQuizAnswers[currentQuizSection]) {
+            currentQuizAnswers[currentQuizSection] = [];
+        }
+        currentQuizAnswers[currentQuizSection][currentQuizQuestionIndex] = answer;
+        
+        // Move to next question or section
+        currentQuizQuestionIndex++;
+        
+        if (currentQuizQuestionIndex >= questions.length) {
+            // Move to next section or complete the quiz
+            currentQuizQuestionIndex = 0;
+            
+            if (currentQuizSection === 'physiology') {
+                currentQuizSection = 'goals';
+                updateProfileProgress(2);
+                showCurrentQuizQuestion();
+            } else if (currentQuizSection === 'goals') {
+                currentQuizSection = 'lifestyle';
+                updateProfileProgress(3);
+                showCurrentQuizQuestion();
+            } else {
+                // Quiz complete - process all answers
+                completeQuiz();
+            }
+        } else {
+            // Show next question in current section
+            showCurrentQuizQuestion();
+        }
+    };
+
+    // Function to complete the quiz and transition to chat interface
+    function completeQuiz() {
+        // Store profile data
+        userProfile = {
+            physicalVessel: currentQuizAnswers.physiology || {},
+            consciousIntent: currentQuizAnswers.goals || {},
+            dailyRhythms: currentQuizAnswers.lifestyle || {},
+            profileComplete: true
+        };
+        
+        // Hide quiz container with fade-out animation
+        if (quizContainer) {
+            quizContainer.style.opacity = '0';
+            quizContainer.style.transform = 'translateY(-20px)';
+            
+            setTimeout(() => {
+                quizContainer.style.display = 'none';
+                
+                // Show chat container with fade-in animation
+                if (chatContainer) {
+                    chatContainer.style.display = 'block';
+                    chatContainer.style.opacity = '0';
+                    chatContainer.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        chatContainer.style.opacity = '1';
+                        chatContainer.style.transform = 'translateY(0)';
+                        
+                        // Add initial AI message
+                        addInitialAIMessage();
+                    }, 100);
+                }
+                
+                // Show form with fade-in animation
+                if (form) {
+                    form.style.display = 'flex';
+                    form.style.opacity = '0';
+                    form.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        form.style.opacity = '1';
+                        form.style.transform = 'translateY(0)';
+                    }, 150);
+                }
+                
+                // Show toolkit button with fade-in animation
+                if (toggleToolkitBtn) {
+                    toggleToolkitBtn.style.display = 'block';
+                    toggleToolkitBtn.style.opacity = '0';
+                    toggleToolkitBtn.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        toggleToolkitBtn.style.opacity = '1';
+                        toggleToolkitBtn.style.transform = 'translateY(0)';
+                    }, 200);
+                }
+                
+                // Populate toolkit sidebar
+                populateSidebar();
+                
+                // Hide progress steps
+                updateProfileProgress(4);
+            }, 300);
+        }
+    }
+    
+    // Function to close sidebar with animation
+    function closeSidebar() {
+        // Animate sidebar items exit
+        const sidebarItems = document.querySelectorAll('.protocol-card');
+        sidebarItems.forEach((item) => {
+            item.classList.remove('active');
+        });
+        
+        // Delay sidebar closing to allow for animations
+        setTimeout(() => {
+            if (sidebar) sidebar.classList.remove('active');
+            if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+        }, 200);
+    }
+
+    // Populate sidebar with knowledge protocols
+    function populateSidebar() {
+        if (!sidebarContent) return;
+        
+        // Clear any existing content first
+        sidebarContent.innerHTML = '';
+        
+        knowledgeProtocols.forEach((protocol, index) => {
+            const card = document.createElement('div');
+            card.className = 'protocol-card';
+            card.innerHTML = `
+                <div class="protocol-header">
+                    <div class="protocol-icon">${protocol.icon}</div>
+                    <h3 class="protocol-title">${protocol.title}</h3>
+                </div>
+                <div class="protocol-content">
+                    ${protocol.content}
+                </div>
+            `;
+            
+            // Add click event to expand/collapse
+            const header = card.querySelector('.protocol-header');
+            if (header) {
+                header.addEventListener('click', function() {
+                    card.classList.toggle('expanded');
+                });
+            }
+            
+            sidebarContent.appendChild(card);
+        });
+        
+        // Add event listeners to all inquire buttons
+        document.querySelectorAll('.inquire-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent the expand/collapse from triggering
+                const protocol = this.getAttribute('data-protocol');
+                inquireAboutProtocol(protocol);
+                closeSidebar();
+            });
+        });
+    }
+
+    // Function to handle protocol inquiries
+    function inquireAboutProtocol(protocolName) {
+        if (!protocolName) return;
+        const inquiryMessage = `I'd like to learn more about the ${protocolName} protocol.`;
+        
+        // Add user message to chat
+        addUserMessage(inquiryMessage);
+        
+        // Get AI response
+        getAIResponse(inquiryMessage);
+    }
+    
+    // Add initial AI message based on collected profile data
+    function addInitialAIMessage() {
+        let initialMessage = "Thank you for completing your profile. Based on the information you've shared, I can now provide personalized wellness guidance tailored to your specific needs.";
+        
+        initialMessage += "\n\nWhat specific aspect of your wellness journey would you like to focus on today?";
+        
+        // Add to chat
+        addAIMessage(initialMessage);
+    }
+    
+    // Function to add user message to chat
+    function addUserMessage(text) {
+        if (!text || !chatContainer) return;
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message user-message';
+        messageDiv.textContent = text;
+        
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+    
+    // Function to add AI message to chat
+    function addAIMessage(text) {
+        if (!text || !chatContainer) return;
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message ai-message';
+        
+        // Convert newlines to paragraphs
+        const paragraphs = text.split('\n\n');
+        paragraphs.forEach(paragraph => {
+            if (paragraph.trim() !== '') {
+                const p = document.createElement('p');
+                p.textContent = paragraph;
+                messageDiv.appendChild(p);
+            }
+        });
+        
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+    
+    // Function to show AI is thinking
+    function showThinking() {
+        if (!chatContainer) return null;
+        
+        const thinkingDiv = document.createElement('div');
+        thinkingDiv.className = 'message ai-message thinking';
+        thinkingDiv.innerHTML = `
+            <div class="thinking-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        `;
+        
+        chatContainer.appendChild(thinkingDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        
+        return thinkingDiv;
+    }
+    
+    // Function to get AI response
+    function getAIResponse(userMessage) {
+        // Show thinking indicator
+        const thinkingDiv = showThinking();
+        
+        // Simulate API call with a delay
+        setTimeout(() => {
+            // Remove thinking indicator
+            if (thinkingDiv && thinkingDiv.parentNode) {
+                thinkingDiv.parentNode.removeChild(thinkingDiv);
+            }
+            
+            // Generate appropriate response based on user message
+            let aiResponse = generateResponse(userMessage);
+            
+            // Add AI response to chat
+            addAIMessage(aiResponse);
+        }, 1500);
+    }
+    
+    // Function to generate appropriate response (simulated AI logic)
+    function generateResponse(userMessage) {
+        if (!userMessage) return "I'm not sure I understand. Could you please clarify your question?";
+        
+        const lowerMessage = userMessage.toLowerCase();
+        
+        // Check for protocol inquiries
+        if (lowerMessage.includes('sleep optimization')) {
+            return "Sleep optimization is a foundational protocol that enhances cognitive performance, recovery, and overall health.\n\nThe protocol consists of four key components:\n\n1. Circadian Entrainment: Morning sunlight exposure (5-10 minutes, ideally within 30-60 minutes of waking) signals your SCN to properly regulate melatonin production later in the day. This enhances sleep onset and quality.\n\n2. Temperature Regulation: Maintaining a sleeping environment between 65-68°F (18-20°C) facilitates core temperature drops necessary for deep sleep. Consider using cooling mattress pads or adjusting ambient temperature.\n\n3. Consistent Schedule: Maintaining regular sleep-wake times stabilizes your circadian rhythm, optimizing sleep architecture and hormonal cascades that regulate energy and recovery.\n\n4. Evening Wind-Down: Implementing a 30-60 minute pre-sleep routine that reduces blue light exposure, minimizes psychological activation, and prepares your nervous system for restorative sleep.\n\nWould you like me to create a personalized sleep optimization protocol based on your specific profile?";
+        }
+        
+        if (lowerMessage.includes('stress management')) {
+            return "Stress management is a protocol designed to enhance resilience through regulated exposure to beneficial stressors while minimizing chronic, unproductive stress.\n\nThe protocol consists of four evidence-based pillars:\n\n1. Respiratory Regulation: The physiological sigh (double inhale through nose followed by extended exhale through mouth) activates parasympathetic response by influencing the vagus nerve, rapidly reducing stress hormone circulation.\n\n2. Thermal Exposure: Strategic exposure to cold (cold showers, ice baths) or heat (sauna sessions) triggers beneficial hormetic stress responses that improve stress resilience over time by enhancing mitochondrial function and stress protein expression.\n\n3. Exercise Calibration: Physical activity optimizes cortisol regulation through appropriate intensity and timing. Zone 2 cardio is particularly effective for balancing sympathetic/parasympathetic activity.\n\n4. Attentional Control: Structured mindfulness practices enhance prefrontal regulation of the amygdala and other limbic structures, improving emotional regulation and stress response management.\n\nWould you like a customized stress management protocol based on your specific needs and constraints?";
+        }
+        
+        if (lowerMessage.includes('nutrition')) {
+            return "Nutrition is foundational to all physiological functions and optimization efforts. The Nutrition Foundations protocol is based on four evidence-based principles:\n\n1. Time-Restricted Feeding: Aligning your eating window with your circadian rhythm (typically 8-10 hours) enhances metabolic flexibility, autophagy, and cellular repair mechanisms. This approach optimizes insulin sensitivity and mitochondrial function.\n\n2. Protein Optimization: Strategic protein distribution (1.6-2.2g/kg of body weight) throughout your eating window supports muscle protein synthesis, neurotransmitter production, and satiety signaling. Emphasis on complete protein sources ensures adequate essential amino acid intake.\n\n3. Whole Food Prioritization: Focusing on minimally processed foods maximizes micronutrient density and supports gut microbiome diversity. This approach ensures adequate phytonutrient intake and fiber consumption, which regulate inflammation and support metabolic health.\n\n4. Hydration Strategy: Consistent water intake supports optimal cellular function, nutrient transport, and metabolic processes. Electrolyte balance is particularly important for neural function and physical performance.\n\nWould you like me to develop a personalized nutrition approach based on your specific goals and current patterns?";
+        }
+        
+        // Generic response for other queries
+        return "Thank you for your question. Based on evidence-based principles, I can help you implement strategies that support your specific wellness goals.\n\nRemember that the most effective approaches focus on consistency, progressive adaptation, and alignment with your unique physiological needs.\n\nCould you share more about what specific outcomes you're looking to achieve in this area? This will help me provide more targeted, evidence-based guidance.";
+    }
+    
+    // Set up form submission
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (input && input.value.trim() !== '') {
+                const userMessage = input.value.trim();
+                
+                // Add user message to chat
+                addUserMessage(userMessage);
+                
+                // Clear input
+                input.value = '';
+                
+                // Get AI response
+                getAIResponse(userMessage);
+            }
+        });
+    }
+    
+    // Add focus/blur events to input form for styling
+    if (input) {
+        input.addEventListener('focus', function() {
+            if (form) form.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+            if (form) form.classList.remove('focused');
+        });
+    }
+    
+    // Add event listener for the toolkit button
+    if (toggleToolkitBtn) {
+        toggleToolkitBtn.addEventListener('click', function() {
+            if (sidebar) sidebar.classList.add('active');
+            if (sidebarOverlay) sidebarOverlay.classList.add('active');
+            
+            // Animate sidebar elements entrance
+            const sidebarItems = document.querySelectorAll('.protocol-card');
+            sidebarItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.classList.add('active');
+                }, 100 * index);
+            });
+        });
+    }
+
+    // Add event listener for closing sidebar
+    if (closeSidebarBtn) {
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+    }
+
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', closeSidebar);
+    }
+});
+
+// Initialize current year in footer
+document.addEventListener('DOMContentLoaded', function() {
+    const currentYearElement = document.getElementById('current-year');
+    if (currentYearElement) {
+        currentYearElement.textContent = new Date().getFullYear();
+    }
+});
