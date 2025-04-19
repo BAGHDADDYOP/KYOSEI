@@ -183,10 +183,10 @@ function generatePDF(contentType, data) {
 }
 
 /**
- * Creates a React component for displaying charts in artifacts
- * This is the corrected function with proper syntax
+ * Creates a React component for displaying monthly profit chart
+ * @returns {string} React component code
  */
-function createChartComponent() {
+function createMonthlyProfitChart() {
     return `
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -207,8 +207,8 @@ const MonthlyProfitChart = () => {
     };
     
     fetchData();
-  }, []); // This closing bracket was missing
-
+  }, []); // Fixed: Added closing bracket and empty dependency array
+  
   const parseCSV = (csvText) => {
     const lines = csvText.split('\\n');
     const headers = lines[0].split(',');
@@ -245,7 +245,7 @@ const MonthlyProfitChart = () => {
 };
 
 export default MonthlyProfitChart;
-    `;
+`;
 }
 
 /**
