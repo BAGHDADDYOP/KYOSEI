@@ -183,6 +183,72 @@ function generatePDF(contentType, data) {
 }
 
 /**
+ * Creates a React component for displaying charts in artifacts
+ * This is the corrected function with proper syntax
+ */
+function createChartComponent() {
+    return `
+import React, { useState, useEffect } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+const MonthlyProfitChart = () => {
+  const [data, setData] = useState([]);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await window.fs.readFile('monthly-profits.csv');
+        const text = new TextDecoder().decode(response);
+        const parsedData = parseCSV(text);
+        setData(parsedData);
+      } catch (error) {
+        console.error('Error reading file:', error);
+      }
+    };
+    
+    fetchData();
+  }, []); // This closing bracket was missing
+
+  const parseCSV = (csvText) => {
+    const lines = csvText.split('\\n');
+    const headers = lines[0].split(',');
+    
+    return lines.slice(1).filter(line => line.trim()).map(line => {
+      const values = line.split(',');
+      const entry = {};
+      
+      headers.forEach((header, index) => {
+        entry[header.trim()] = isNaN(values[index]) ? 
+          values[index] : parseFloat(values[index]);
+      });
+      
+      return entry;
+    });
+  };
+  
+  return (
+    <div className="chart-container">
+      <h3>Monthly Profits</h3>
+      <ResponsiveContainer width="100%" height={400}>
+        <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="month" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line type="monotone" dataKey="profit" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="revenue" stroke="#82ca9d" />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default MonthlyProfitChart;
+    `;
+}
+
+/**
  * Handles roadmap data from AI response
  * @param {string} aiResponse - The AI response text
  */
