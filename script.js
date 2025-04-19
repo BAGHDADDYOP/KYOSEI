@@ -1570,4 +1570,70 @@ document.addEventListener('DOMContentLoaded', function() {
     if (currentYearElement) {
         currentYearElement.textContent = new Date().getFullYear();
     }
+// === GPT-4 Symbolic Assistant Integration for Kyosei ===
+
+// 1. Insert your OpenAI API key here
+const OPENAI_API_KEY = "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"; // replace with your key
+
+// 2. Select the input and output elements
+const inputForm = document.getElementById("input-form");
+const userInput = document.getElementById("user-input");
+const chatContainer = document.getElementById("chat-container");
+
+// 3. Display assistant response
+function displayMessage(content, sender = "ai") {
+  const message = document.createElement("div");
+  message.classList.add("message", sender === "user" ? "user-message" : "ai-message");
+  message.innerHTML = `<p>${content}</p>`;
+  chatContainer.appendChild(message);
+  chatContainer.scrollTop = chatContainer.scrollHeight;
+}
+
+// 4. Symbolic prompt template
+function buildPrompt(userText) {
+  return `You are Kyōsei, a symbolic transformation assistant. 
+Speak only in metaphor, archetype, and poetic intuition.
+Avoid clinical language. Be immersive, subtle, and mythic.
+
+User: ${userText}
+Kyōsei:`;
+}
+
+// 5. Handle form submit
+inputForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const input = userInput.value.trim();
+  if (!input) return;
+  displayMessage(input, "user");
+  userInput.value = "";
+
+  displayMessage("<div class='thinking-dots'><span></span><span></span><span></span></div>", "ai");
+
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4-1106-preview",
+        messages: [{ role: "user", content: buildPrompt(input) }],
+        temperature: 0.8,
+        max_tokens: 300,
+      }),
+    });
+
+    const data = await response.json();
+    const aiReply = data.choices?.[0]?.message?.content || "(No response)";
+
+    // Remove loading dots
+    chatContainer.lastChild.remove();
+    displayMessage(aiReply);
+  } catch (err) {
+    chatContainer.lastChild.remove();
+    displayMessage("An error occurred while channeling Kyōsei.", "ai");
+    console.error(err);
+  }
 });
+
