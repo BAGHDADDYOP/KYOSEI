@@ -1,0 +1,86 @@
+<!-- Login and Registration Modal Component -->
+<div class="auth-modal" id="auth-modal">
+    <div class="auth-modal-content">
+        <!-- Close button -->
+        <button class="auth-close-btn" id="auth-close-btn">&times;</button>
+        
+        <!-- Auth tabs -->
+        <div class="auth-tabs">
+            <button class="auth-tab-btn active" data-tab="login">LOGIN</button>
+            <button class="auth-tab-btn" data-tab="register">REGISTER</button>
+        </div>
+        
+        <!-- Login form -->
+        <div class="auth-tab-content active" id="login-tab">
+            <form id="login-form">
+                <div class="auth-header">
+                    <h2>ACCESS YOUR PROFILE</h2>
+                    <p>Login to sync your wellness data across devices</p>
+                </div>
+                
+                <div class="auth-field">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" placeholder="Your email address" required>
+                </div>
+                
+                <div class="auth-field">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Your password" required>
+                </div>
+                
+                <div class="auth-field auth-remember">
+                    <input type="checkbox" id="login-remember">
+                    <label for="login-remember">Remember me</label>
+                    <a href="#" class="auth-forgot">Forgot password?</a>
+                </div>
+                
+                <div class="auth-message" id="login-message"></div>
+                
+                <button type="submit" class="auth-submit-btn">LOGIN</button>
+                
+                <div class="auth-demo">
+                    <p>Demo credentials: demo@example.com / password</p>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Register form -->
+        <div class="auth-tab-content" id="register-tab">
+            <form id="register-form">
+                <div class="auth-header">
+                    <h2>CREATE YOUR PROFILE</h2>
+                    <p>Join Kyōsei to track your wellness journey</p>
+                </div>
+                
+                <div class="auth-field">
+                    <label for="register-name">Full Name</label>
+                    <input type="text" id="register-name" placeholder="Your full name" required>
+                </div>
+                
+                <div class="auth-field">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" placeholder="Your email address" required>
+                </div>
+                
+                <div class="auth-field">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" placeholder="Create a password (min. 8 characters)" required minlength="8">
+                </div>
+                
+                <div class="auth-field">
+                    <label for="register-confirm">Confirm Password</label>
+                    <input type="password" id="register-confirm" placeholder="Confirm your password" required>
+                </div>
+                
+                <div class="auth-field auth-terms">
+                    <input type="checkbox" id="register-terms" required>
+                    <label for="register-terms">I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+                
+                <div class="auth-message" id="register-message"></div>
+                
+                <button type="submit" class="auth-submit-btn">CREATE ACCOUNT</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,203 @@
+<!-- Progress Dashboard -->
+<div class="dashboard-container" id="progress-dashboard">
+    <div class="dashboard-header">
+      <h2 class="dashboard-title">Wellness Progress</h2>
+      
+      <div class="dashboard-controls">
+        <div class="time-range-control">
+          <label for="time-range-select">Time Range:</label>
+          <select id="time-range-select" class="time-range-select">
+            <option value="7days">Last 7 Days</option>
+            <option value="30days">Last 30 Days</option>
+            <option value="90days">Last 90 Days</option>
+            <option value="year">Last Year</option>
+          </select>
+        </div>
+        
+        <div class="view-toggle" id="dashboard-view-toggle">
+          <button class="view-btn active" data-view="overview">Overview</button>
+          <button class="view-btn" data-view="metrics">Metrics</button>
+          <button class="view-btn" data-view="activities">Activities</button>
+        </div>
+        
+        <div class="dashboard-actions">
+          <button class="dashboard-action-btn" id="export-data-btn">
+            <i class="icon-download"></i>
+            Export
+          </button>
+          <button class="dashboard-action-btn" id="import-data-btn">
+            <i class="icon-upload"></i>
+            Import
+          </button>
+          <button class="dashboard-action-btn primary" id="add-metric-btn">
+            <i class="icon-plus"></i>
+            Add Metric
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="dashboard-content">
+      <!-- Metrics Container -->
+      <div class="metrics-container" id="metrics-container">
+        <!-- Metrics will be added here dynamically -->
+      </div>
+      
+      <!-- Activities Container -->
+      <div class="activities-container" id="activities-container">
+        <!-- Activities will be added here dynamically -->
+      </div>
+    </div>
+    
+    <!-- Add Metric Modal -->
+    <div class="modal" id="add-metric-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Add New Metric</h3>
+          <button class="modal-close-btn">&times;</button>
+        </div>
+        
+        <form id="add-metric-form">
+          <div class="form-field">
+            <label for="metric-name">Metric Name</label>
+            <input type="text" id="metric-name" placeholder="e.g., Body Weight, Sleep Duration" required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-field">
+              <label for="metric-type">Type</label>
+              <select id="metric-type" required>
+                <option value="number">Number</option>
+                <option value="time">Time</option>
+                <option value="scale">Scale (1-10)</option>
+              </select>
+            </div>
+            
+            <div class="form-field">
+              <label for="metric-unit">Unit</label>
+              <input type="text" id="metric-unit" placeholder="e.g., kg, hours, steps" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-field">
+              <label for="metric-goal">Goal Direction</label>
+              <select id="metric-goal" required>
+                <option value="increase">Increase</option>
+                <option value="decrease">Decrease</option>
+              </select>
+            </div>
+            
+            <div class="form-field">
+              <label for="metric-goal-value">Goal Value</label>
+              <input type="number" id="metric-goal-value" placeholder="Target value" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-field">
+              <label for="metric-category">Category</label>
+              <select id="metric-category" required>
+                <option value="physical">Physical</option>
+                <option value="activity">Activity</option>
+                <option value="recovery">Recovery</option>
+                <option value="wellness">Wellness</option>
+                <option value="nutrition">Nutrition</option>
+                <option value="sleep">Sleep</option>
+              </select>
+            </div>
+            
+            <div class="form-field">
+              <label for="metric-initial-value">Initial Value</label>
+              <input type="number" id="metric-initial-value" placeholder="Current value" required>
+            </div>
+          </div>
+          
+          <div class="form-field">
+            <label for="metric-color">Color (optional)</label>
+            <input type="color" id="metric-color" value="#4cd964">
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn secondary cancel-btn">Cancel</button>
+            <button type="submit" class="btn primary">Add Metric</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Add Activity Modal -->
+    <div class="modal" id="add-activity-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Add New Activity</h3>
+          <button class="modal-close-btn">&times;</button>
+        </div>
+        
+        <form id="add-activity-form">
+          <div class="form-field">
+            <label for="activity-name">Activity Name</label>
+            <input type="text" id="activity-name" placeholder="e.g., Morning Run, Cold Shower" required>
+          </div>
+          
+          <div class="form-field">
+            <label for="activity-type">Type</label>
+            <select id="activity-type" required>
+              <option value="workout">Workout</option>
+              <option value="nutrition">Nutrition</option>
+              <option value="recovery">Recovery</option>
+              <option value="sleep">Sleep</option>
+            </select>
+          </div>
+          
+          <!-- Dynamic fields based on activity type will be added here -->
+          <div id="activity-detail-fields"></div>
+          
+          <div class="form-field">
+            <label for="activity-notes">Notes</label>
+            <textarea id="activity-notes" placeholder="Additional details about this activity"></textarea>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn secondary cancel-btn">Cancel</button>
+            <button type="submit" class="btn primary">Add Activity</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- File Import Modal -->
+    <div class="modal" id="import-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Import Data</h3>
+          <button class="modal-close-btn">&times;</button>
+        </div>
+        
+        <form id="import-form">
+          <div class="form-field">
+            <label for="import-file">Select CSV File</label>
+            <input type="file" id="import-file" accept=".csv" required>
+          </div>
+          
+          <div class="import-instructions">
+            <h4>CSV Format Requirements:</h4>
+            <p>Your CSV file should have the following columns:</p>
+            <ul>
+              <li>Metric - Name of the metric</li>
+              <li>Date - Date of the measurement (MM/DD/YYYY)</li>
+              <li>Value - Numeric value</li>
+              <li>Unit - Unit of measurement</li>
+              <li>Goal - Target value</li>
+              <li>Category - Metric category</li>
+            </ul>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn secondary cancel-btn">Cancel</button>
+            <button type="submit" class="btn primary">Import Data</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

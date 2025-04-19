@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kyōsei: Research-based wellness optimization platform leveraging evidence-based protocols">
+    <meta name="theme-color" content="#000000">
+    <title>Kyōsei: Offline Mode</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Minimal styles for offline page */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Helvetica', Arial, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100vh;
+            padding: 0 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            color: #aaaaaa;
+        }
+        
+        .status-indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #ff3a30;
+            display: inline-block;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .status-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ff3a30;
+        }
+        
+        .reload-button {
+            background-color: white;
+            color: black;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .reload-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+        
+        .logo {
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+        }
+        
+        .offline-tips {
+            margin-top: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 100%;
+        }
+        
+        .offline-tips h2 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .offline-tips ul {
+            text-align: left;
+            list-style-position: inside;
+            padding-left: 10px;
+        }
+        
+        .offline-tips li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #cccccc;
+        }
+        
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">KYŌSEI</div>
+        
+        <div class="status-container">
+            <span class="status-indicator"></span>
+            <span class="status-text">You're currently offline</span>
+        </div>
+        
+        <h1>OFFLINE MODE</h1>
+        
+        <p>You can still access your previously loaded wellness protocols and profile information while offline.</p>
+        
+        <button class="reload-button" onclick="window.location.reload()">Reconnect</button>
+        
+        <div class="offline-tips">
+            <h2>WHILE OFFLINE, YOU CAN STILL:</h2>
+            <ul>
+                <li>Review your personalized recommendations</li>
+                <li>Access your wellness protocols in the toolkit</li>
+                <li>View your implementation plan</li>
+                <li>Check your progress metrics</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        // Check connection status periodically
+        setInterval(function() {
+            if (navigator.onLine) {
+                document.querySelector('.status-text').textContent = 'Connection restored';
+                document.querySelector('.status-text').style.color = '#4cd964';
+                document.querySelector('.status-indicator').style.backgroundColor = '#4cd964';
+                document.querySelector('.status-indicator').style.animation = 'none';
+            }
+        }, 3000);
+        
+        // Listen for online event
+        window.addEventListener('online', function() {
+            document.querySelector('.status-text').textContent = 'Connection restored';
+            document.querySelector('.status-text').style.color = '#4cd964';
+            document.querySelector('.status-indicator').style.backgroundColor = '#4cd964';
+            document.querySelector('.status-indicator').style.animation = 'none';
+        });
+    </script>
+</body>
+</html>
